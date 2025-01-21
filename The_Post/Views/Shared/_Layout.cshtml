@@ -7,30 +7,49 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/The_Post.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
 </head>
 <body>
+
     <header>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">The_Post</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <div class="container-fluid d-flex">
+
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Dropdown menu button -->
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="menuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
+                                <path d="M1 7.5h30V1.9H1v5.6zm0 22.6h30v-5.6H1v5.6zm0-11.3h30v-5.6H1v5.6z"></path>
+                            </svg>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="menuButton">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                        </ul>
+                    </div>
+                    <!-- Search button -->
+                    <button role="button" aria-label="Search The Post">
+                        <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true">
+                            <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="navbar-collapse collapse d-sm-inline-flex align-items-center">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        <a class="navbar-brand mx-auto text-center fw-bold display-3" asp-area="" asp-controller="Home" asp-action="Index">
+                            The Post
+                        </a>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
+
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -42,9 +61,11 @@
             &copy; 2025 - The_Post - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
