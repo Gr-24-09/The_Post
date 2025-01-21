@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using The_Post.Models;
 
 namespace The_Post.Services
 {
@@ -8,9 +9,9 @@ namespace The_Post.Services
         public Task UpdateArticle(int articleID);
         public Task GetArticleById(int articleID);
         public Task<Article> GetAllArticles(); // Pagination
-        public List<Article> GetFiveMostPopularArticles();
-        public List<Article> GetEditorsChoiceArticles();
-        public Task Article GetMostPopularArticleByCategory(int categoryID); 
+        public Task<Article> GetFiveMostPopularArticles();
+        public Task<Article> GetEditorsChoiceArticles();
+        public Task GetMostPopularArticleByCategory(int categoryID); 
         public Task DeleteArticle(int articleID);
     }
 }

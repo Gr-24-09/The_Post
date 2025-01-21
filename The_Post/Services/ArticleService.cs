@@ -24,17 +24,22 @@ namespace The_Post.Services
             throw new NotImplementedException();
         }
 
-        public async List<Article> GetEditorsChoiceArticles()
+        public async Task<Article> GetEditorsChoiceArticles()
         {
             throw new NotImplementedException();
         }
 
-        public async List<Article> GetFiveMostPopularArticles()
+        public async Task<Article> GetFiveMostPopularArticles()
         {
             throw new NotImplementedException();
         }
 
         public async Task UpdateArticle(int articleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task GetMostPopularArticleByCategory(int categoryID)
         {
             throw new NotImplementedException();
         }
