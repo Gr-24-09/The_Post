@@ -23,6 +23,11 @@ namespace The_Post.Controllers
             return View();
         }
 
+        public IActionResult CookiesNotice()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
