@@ -1,13 +1,12 @@
-﻿namespace The_Post.Services
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace The_Post.Services
 {
     public interface IRoleService
     {
-        // Needs to be updated
-        // How will we implement role?
-
-        public Task AddRole();
-        public Task GetAllRoles();
-        public Task EditRole();
-        public Task DeleteRole();
+        public Task AddRole(string roleName);
+        public Task<IdentityRole> GetAllRoles(); // I'm not sure if this is the correct signature
+        public Task EditRole(string roleID);
+        public Task DeleteRole(string roleID);
     }
 }

@@ -5,13 +5,13 @@ namespace The_Post.Services
 {
     public interface IArticleService
     {
-        public Task CreateArticle(Article article);
-        public Task UpdateArticle(int articleID);
-        public Task GetArticleById(int articleID);
-        public Task<Article> GetAllArticles(); // Pagination
-        public Task<Article> GetFiveMostPopularArticles();
-        public Task<Article> GetEditorsChoiceArticles();
-        public Task GetMostPopularArticleByCategory(int categoryID); 
-        public Task DeleteArticle(int articleID);
+        public void CreateArticle(Article article);
+        public void UpdateArticle(int articleID);
+        public Article GetArticleById(int articleID);
+        public List<Article> GetAllArticles(); // Pagination
+        public List<Article> GetFiveMostPopularArticles();
+        public List<Article> GetEditorsChoiceArticles();
+        public Article GetMostPopularArticleByCategory(int categoryID); 
+        public void DeleteArticle(int articleID);
     }
 }

@@ -4,9 +4,9 @@
     {
         // Needs to be updated
 
-        public Task AddCard();
-        public Task GetCard();
-        public Task EditCard();
-        public Task DeleteCard();
+        public void AddCard();
+        public void GetCard();
+        public void EditCard();
+        public void DeleteCard();
     }
 }

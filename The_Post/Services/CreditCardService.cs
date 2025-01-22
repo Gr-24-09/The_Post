@@ -3,22 +3,22 @@ namespace The_Post.Services
 {
     public class CreditCardService : ICreditCardService
     {
-        public async Task AddCard()
+        public void AddCard()
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteCard()
+        public void DeleteCard()
         {
             throw new NotImplementedException();
         }
 
-        public async Task EditCard()
+        public void EditCard()
         {
             throw new NotImplementedException();
         }
 
-        public async Task GetCard()
+        public void GetCard()
         {
             throw new NotImplementedException();
         }

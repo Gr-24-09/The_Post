@@ -4,42 +4,42 @@ namespace The_Post.Services
 {
     public class ArticleService : IArticleService
     {
-        public async Task CreateArticle(Article article)
+        public void CreateArticle(Article article)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteArticle(int articleId)
+        public void DeleteArticle(int articleID)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Article> GetAllArticles()
+        public List<Article> GetAllArticles() // Pagination
         {
             throw new NotImplementedException();
         }
 
-        public async Task GetArticleById(int articleId)
+        public Article GetArticleById(int articleID)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Article> GetEditorsChoiceArticles()
+        public List<Article> GetEditorsChoiceArticles()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Article> GetFiveMostPopularArticles()
+        public List<Article> GetFiveMostPopularArticles()
         {
             throw new NotImplementedException();
         }
 
-        public async Task UpdateArticle(int articleId)
+        public Article GetMostPopularArticleByCategory(int categoryID)
         {
             throw new NotImplementedException();
         }
 
-        public async Task GetMostPopularArticleByCategory(int categoryID)
+        public void UpdateArticle(int articleID)
         {
             throw new NotImplementedException();
         }
