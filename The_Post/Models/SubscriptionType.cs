@@ -16,5 +16,7 @@ namespace The_Post.Models
         [Required]
         [DataType(DataType.Currency)]
          public decimal Price { get; set; }
+
+        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
     }
 }

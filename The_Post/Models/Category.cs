@@ -11,6 +11,8 @@ namespace The_Post.Models
         [StringLength(100)]
          public string Name { get; set; }
 
-        public virtual Article Article { get; set; }
+
+        public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
+
     }
 }

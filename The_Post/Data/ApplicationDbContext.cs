@@ -12,5 +12,12 @@ namespace The_Post.Data
         }
 
         public DbSet<Subscription> Subscriptions { get; set; }
+
+        public DbSet<Article> Articles { get; set; }
+
+        public DbSet<Category> Categories { get; set; }
+
+        public DbSet<SubscriptionType> SubscriptionTypes { get; set; }
     }
+
 }
