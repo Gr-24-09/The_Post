@@ -21,3 +21,10 @@ body {
   margin-bottom: 60px;
 }
 
+.navbar-brand {
+    font-family: 'Merriweather', serif;
+    font-size: 4rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #333;
+}
