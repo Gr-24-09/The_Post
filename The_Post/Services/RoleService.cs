@@ -20,7 +20,7 @@ namespace The_Post.Services
             throw new NotImplementedException();
         }
 
-        public async Task<IdentityRole> GetAllRoles() // I'm not sure if this is the correct method signature
+        public async Task<List<IdentityRole>> GetAllRoles() // I'm not sure if this is the correct return type, maybe it should be a list of string names?
         {
             throw new NotImplementedException();
         }

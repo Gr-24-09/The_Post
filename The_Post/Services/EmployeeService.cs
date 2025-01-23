@@ -24,7 +24,7 @@ namespace The_Post.Services
             throw new NotImplementedException();
         }
 
-        public async Task<User> GetAllEmployees()
+        public async Task<List<User>> GetAllEmployees()
         {
             throw new NotImplementedException();
         }
