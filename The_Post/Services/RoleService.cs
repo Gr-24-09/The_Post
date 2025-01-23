@@ -5,24 +5,42 @@ namespace The_Post.Services
 {
     public class RoleService : IRoleService
     {
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public RoleService(RoleManager<IdentityRole> roleManager)
+        {
+            _roleManager = roleManager;
+        }
         public async Task AddRole(string roleName)
         {
-            throw new NotImplementedException();
+          if (!await _roleManager.RoleExistsAsync(roleName))
+            {
+                await _roleManager.CreateAsync(new IdentityRole (roleName));    
+            }
         }
 
         public async Task DeleteRole(string roleID)
         {
-            throw new NotImplementedException();
+            var Role = await _roleManager.FindByIdAsync (roleID);
+            if (Role != null)
+            {
+                await _roleManager.DeleteAsync (Role);
+            }
         }
 
-        public async Task EditRole(string roleID)
+        public async Task EditRole(string roleID, string NewRoleName)
         {
-            throw new NotImplementedException();
+            var existingRole = await _roleManager.FindByIdAsync(roleID);
+            if (existingRole != null)
+            {
+                existingRole.Name = NewRoleName;
+                await _roleManager.UpdateAsync (existingRole);
+            }
         }
 
-        public async Task<List<IdentityRole>> GetAllRoles() // I'm not sure if this is the correct return type, maybe it should be a list of string names?
+        public async Task<List<IdentityRole>> GetAllRoles() 
         {
-            throw new NotImplementedException();
+            return _roleManager.Roles.ToList();
         }
     }
 }
