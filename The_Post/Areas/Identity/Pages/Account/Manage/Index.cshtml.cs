@@ -75,6 +75,21 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Date of Birth")]
             [DataType(DataType.Date)]
             public DateTime? DOB { get; set; }
+
+            
+            [Required(ErrorMessage = "Delivery address is required.")]
+            [StringLength(50, ErrorMessage = "Delivery address can't be longer than 50 characters.")]
+
+            public string Address { get; set; }
+
+            [Required(ErrorMessage = "Delivery City is required.")]
+            [StringLength(50, ErrorMessage = "Delivery city can't be longer than 50 characters.")]
+
+            public string City { get; set; }
+
+            [Required(ErrorMessage = "Delivery Zip is required.")]
+            [RegularExpression(@"^\d{5}$", ErrorMessage = "Delivery zip must be a 5-digit number.")]
+            public string Zip { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -90,7 +105,10 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
                   Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                DOB = user.DOB
+                DOB = user.DOB,
+                Address=user.Address,
+                City = user.City,
+                Zip = user.Zip,
             };
         }
 
@@ -134,7 +152,18 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
             {
                 user.Email = Input.Email;
             }
-
+            if (Input.Address != user.Address)
+            {
+                user.Address = Input.Address;
+            }
+            if (Input.City != user.City)
+            {
+                user.City = Input.City;
+            }
+            if (Input.Zip != user.Zip)
+            {
+                user.Zip = Input.Zip;
+            }
             if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;

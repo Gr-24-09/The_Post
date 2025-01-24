@@ -114,6 +114,19 @@ namespace The_Post.Areas.Identity.Pages.Account
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+            [Required(ErrorMessage = "Delivery address is required.")]
+            [StringLength(50, ErrorMessage = "Delivery address can't be longer than 50 characters.")]
+
+            public string Address { get; set; }
+
+            [Required(ErrorMessage = "Delivery City is required.")]
+            [StringLength(50, ErrorMessage = "Delivery city can't be longer than 50 characters.")]
+
+            public string City { get; set; }
+
+            [Required(ErrorMessage = "Delivery Zip is required.")]
+            [RegularExpression(@"^\d{5}$", ErrorMessage = "Delivery zip must be a 5-digit number.")]
+            public string Zip { get; set; }
         }
 
 
@@ -135,6 +148,9 @@ namespace The_Post.Areas.Identity.Pages.Account
                 user.LastName = Input.LastName;
                 user.DOB = Input.DOB;
                 user.PhoneNumber = Input.PhoneNumber;
+                user.Address = Input.Address;
+                user.City = Input.City; 
+                user.Zip = Input.Zip;
                
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
