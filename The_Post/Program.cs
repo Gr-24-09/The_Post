@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using The_Post.Data;
 using The_Post.Models;
+using The_Post.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultUI()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
+
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IArticleService,ArticleService>();
+builder.Services.AddScoped<IEmployeeService,EmployeeService>();
 
 var app = builder.Build();
 

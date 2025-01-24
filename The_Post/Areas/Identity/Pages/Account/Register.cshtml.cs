@@ -110,6 +110,10 @@ namespace The_Post.Areas.Identity.Pages.Account
             [Display(Name = "Date of Birth")]
             [DataType(DataType.Date)]
             public DateTime? DOB { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -130,6 +134,7 @@ namespace The_Post.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.DOB = Input.DOB;
+                user.PhoneNumber = Input.PhoneNumber;
                
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

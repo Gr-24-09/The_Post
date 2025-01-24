@@ -59,6 +59,22 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Display(Name = "First Name")]
+            [Required]
+            public string FirstName { get; set; }
+
+            [Display(Name = "Last Name")]
+            [Required]
+            public string LastName { get; set; }
+
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime? DOB { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -70,7 +86,11 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                  Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DOB = user.DOB
             };
         }
 
@@ -110,8 +130,29 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+            if (Input.Email != user.Email)
+            {
+                user.Email = Input.Email;
+            }
 
+            if (Input.FirstName != user.FirstName)
+            {
+                user.FirstName = Input.FirstName;
+            }
+
+            if (Input.LastName != user.LastName)
+            {
+                user.LastName = Input.LastName;
+            }
+
+            if (Input.DOB != user.DOB)
+            {
+                user.DOB = Input.DOB;
+            }
+
+            await _userManager.UpdateAsync(user);
             await _signInManager.RefreshSignInAsync(user);
+
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
