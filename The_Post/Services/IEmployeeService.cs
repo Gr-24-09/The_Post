@@ -5,9 +5,9 @@ namespace The_Post.Services
     public interface IEmployeeService
     {
         public Task AddEmployee(User employee);
-        public Task<List<User>> GetAllEmployees();
-        public Task EditEmployee(string userId);
+        public Task AssignRole(string userId, string role);        
         public Task DeleteEmployee(string userId);
-        public Task AssignRole(string userId); // Add Role as a parameter
+        public Task EditEmployee(string userId, User updatedUser);
+        public List<User> GetAllEmployees();
     }
 }
