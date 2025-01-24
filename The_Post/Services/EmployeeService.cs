@@ -39,22 +39,9 @@ namespace The_Post.Services
             await _userManager.DeleteAsync(user);            
         }
 
-        public async Task EditEmployee(string userId, User updatedUser)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                throw new ArgumentException("User not found", nameof(userId));
-            }
-
-                user.UserName = updatedUser.UserName;
-                user.Email = updatedUser.Email;
-                user.PhoneNumber = updatedUser.PhoneNumber;
-                user.DOB = updatedUser.DOB;
-                user.FirstName = updatedUser.FirstName;
-                user.LastName = updatedUser.LastName;
-
-                await _userManager.UpdateAsync(user);           
+        public async Task EditEmployee(User updatedUser)
+        {                         
+            await _userManager.UpdateAsync(updatedUser);           
         }
 
         public List<User> GetAllEmployees()
