@@ -1,5 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using The_Post.Models;
 
 namespace The_Post.Services
 {
@@ -19,28 +21,24 @@ namespace The_Post.Services
             }
         }
 
-        public async Task DeleteRole(string roleID)
+        public async Task DeleteRole(string roleId)
         {
-            var Role = await _roleManager.FindByIdAsync (roleID);
-            if (Role != null)
+            var role = await _roleManager.FindByIdAsync (roleId);
+            if (role == null)
             {
-                await _roleManager.DeleteAsync (Role);
+                throw new ArgumentException("Role not found", nameof(roleId));
             }
+            await _roleManager.DeleteAsync(role);
         }
 
-        public async Task EditRole(string roleID, string NewRoleName)
-        {
-            var existingRole = await _roleManager.FindByIdAsync(roleID);
-            if (existingRole != null)
-            {
-                existingRole.Name = NewRoleName;
-                await _roleManager.UpdateAsync (existingRole);
-            }
+        public async Task EditRole(IdentityRole role)
+        {           
+            await _roleManager.UpdateAsync(role);            
         }
 
         public async Task<List<IdentityRole>> GetAllRoles() 
         {
-            return _roleManager.Roles.ToList();
+            return await _roleManager.Roles.ToListAsync();
         }
     }
 }

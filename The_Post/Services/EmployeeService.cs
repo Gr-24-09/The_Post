@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.Security.AccessControl;
 using The_Post.Data;
 using The_Post.Models;
@@ -39,14 +40,14 @@ namespace The_Post.Services
             await _userManager.DeleteAsync(user);            
         }
 
-        public async Task EditEmployee(User updatedUser)
+        public async Task EditEmployee(User user)
         {                         
-            await _userManager.UpdateAsync(updatedUser);           
+            await _userManager.UpdateAsync(user);           
         }
 
-        public List<User> GetAllEmployees()
+        public async Task<List<User>> GetAllEmployees()
         {
-            return _userManager.Users.ToList();
+            return await _userManager.Users.ToListAsync();
         }
     }
 }
