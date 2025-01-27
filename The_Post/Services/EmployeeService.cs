@@ -15,9 +15,9 @@ namespace The_Post.Services
             _userManager = userManager;
         }
 
-        public async Task AddEmployee(User user)
+        public async Task AddEmployee(User user, string password)
         {
-           await _userManager.CreateAsync(user);                      
+           await _userManager.CreateAsync(user, password);                      
         }
 
         public async Task AssignRole(string userId, string role)

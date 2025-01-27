@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using The_Post.Data;
+using The_Post.Models;
+using The_Post.Models.VM;
 using The_Post.Services;
 
 namespace The_Post.Controllers
@@ -17,47 +19,43 @@ namespace The_Post.Controllers
             _roleService = roleService;
         }
 
-        public IActionResult Indx()
+        public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult AddArticle()
-        {
-            return View();
-        }
-
-        public IActionResult EditArticle()
-        {
-            return View();
-        }
-
-        public IActionResult DeleteArticle()
-        {
-            return View();
-        }
-
-        public IActionResult ArticleAddedSuccessfully()
-        {
-            return View();
-        }
-
-        public IActionResult AllArticles()
-        {
-            return View();
-        }
-
-        public IActionResult EditorsChoice()
-        {
-            return View();
-        }
-
-        public IActionResult SubscriptionStats()
-        {
-            return View();
-        }
+        
+        //------------------------- EMPLOYEE ACTIONS -------------------------
 
         public IActionResult AddEmployee()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployee(AddEmployeeVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    DOB = model.DOB,
+                    Address = model.Address,
+                    Zip = model.Zip,
+                    City = model.City,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email
+                };
+
+                await _employeeService.AddEmployee(user, model.Password);
+                return RedirectToAction("EmployeeAdded");
+            }
+
+            return View();
+        }
+
+        public IActionResult EmployeeAdded()
         {
             return View();
         }
@@ -67,12 +65,24 @@ namespace The_Post.Controllers
             return View();
         }
 
-        public IActionResult DeleteEmployee()
+        public async Task<IActionResult> DeleteEmployee(string userId)
         {
             return View();
         }
 
-        public IActionResult AllEmployees()
+        public async Task<IActionResult> AllEmployees()
+        {
+            return View(await _employeeService.GetAllEmployees());
+        }
+
+        //------------------------- OTHER ACTIONS -------------------------
+
+        public IActionResult EditorsChoice()
+        {
+            return View();
+        }
+
+        public IActionResult ArchiveArticle()
         {
             return View();
         }
@@ -82,7 +92,7 @@ namespace The_Post.Controllers
             return View();
         }
 
-        public IActionResult ArchiveArticle()
+        public IActionResult SubscriptionStats()
         {
             return View();
         }

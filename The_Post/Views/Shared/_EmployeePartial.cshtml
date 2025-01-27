@@ -1,0 +1,30 @@
+﻿@model The_Post.Models.User;
+
+<div class="p-2 col-md-4">
+    <div class="card rounded">
+        <div class="card-header p-0 hstack gap-2">
+            <div class="p-3"><strong>@Model.FirstName @Model.LastName</strong></div>
+            <div class="p-2 ms-auto"><a asp-action="EditEmployee" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning">Edit</a></div>
+            <div class="vr"></div>
+            <div class="p-2">
+                <form asp-action="DeleteEmployee" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this customer?')">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            UserName:       <em>@Model.UserName</em> <br />
+            Date of Birth:  <em>@Model.DOB</em> <br />            
+            <br />
+            Address: <em>@Model.Address</em> <br />
+            Zip:     <em>@Model.Zip</em> <br />
+            City:    <em>@Model.City</em> <br />
+        </div>
+        <div class="card-footer">
+            <div>&#128383; @Model.PhoneNumber</div>
+            <div class="d-flex justify-content-between">
+                &#128231; @Model.Email               
+            </div>
+        </div>
+    </div>
+</div>
