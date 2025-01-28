@@ -1,9 +1,23 @@
 ﻿@model The_Post.Models.User;
 
 <div class="p-2 col-md-4">
-    <div class="card rounded">
-        <div class="card-header p-0 hstack gap-2">
-            <div class="p-3"><strong>@Model.FirstName @Model.LastName</strong></div>
+
+    <div class="card">
+        <img class="card-img-top" src="" alt="THE POST">
+        <div class="card-body">
+            <h5 class="card-title"><strong>@Model.FirstName @Model.LastName</strong></h5>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success"><i class="fa fa-briefcase" style="font-size:20px;"></i>   The Post</li>
+                <li class="list-group-item list-group-item-success"><i class="fa fa-user" style="font-size:20px;"></i>   Role</li>
+                <li class="list-group-item list-group-item-success"><i class="fa fa-map-marker" style="font-size:20px;"></i>   Linköping</li>
+                <li class="list-group-item list-group-item-success"><i style="font-size:20px;"></i>&#128383   @Model.PhoneNumber</li>
+                <li class="list-group-item list-group-item-success"><i style="font-size:20px;"></i>&#128231   @Model.Email</li>
+            </ul>
+        </div>
+        <div class="card-footer p-0 hstack gap-2">
+            <button type="button" class="btn" data-bs-toggle="modal" data-target="#modal1" id="left-panel-link">
+                Learn More
+            </button>
             <div class="p-2 ms-auto"><a asp-action="EditEmployee" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning">Edit</a></div>
             <div class="vr"></div>
             <div class="p-2">
@@ -12,19 +26,29 @@
                 </form>
             </div>
         </div>
-        <div class="card-body">
-            UserName:       <em>@Model.UserName</em> <br />
-            Date of Birth:  <em>@Model.DOB</em> <br />            
-            <br />
-            Address: <em>@Model.Address</em> <br />
-            Zip:     <em>@Model.Zip</em> <br />
-            City:    <em>@Model.City</em> <br />
-        </div>
-        <div class="card-footer">
-            <div>&#128383; @Model.PhoneNumber</div>
-            <div class="d-flex justify-content-between">
-                &#128231; @Model.Email               
+    </div>
+
+    <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">@Model.FirstName @Model.LastName</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    UserName:       <em>@Model.UserName</em> <br />
+                    Date of Birth:  <em>@Model.DOB</em> <br />
+                    <br />
+                    Address: <em>@Model.Address</em> <br />
+                    Zip:     <em>@Model.Zip</em> <br />
+                    City:    <em>@Model.City</em> <br />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
-    </div>
+    </div>    
 </div>

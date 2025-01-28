@@ -28,3 +28,23 @@ body {
     letter-spacing: 2px;
     color: #333;
 }
+
+.modal-header {
+    background-image: linear-gradient(#7FDBFF,white);
+}
+
+.modal-footer {
+    background-image: linear-gradient(white,#7FDBFF);
+}
+
+#left-panel-link {
+    position: relative;
+    left: 5%;
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}

@@ -88,6 +88,39 @@ namespace The_Post.Controllers
 
         //------------------------- OTHER ACTIONS -------------------------
 
+        public async Task<IActionResult> AssignRole()
+        {
+            var model = new AssignRoleVM
+            {
+                Users = await _employeeService.GetAllEmployees(),
+                Roles = await _roleService.GetAllRolesAsync()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(AssignRoleVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _employeeService.AssignRole(model.UserId, model.Role);
+                    return RedirectToAction("AllEmployees");
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                } 
+            }
+
+            //Repopulate dropdowns if validation fails
+            model.Users = await _employeeService.GetAllEmployees();
+            model.Roles = await _roleService.GetAllRolesAsync();
+            return View(model);
+        }
+
         public IActionResult EditorsChoice()
         {
             return View();
@@ -97,12 +130,7 @@ namespace The_Post.Controllers
         {
             return View();
         }
-
-        public IActionResult AssignRole()
-        {
-            return View();
-        }
-
+                
         public IActionResult SubscriptionStats()
         {
             return View();

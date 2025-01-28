@@ -47,7 +47,11 @@ namespace The_Post.Services
 
         public async Task<List<User>> GetAllEmployees()
         {
-            return await _userManager.Users.ToListAsync();
+            var employees = await _userManager.Users
+                .Where(u => u.IsEmployee)
+                .ToListAsync();
+
+            return employees;
         }
     }
 }
