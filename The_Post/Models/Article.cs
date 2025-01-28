@@ -16,6 +16,10 @@ namespace The_Post.Models
         public string LinkText { get; set; }
 
         [Required]
+        [Display(Name = "Editors Choice")]
+        public bool EditorsChoice { get; set; }
+
+        [Required]
         [StringLength(100)]
         public string HeadLine { get; set; }
 
@@ -38,9 +42,9 @@ namespace The_Post.Models
         [StringLength(500)]
         public string ImageLink { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Category { get; set; }
+        //[Required]
+        //[StringLength(100)]
+        //public string Category { get; set; }
 
         [Required]
         public bool IsArchived { get; set; }
