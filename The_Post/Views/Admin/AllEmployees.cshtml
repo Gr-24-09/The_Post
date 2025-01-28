@@ -1,7 +1,19 @@
-﻿
+﻿@model IEnumerable<The_Post.Models.User>;
+
 @{
     ViewData["Title"] = "AllEmployees";
 }
 
-<h1>AllEmployees</h1>
+<h1 class="text-center"><em><strong>Employees</strong></em></h1>
+<hr />
+<div class="d-grid gap-2 col-md-4 mx-auto">
+    <a asp-action="AddEmployee" class="m-2 btn btn-outline-success">Add New Employee</a>
+</div>
+
+<div class="row mt-3">
+    @foreach (var item in Model)
+    {
+        <partial name="_EmployeePartial" model=item></partial>
+    }
+</div>
 
