@@ -83,7 +83,8 @@ namespace The_Post.Controllers
 
         public async Task<IActionResult> AllEmployees()
         {
-            return View(await _employeeService.GetAllEmployees());
+            var employees = await _employeeService.GetAllEmployeesWithRolesAsync();
+            return View(employees);
         }
 
         //------------------------- OTHER ACTIONS -------------------------
