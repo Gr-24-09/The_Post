@@ -26,6 +26,12 @@ namespace The_Post.Services
             _ApplicationDBContext.SaveChanges();
         }
 
+        public void UpdateArticle(Article updatedArticle)
+        { 
+            _ApplicationDBContext.Articles.Update(updatedArticle);
+            _ApplicationDBContext.SaveChanges();
+
+        }
         public List<Article> GetAllArticles() // Pagination
         {
             var article = _ApplicationDBContext.Articles.ToList();
@@ -36,12 +42,20 @@ namespace The_Post.Services
         {
             var article = _ApplicationDBContext.Articles.FirstOrDefault(c => c.Id == articleID);
             return article;
+
         }
 
-        //public List<Article> GetEditorsChoiceArticles()
-        //{
-        //    var editorschoice = _ApplicationDBContext.Articles.
-        //}
+        public List<Article> GetEditorsChoiceArticles()
+        {
+            var editorschoice = _ApplicationDBContext.Articles.Where(article => article.EditorsChoice).ToList();
+            return editorschoice;
+        }
+
+        public List<Article> TenLatestArticles()
+        {
+            var tenlatest = _ApplicationDBContext.Articles.OrderByDescending(article => article.DateStamp).ToList();
+            return tenlatest;
+        }
 
         public List<Article> GetFiveMostPopularArticles()
         {
@@ -51,28 +65,11 @@ namespace The_Post.Services
 
         public Article GetMostPopularArticleByCategory(int categoryID)
         {
-            var mostpopularbycategory = _ApplicationDBContext.Articles.GroupBy(c => c.Categories).
-                                          Select(group => group.OrderByDescending(m => m.Views).FirstOrDefault());
-            return (Article) mostpopularbycategory;
+            var mostpopularbycategory = _ApplicationDBContext.Categories.Where(c => c.Id== categoryID)
+                                          .SelectMany(c=> c.Articles).OrderByDescending(m => m.Views).FirstOrDefault();
+            return (Article)mostpopularbycategory;
         }
 
-        public void UpdateArticle(int articleID,Article updatedarticle)
-        {
-            var existingarticle = _ApplicationDBContext.Articles.FirstOrDefault(a => a.Id == articleID);
-                if(existingarticle !=null )
-            {
-                existingarticle.DateStamp = updatedarticle.DateStamp;
-                existingarticle.HeadLine = updatedarticle.HeadLine;
-                existingarticle.LinkText = updatedarticle.LinkText;
-                existingarticle.ContentSummary = updatedarticle.ContentSummary;
-                existingarticle.Content = updatedarticle.Content;
-                existingarticle.Views = updatedarticle.Views;
-                existingarticle.Likes = updatedarticle.Likes;
-                existingarticle.ImageLink = updatedarticle.ImageLink;
-                existingarticle.IsArchived = updatedarticle.IsArchived;
 
-                _ApplicationDBContext.SaveChanges();
-            }
-        }
     }
 }
