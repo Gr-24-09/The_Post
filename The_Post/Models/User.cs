@@ -14,25 +14,23 @@ namespace The_Post.Models
         [Required, MaxLength(100)]
         public string LastName { get; set; }= string.Empty;
 
-
         [Display(Name = "Date of Birth")]
         [DataType(DataType.Date)]
         public DateTime? DOB { get; set; }
 
-        [Required(ErrorMessage = "Delivery address is required.")]
-        [StringLength(50, ErrorMessage = "Delivery address can't be longer than 50 characters.")]
-        
+        [Required(ErrorMessage = "Address is required.")]
+        [StringLength(50, ErrorMessage = "Address can't be longer than 50 characters.")]        
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "Delivery City is required.")]
-        [StringLength(50, ErrorMessage = "Delivery city can't be longer than 50 characters.")]
-        
+        [Required(ErrorMessage = "City is required.")]
+        [StringLength(50, ErrorMessage = "City can't be longer than 50 characters.")]        
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Delivery Zip is required.")]
-        [RegularExpression(@"^\d{5}$", ErrorMessage = "Delivery zip must be a 5-digit number.")]
+        [Required(ErrorMessage = "Zip is required.")]
+        [RegularExpression(@"^\d{5}$", ErrorMessage = "Zip must be a 5-digit number.")]
         public string Zip { get; set; }
 
+        public bool IsEmployee { get; set; }
 
         public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
     }

@@ -37,7 +37,8 @@ namespace The_Post.Controllers
             if (ModelState.IsValid)
             {
                 var user = new User
-                {
+                {                    
+                    UserName = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     DOB = model.DOB,
@@ -45,14 +46,24 @@ namespace The_Post.Controllers
                     Zip = model.Zip,
                     City = model.City,
                     PhoneNumber = model.PhoneNumber,
-                    Email = model.Email
+                    Email = model.Email,
+                    IsEmployee = true
                 };
 
-                await _employeeService.AddEmployee(user, model.Password);
-                return RedirectToAction("EmployeeAdded");
+                var result = await _employeeService.AddEmployee(user, model.Password);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("EmployeeAdded");
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                } 
             }
 
-            return View();
+            return View(model);
         }
 
         public IActionResult EmployeeAdded()
