@@ -1,0 +1,47 @@
+﻿ <!-- Offcanvas Sidebar -->
+<div class="offcanvas offcanvas-start w-25 text-bg-dark" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+        <h4 class="offcanvas-title text-center" id="offcanvasWithBothOptionsLabel">Menu</h4>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-unstyled ps-0">
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Home" asp-action="Index">Home</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Local">Local</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Sweden">Sweden</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="World">World</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Weather">Weather</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Sports">Sports</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Economy">Economy</a></li>
+
+            <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<style>
+   /* Sidebar Links Styling */
+   .sidebar-link {
+       color: black !important; 
+       font-weight: bold; 
+       padding: 10px 15px; 
+       display: block; 
+       text-decoration: none; 
+       border-bottom: 1px solid gray; 
+   }
+ 
+   /* Hover Effect */
+   .sidebar-link:hover {
+       background-color: rgba(255, 255, 255, 0.3);
+       color: gray !important; 
+       transition: background-color 0.3s ease-in-out; 
+   }
+</style>
+
