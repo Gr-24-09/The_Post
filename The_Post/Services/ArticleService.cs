@@ -30,8 +30,8 @@ namespace The_Post.Services
 
         public void UpdateArticle(Article updatedArticle)
         { 
-            _ApplicationDBContext.Articles.Update(updatedArticle);
-            _ApplicationDBContext.SaveChanges();
+            _applicationDBContext.Articles.Update(updatedArticle);
+            _applicationDBContext.SaveChanges();
 
         }
         public List<Article> GetAllArticles() // Pagination
@@ -49,13 +49,13 @@ namespace The_Post.Services
 
         public List<Article> GetEditorsChoiceArticles()
         {
-            var editorschoice = _ApplicationDBContext.Articles.Where(article => article.EditorsChoice).ToList();
+            var editorschoice = _applicationDBContext.Articles.Where(article => article.EditorsChoice).ToList();
             return editorschoice;
         }
 
         public List<Article> TenLatestArticles()
         {
-            var tenlatest = _ApplicationDBContext.Articles.OrderByDescending(article => article.DateStamp).ToList();
+            var tenlatest = _applicationDBContext.Articles.OrderByDescending(article => article.DateStamp).ToList();
             return tenlatest;
         }
 
@@ -67,19 +67,12 @@ namespace The_Post.Services
 
         public Article GetMostPopularArticleByCategory(int categoryID)
         {
-            //var articlesInCategory = _applicationDBContext.Categories
-            //                .Where(c => c.Id == categoryID)
-            //                .SelectMany(c => c.Articles)
-            //                .OrderByDescending(a => a.Views).FirstOrDefault();
+            var mostpopularbycategory = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
+                                          .SelectMany(c => c.Articles).OrderByDescending(m => m.Views).FirstOrDefault();
 
-            throw new NotImplementedException();
+            return (Article)mostpopularbycategory;
         }
 
-        public void UpdateArticle(Article updatedArticle)
-        {
-            _applicationDBContext.Articles.Update(updatedArticle);
-            _applicationDBContext.SaveChanges();
-        }
 
         // For use when displaying the categories as checkboxes.
         public List<SelectListItem> GetAllCategoriesSelectList()
@@ -114,11 +107,6 @@ namespace The_Post.Services
 
             // Joins the paragraphs together into one string.
             return string.Join("", paragraphs);
-        }
-
-            var mostpopularbycategory = _ApplicationDBContext.Categories.Where(c => c.Id== categoryID)
-                                          .SelectMany(c=> c.Articles).OrderByDescending(m => m.Views).FirstOrDefault();
-            return (Article)mostpopularbycategory;
         }
 
     }
