@@ -4,8 +4,9 @@
 
     <img src="@Model.ImageLink" class="img-fluid" alt="" /> <!--We maybe should add an alt-text to the image in the Article table -->
 
-    <a href="Article/@Model.Id" class="h3 text-dark text-decoration-none"><!--Url path to the article. Needs to be changed-->
-        <h1 class="fw-bolder"> @Model.HeadLine </h1>
+
+    <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="h3 text-dark text-decoration-none">
+            <h1 class="fw-bolder"> @Model.HeadLine </h1>
     </a>
 
     <div class="fs-4 align-self-start"> @Model.LinkText </div> <!--LinkText should be used because it is shorter than ContentSummary-->
