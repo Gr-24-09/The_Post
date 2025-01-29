@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.AccessControl;
 using The_Post.Data;
 using The_Post.Models;
+using The_Post.Models.VM;
 
 namespace The_Post.Services
 {
@@ -47,7 +48,41 @@ namespace The_Post.Services
 
         public async Task<List<User>> GetAllEmployees()
         {
-            return await _userManager.Users.ToListAsync();
+            var employees = await _userManager.Users
+                .Where(u => u.IsEmployee)
+                .ToListAsync();
+
+            return employees;
+        }
+
+        public async Task<List<EmployeeVM>> GetAllEmployeesWithRolesAsync()
+        {
+            var employees = await _userManager.Users
+                .Where(u => u.IsEmployee)
+                .ToListAsync();
+
+            var employeeVMs = new List<EmployeeVM>();
+
+            foreach (var user in employees)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                employeeVMs.Add(new EmployeeVM
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    Email = user.Email,
+                    UserName = user.UserName,
+                    DOB = user.DOB,
+                    Address = user.Address,
+                    Zip = user.Zip,
+                    City = user.City,
+                    Role = roles.Any() ? string.Join(", ", roles) : "No Role Assigned"
+                });
+            }
+
+            return employeeVMs;
         }
     }
 }
