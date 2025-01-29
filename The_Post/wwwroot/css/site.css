@@ -28,3 +28,31 @@ body {
     letter-spacing: 2px;
     color: #333;
 }
+
+.modal-header {
+    background-image: linear-gradient(#81baa0,white);
+}
+
+.modal-footer {
+    background-image: linear-gradient(white,#81baa0);
+}
+
+/*.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+.list-group-item-action:hover {
+    background-color: #f8f9fa;
+}
+*/
+@media (max-width: 991px) {
+    .sticky-top {
+        position: relative !important;
+        top: 0 !important;
+    }
+}

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using The_Post.Models;
 
 namespace The_Post.Services
@@ -13,7 +14,7 @@ namespace The_Post.Services
         {
             _roleManager = roleManager;
         }
-        public async Task AddRole(string roleName)
+        public async Task AddRoleAsync(string roleName)
         {
           if (!await _roleManager.RoleExistsAsync(roleName))
             {
@@ -21,7 +22,7 @@ namespace The_Post.Services
             }
         }
 
-        public async Task DeleteRole(string roleId)
+        public async Task DeleteRoleAsync(string roleId)
         {
             var role = await _roleManager.FindByIdAsync (roleId);
             if (role == null)
@@ -31,14 +32,24 @@ namespace The_Post.Services
             await _roleManager.DeleteAsync(role);
         }
 
-        public async Task EditRole(IdentityRole role)
+        public async Task EditRoleAsync(IdentityRole role)
         {           
             await _roleManager.UpdateAsync(role);            
         }
 
-        public async Task<List<IdentityRole>> GetAllRoles() 
+        public async Task<List<IdentityRole>> GetAllRolesAsync() 
         {
             return await _roleManager.Roles.ToListAsync();
+        }
+
+        public async Task<IdentityRole?> GetRoleByIdAsync(string roleId)
+        {
+            if (string.IsNullOrEmpty(roleId))
+            {
+                throw new ArgumentException("Role ID cannot be null or empty.", nameof(roleId));
+            }
+
+            return await _roleManager.FindByIdAsync(roleId); 
         }
     }
 }

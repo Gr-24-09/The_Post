@@ -28,6 +28,12 @@ namespace The_Post.Services
             _applicationDBContext.SaveChanges();
         }
 
+        public void UpdateArticle(Article updatedArticle)
+        { 
+            _ApplicationDBContext.Articles.Update(updatedArticle);
+            _ApplicationDBContext.SaveChanges();
+
+        }
         public List<Article> GetAllArticles() // Pagination
         {
             var article = _applicationDBContext.Articles.ToList();
@@ -38,12 +44,19 @@ namespace The_Post.Services
         {
             var article = _applicationDBContext.Articles.FirstOrDefault(c => c.Id == articleID);
             return article;
+
         }
 
         public List<Article> GetEditorsChoiceArticles()
         {
-            //var editorschoice = _ApplicationDBContext.Articles.
-            throw new NotImplementedException();
+            var editorschoice = _ApplicationDBContext.Articles.Where(article => article.EditorsChoice).ToList();
+            return editorschoice;
+        }
+
+        public List<Article> TenLatestArticles()
+        {
+            var tenlatest = _ApplicationDBContext.Articles.OrderByDescending(article => article.DateStamp).ToList();
+            return tenlatest;
         }
 
         public List<Article> GetFiveMostPopularArticles()
@@ -54,7 +67,6 @@ namespace The_Post.Services
 
         public Article GetMostPopularArticleByCategory(int categoryID)
         {
-
             //var articlesInCategory = _applicationDBContext.Categories
             //                .Where(c => c.Id == categoryID)
             //                .SelectMany(c => c.Articles)
@@ -103,5 +115,11 @@ namespace The_Post.Services
             // Joins the paragraphs together into one string.
             return string.Join("", paragraphs);
         }
+
+            var mostpopularbycategory = _ApplicationDBContext.Categories.Where(c => c.Id== categoryID)
+                                          .SelectMany(c=> c.Articles).OrderByDescending(m => m.Views).FirstOrDefault();
+            return (Article)mostpopularbycategory;
+        }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using The_Post.Models;
 using The_Post.Services;
 using The_Post.Data;
+using The_Post.Models.VM;
 
 namespace The_Post.Controllers
 {
@@ -21,7 +22,11 @@ namespace The_Post.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            ArticleQueriesVM obj = new ArticleQueriesVM();
+            obj.GetFiveMostPopularArticles = _articleService.GetFiveMostPopularArticles();
+            obj.GetEditorsChoiceArticles = _articleService.GetEditorsChoiceArticles();
+            obj.TenLatestArticles = _articleService.TenLatestArticles();
+            return View(obj);
         }
 
         public IActionResult Privacy()
