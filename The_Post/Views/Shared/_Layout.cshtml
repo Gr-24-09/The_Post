@@ -8,47 +8,49 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/The_Post.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
 </head>
-<body>
-
-    <header>
-
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid d-flex">
-
-                <div class="d-flex align-items-center gap-2">
-                    <!-- Dropdown menu button -->
-                    <div class="dropdown">
-                        <button class="btn btn-light dropdown-toggle" type="button" id="menuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
-                                <path d="M1 7.5h30V1.9H1v5.6zm0 22.6h30v-5.6H1v5.6zm0-11.3h30v-5.6H1v5.6z"></path>
-                            </svg>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="menuButton">
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                            <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
-                        </ul>
-                    </div>
-                    <!-- Search button -->
-                    <button role="button" aria-label="Search The Post">
-                        <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true">
-                            <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
-                        </svg>
-                    </button>
-                </div>
-
+ <body>
+  <header>
+      <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+          <div class="container-fluid d-flex justify-content-between align-items-center">
+    
+              <!-- Left section (Offcanvas menu button & Search) -->
+              <div class="d-flex align-items-center gap-3">
+                  <!-- Offcanvas Toggle Button -->
+                  <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions" aria-expanded="false" title="Menu">
+                      <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
+                          <path d="M1 7.5h30V1.9H1v5.6zm0 22.6h30v-5.6H1v5.6zm0-11.3h30v-5.6H1v5.6z"></path>
+                      </svg>
+                  </button>
+    
+                  <!-- Search Bar -->
+                  <div class="d-flex align-items-center rounded-lg overflow-hidden">
+                      <button role="button" aria-label="Search The Post" title="Search" style="all: unset; cursor: pointer; " class="p-2 bg-white hover:bg-gray-100 border-none outline-none" >
+                             <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true" fill="currentColor">
+                                <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
+                             </svg>
+                      </button>
+                       <input type="text" placeholder="Search..." class="px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">     
+                  </div>
+              </div>
+    
+              <!-- Center section (Brand) -->
+ 
                 <div class="navbar-collapse collapse d-sm-inline-flex align-items-center">
                     <ul class="navbar-nav flex-grow-1">
-                        <a class="navbar-brand mx-auto text-center fw-bold display-3" asp-area="" asp-controller="Home" asp-action="Index">
-                            The Post
-                        </a>
+                        <a class="navbar-brand fw-bold display-3" style="margin-left: 100px;" asp-area="" asp-controller="Home" asp-action="Index">The Post</a>
                     </ul>
+              <!-- Right section (Login) -->
                     <partial name="_LoginPartial" />
                 </div>
 
             </div>
         </nav>
-    </header>
+    </header>  
+
+    <!-- Invoke the Offcanvas Menu View Component -->
+      @await Component.InvokeAsync("OffcanvasMenu")
 
     <div class="container">
         <main role="main" class="pb-3">
