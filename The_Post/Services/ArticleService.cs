@@ -67,9 +67,16 @@ namespace The_Post.Services
         {
             var mostpopularbycategory = _ApplicationDBContext.Categories.Where(c => c.Id== categoryID)
                                           .SelectMany(c=> c.Articles).OrderByDescending(m => m.Views).FirstOrDefault();
-            return (Article)mostpopularbycategory;
+            return (Article) mostpopularbycategory;
         }
 
+        public List<Article> GetAllArticlesByCategory(int categoryID)
+        {
+            var articles = _ApplicationDBContext.Categories.Where(c => c.Id == categoryID)
+                            .SelectMany(c => c.Articles).ToList();
+            return articles;
+
+        }
 
     }
 }

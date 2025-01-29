@@ -1,7 +1,13 @@
-﻿
+﻿@model IEnumerable<The_Post.Models.Article>
 @{
     ViewData["Title"] = "World";
 }
 
 <h1>World</h1>
 
+<div>
+
+        <partial name="_ArticleListingPartial" model="Model"></partial>
+    
+
+</div>
