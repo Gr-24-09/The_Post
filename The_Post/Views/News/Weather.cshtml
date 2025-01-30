@@ -1,7 +1,15 @@
-﻿
+﻿@model IEnumerable<The_Post.Models.Article>
 @{
     ViewData["Title"] = "Weather";
 }
 
 <h1>Weather</h1>
 
+<div>
+
+    @foreach (var item in Model)
+    {
+        <partial name="_ArticleListingPartial" model="item"></partial>
+    }
+
+</div>

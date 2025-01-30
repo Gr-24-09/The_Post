@@ -19,34 +19,41 @@ namespace The_Post.Controllers
             return View();
         }
 
-        public IActionResult Local()
+        public  IActionResult Local()
         {
-            return View();
+            var local = _articleService.GetAllArticlesByCategory(1);
+            return View(local);
         }
 
         public IActionResult Sweden()
         {
-            return View();
+            var sweden = _articleService.GetAllArticlesByCategory(2);
+            return View(sweden);
+                
         }
 
         public IActionResult World()
         {
-            return View();
+            var world = _articleService.GetAllArticlesByCategory(3);
+            return View(world);
         }
 
         public IActionResult Weather()
         {
-            return View();
+            var weather = _articleService.GetAllArticlesByCategory(4);
+            return View(weather);
         }
 
         public IActionResult Economy()
         {
-            return View();
+            var economy = _articleService.GetAllArticlesByCategory(5);
+            return View(economy);
         }
 
         public IActionResult Sports()
         {
-            return View();
+            var sports = _articleService.GetAllArticlesByCategory(6);
+            return View(sports);
         }
     }
 }

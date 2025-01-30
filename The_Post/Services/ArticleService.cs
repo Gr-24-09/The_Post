@@ -73,6 +73,13 @@ namespace The_Post.Services
             return (Article)mostpopularbycategory;
         }
 
+        public List<Article> GetAllArticlesByCategory(int categoryID)
+        {
+            var articles = _ApplicationDBContext.Categories.Where(c => c.Id == categoryID)
+                            .SelectMany(c => c.Articles).ToList();
+            return articles;
+
+        }
 
         // For use when displaying the categories as checkboxes.
         public List<SelectListItem> GetAllCategoriesSelectList()
