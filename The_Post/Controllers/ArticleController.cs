@@ -32,7 +32,11 @@ namespace The_Post.Controllers
 
         public IActionResult ViewArticle(int articleID)
         {
-            return View(_articleService.GetArticleById(articleID));
+            var article = _articleService.GetArticleById(articleID);
+            article.Views++;
+            _articleService.UpdateArticle(article);
+
+            return View(article);
         }
 
         public IActionResult AddArticle()
