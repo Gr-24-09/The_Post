@@ -55,7 +55,7 @@ namespace The_Post.Services
 
         public List<Article> TenLatestArticles()
         {
-            var tenlatest = _applicationDBContext.Articles.OrderByDescending(article => article.DateStamp).ToList();
+            var tenlatest = _applicationDBContext.Articles.OrderByDescending(article => article.DateStamp).Take(10).ToList();
             return tenlatest;
         }
 
