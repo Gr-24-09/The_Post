@@ -12,9 +12,10 @@
 </head>
  <body>
   <header>
-      <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+     <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3 ">
+       <div class="container1">
+           <div class="top-section">
           <div class="container-fluid d-flex justify-content-between align-items-center">
-    
               <!-- Left section (Offcanvas menu button & Search) -->
               <div class="d-flex align-items-center gap-3">
                   <!-- Offcanvas Toggle Button -->
@@ -44,10 +45,32 @@
               <!-- Right section (Login) -->
                     <partial name="_LoginPartial" />
                 </div>
-
+               
+           </div>
+           
+            <div class="bottom-section ">
+                 <ul class="list-unstyled d-flex align-content-center gap-1">
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Home" asp-action="Index">Home</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Local">Local</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Sweden">Sweden</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="World">World</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Weather">Weather</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Sports">Sports</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="Economy">Economy</a></li>
+               
+                    <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Home" asp-action="Privacy">Privacy</a></li>
+                 </ul>
             </div>
-        </nav>
-    </header>  
+          
+        </div>   
+     </nav>
+  </header>  
 
     <!-- Invoke the Offcanvas Menu View Component -->
       @await Component.InvokeAsync("OffcanvasMenu")
