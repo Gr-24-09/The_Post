@@ -75,7 +75,7 @@ namespace The_Post.Services
 
         public List<Article> GetAllArticlesByCategory(int categoryID)
         {
-            var articles = _ApplicationDBContext.Categories.Where(c => c.Id == categoryID)
+            var articles = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
                             .SelectMany(c => c.Articles).ToList();
             return articles;
 
