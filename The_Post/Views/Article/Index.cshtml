@@ -1,0 +1,12 @@
+﻿@model IEnumerable<The_Post.Models.Article>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All articles</h1>
+
+@foreach(Article article in Model)
+{
+    <partial name="../Shared/_ArticleListingPartial" model="article"></partial>
+}

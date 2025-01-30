@@ -9,7 +9,7 @@ namespace The_Post.Models
 
         [Required]
         [Display(Name = "Date Stamp")]
-        public DateTime DateStamp { get; set; }
+        public DateTime DateStamp { get; set; } = DateTime.Now;
 
         [Required]
         [StringLength(300)]
@@ -20,31 +20,27 @@ namespace The_Post.Models
         public bool EditorsChoice { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(200)]
         public string HeadLine { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(1000)]
         [Display(Name ="Content Summary")]
         public string ContentSummary { get; set; }
 
         [Required]
-        [StringLength(2000)]
+        [StringLength(10000)]
         public string Content { get; set; }
 
         [Required]
-        public int Views { get; set; }
+        public int Views { get; set; } = 0;
 
         [Required]
-        public int Likes { get; set; }
+        public int Likes { get; set; } = 0;
 
         [Required]
         [StringLength(500)]
         public string ImageLink { get; set; }
-
-        //[Required]
-        //[StringLength(100)]
-        //public string Category { get; set; }
 
         [Required]
         public bool IsArchived { get; set; }

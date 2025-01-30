@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = TempData["ArticleMessage"];
+}
+
+<h4>@TempData["ArticleMessage"]</h4>
+
+
+<div>
+    <a asp-action="AddArticle"> Add another article </a>
+    <br />
+    <a asp-action="Index" asp-controller="Home"> Back to the Front Page </a>
+</div>

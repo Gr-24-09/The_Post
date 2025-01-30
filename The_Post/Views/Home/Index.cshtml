@@ -1,8 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model The_Post.Models.VM.ArticleQueriesVM
+
+@{
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Editors Choice - Left Sidebar -->
+        <div class="col-lg-3 order-3 order-lg-1">
+            <div class="sticky-top" style="top: 2rem;">
+                <h2 class="border-bottom pb-2 mb-4">Editor's Choice</h2>
+                @foreach (var article in Model.GetEditorsChoiceArticles)
+                {
+                    <div class="card mb-3">
+                        <img src="@article.ImageLink" class="card-img-top" alt="@article.HeadLine">
+                        <div class="card-body">
+                            <h5 class="card-title">@article.HeadLine</h5>
+                            <p class="card-text small">@article.ContentSummary</p>
+                            <a href="/Article/@article.Id" class="btn btn-outline-primary btn-sm">Read More</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Latest Articles - Main Content -->
+        <main class="col-lg-6 order-1 order-lg-2">
+            <h1 class="border-bottom pb-2 mb-4">Latest News</h1>
+            @foreach (var article in Model.TenLatestArticles)
+            {
+                <partial name="_ArticleListingPartial" model="article" />
+            }
+        </main>
+
+        <!-- Most Popular - Right Sidebar -->
+        <div class="col-lg-3 order-2 order-lg-3">
+            <div class="sticky-top" style="top: 2rem;">
+                <h2 class="border-bottom pb-2 mb-4">Most Popular</h2>
+                @foreach (var article in Model.GetFiveMostPopularArticles)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h6 class="card-title">@article.HeadLine</h6>
+                            <p class="card-text small text-muted">
+                                <i class="fas fa-eye"></i> @article.Views views
+                            </p>
+                            <a href="/Article/@article.Id" class="stretched-link"></a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </div>
