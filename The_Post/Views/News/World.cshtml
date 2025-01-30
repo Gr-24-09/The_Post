@@ -7,7 +7,9 @@
 
 <div>
 
-        <partial name="_ArticleListingPartial" model="Model"></partial>
-    
+    @foreach (var item in Model)
+    {
+        <partial name="_ArticleListingPartial" model="item"></partial>
+    }
 
 </div>
