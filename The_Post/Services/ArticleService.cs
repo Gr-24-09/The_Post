@@ -36,39 +36,48 @@ namespace The_Post.Services
         }
         public List<Article> GetAllArticles() // Pagination
         {
-            var article = _applicationDBContext.Articles.ToList();
+            var article = _applicationDBContext.Articles.Include(a => a.Categories).ToList();
             return article;
         }
 
         public Article GetArticleById(int articleID)
         {
-            var article = _applicationDBContext.Articles.FirstOrDefault(c => c.Id == articleID);
+            var article = _applicationDBContext.Articles
+                .Include(a => a.Categories)
+                .FirstOrDefault(c => c.Id == articleID);
             return article;
-
         }
 
         public List<Article> GetEditorsChoiceArticles()
         {
-            var editorschoice = _applicationDBContext.Articles.Where(article => article.EditorsChoice).ToList();
+            var editorschoice = _applicationDBContext.Articles
+                .Include(a => a.Categories)
+                .Where(article => article.EditorsChoice).ToList();
             return editorschoice;
         }
 
         public List<Article> TenLatestArticles()
         {
-            var tenlatest = _applicationDBContext.Articles.OrderByDescending(article => article.DateStamp).ToList();
+            var tenlatest = _applicationDBContext.Articles
+                .Include(a => a.Categories)
+                .OrderByDescending(article => article.DateStamp).ToList();
             return tenlatest;
         }
 
         public List<Article> GetFiveMostPopularArticles()
         {
-            var mostPopular = _applicationDBContext.Articles.OrderByDescending(m => m.Views).Take(5).ToList();
+            var mostPopular = _applicationDBContext.Articles
+                .Include(a => a.Categories)
+                .OrderByDescending(m => m.Views).Take(5).ToList();
             return mostPopular;
         }
 
         public Article GetMostPopularArticleByCategory(int categoryID)
         {
             var mostpopularbycategory = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
-                                          .SelectMany(c => c.Articles).OrderByDescending(m => m.Views).FirstOrDefault();
+                                          .SelectMany(c => c.Articles)
+                                          .Include(a => a.Categories)
+                                          .OrderByDescending(m => m.Views).FirstOrDefault();
 
             return (Article)mostpopularbycategory;
         }
@@ -76,7 +85,8 @@ namespace The_Post.Services
         public List<Article> GetAllArticlesByCategory(int categoryID)
         {
             var articles = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
-                            .SelectMany(c => c.Articles).ToList();
+                            .SelectMany(c => c.Articles)
+                            .Include(a => a.Categories).ToList();
             return articles;
 
         }
