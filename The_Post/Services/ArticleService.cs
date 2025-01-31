@@ -60,7 +60,8 @@ namespace The_Post.Services
         {
             var tenlatest = _applicationDBContext.Articles
                 .Include(a => a.Categories)
-                .OrderByDescending(article => article.DateStamp).ToList();
+                .OrderByDescending(article => article.DateStamp).Take(10).ToList();
+                
             return tenlatest;
         }
 
