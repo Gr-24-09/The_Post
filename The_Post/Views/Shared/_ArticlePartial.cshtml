@@ -6,9 +6,20 @@
 
     <h1 class="fw-bolder"> @Model.HeadLine </h1>
 
+    <div class="d-flex gap-2 flex-wrap align-self-start fs-5">
+        @foreach (var category in Model.Categories)
+        {
+            <a class="badge bg-secondary text-decoration-none text-white"
+               asp-action="@category.Name"
+               asp-controller="News">
+                @category.Name
+            </a>
+        }
+    </div>
+
     <div class="text-muted">Published: @Model.DateStamp</div>
 
-    <p class="fs-4 fw-bold"> @Model.ContentSummary </p>
+    <p class="fs-4 fw-bold mt-2"> @Model.ContentSummary </p>
 
     <div class="fs-5"> @Html.Raw(Model.Content) </div> <!--Html.Raw is needed in order for the generated <p> and <br /> elements to be processed correctly-->
 
@@ -22,5 +33,6 @@
     </div>
 
     <p class=""> Views: @Model.Views </p>
+
 </div>
 
