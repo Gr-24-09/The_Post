@@ -73,6 +73,7 @@ body {
     color: #333;
 }
 
+/* For Modals */
 .modal-header {
     background-image: linear-gradient(#81baa0,white);
 }
@@ -81,7 +82,8 @@ body {
     background-image: linear-gradient(white,#81baa0);
 }
 
-/*.card {
+/* For all cards */
+.card {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
@@ -90,16 +92,38 @@ body {
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-.list-group-item-action:hover {
-    background-color: #f8f9fa;
-}
-*/
+/* ---- Sidebars ---- */
+
 @media (max-width: 991px) {
     .sticky-top {
         position: relative !important;
         top: 0 !important;
     }
 }
+
+.scrollable-sidebar-content {
+    max-height: calc(100vh - 14rem);
+    overflow-y: auto;
+    padding-right: 0.5rem;    
+}
+    .scrollable-sidebar-content::-webkit-scrollbar {
+        width: 3px;
+    }
+
+    .scrollable-sidebar-content::-webkit-scrollbar-track {
+        background: #f8f9fa;
+    }
+
+    .scrollable-sidebar-content::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;      
+    }
+
+        .scrollable-sidebar-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
 
 .article-image-height {
     width: 100%;
