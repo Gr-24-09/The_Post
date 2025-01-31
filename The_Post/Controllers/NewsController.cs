@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using The_Post.Data;
+using The_Post.Models.VM;
 using The_Post.Services;
 
 namespace The_Post.Controllers
@@ -19,41 +20,17 @@ namespace The_Post.Controllers
             return View();
         }
 
-        public  IActionResult Local()
+        public IActionResult CategoryView(string categoryName)
         {
-            var local = _articleService.GetAllArticlesByCategory(1);
-            return View(local);
-        }
+            var articles = _articleService.GetAllArticlesByCategoryName(categoryName);
 
-        public IActionResult Sweden()
-        {
-            var sweden = _articleService.GetAllArticlesByCategory(2);
-            return View(sweden);
-                
-        }
-
-        public IActionResult World()
-        {
-            var world = _articleService.GetAllArticlesByCategory(3);
-            return View(world);
-        }
-
-        public IActionResult Weather()
-        {
-            var weather = _articleService.GetAllArticlesByCategory(4);
-            return View(weather);
-        }
-
-        public IActionResult Economy()
-        {
-            var economy = _articleService.GetAllArticlesByCategory(5);
-            return View(economy);
-        }
-
-        public IActionResult Sports()
-        {
-            var sports = _articleService.GetAllArticlesByCategory(6);
-            return View(sports);
+            var model = new CategoryPageVM()
+            {
+                Articles = articles,
+                Category = categoryName
+            };
+   
+            return View(model);
         }
     }
 }
