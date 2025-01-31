@@ -107,3 +107,10 @@ body {
     max-height: 400px;
     object-fit: contain;
 }
+
+/* Media query for mobile screens (600px or less width) */
+@media (max-width: 600px) {
+    .article-image-height {
+        max-height: 250px; /* The max-height gets changed to 250px */
+    }
+}
