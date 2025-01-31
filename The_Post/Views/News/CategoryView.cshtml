@@ -1,0 +1,18 @@
+﻿@model The_Post.Models.VM.CategoryPageVM
+
+@{
+    ViewData["Title"] = Model.Category;
+}
+
+<h1>@Model.Category</h1>
+
+<div>
+
+    @foreach (var article in Model.Articles)
+    {
+        <partial name="_ArticleListingPartial" model="article"></partial>
+    }
+
+</div>
+
+

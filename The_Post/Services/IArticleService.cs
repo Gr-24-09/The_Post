@@ -17,8 +17,8 @@ namespace The_Post.Services
         public string GetProcessedArticleContent(string content);
         public List<Article> TenLatestArticles();
         public Article GetMostPopularArticleByCategory(int categoryID);
-
-        public List<Article> GetAllArticlesByCategory(int categoryID);
+        public List<Article> GetAllArticlesByCategoryID(int categoryID);
+        public List<Article> GetAllArticlesByCategoryName(string categoryName);
         public void DeleteArticle(int articleID);
     }
 }

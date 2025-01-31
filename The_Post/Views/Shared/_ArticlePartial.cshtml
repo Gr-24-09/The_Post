@@ -10,8 +10,8 @@
         @foreach (var category in Model.Categories)
         {
             <a class="badge bg-secondary text-decoration-none text-white"
-               asp-action="@category.Name"
-               asp-controller="News">
+               asp-action="CategoryView"
+               asp-controller="News" asp-route-categoryName="@category.Name">
                 @category.Name
             </a>
         }

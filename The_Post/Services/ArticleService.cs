@@ -83,9 +83,18 @@ namespace The_Post.Services
             return (Article)mostpopularbycategory;
         }
 
-        public List<Article> GetAllArticlesByCategory(int categoryID)
+        public List<Article> GetAllArticlesByCategoryID(int categoryID)
         {
             var articles = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
+                            .SelectMany(c => c.Articles)
+                            .Include(a => a.Categories).ToList();
+            return articles;
+
+        }
+
+        public List<Article> GetAllArticlesByCategoryName(string categoryName)
+        {
+            var articles = _applicationDBContext.Categories.Where(c => c.Name == categoryName)
                             .SelectMany(c => c.Articles)
                             .Include(a => a.Categories).ToList();
             return articles;
