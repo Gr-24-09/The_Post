@@ -44,6 +44,7 @@ namespace The_Post.Services
         {
             var article = _applicationDBContext.Articles
                 .Include(a => a.Categories)
+                .Include(a => a.Likes)
                 .FirstOrDefault(c => c.Id == articleID);
             return article;
         }
@@ -136,5 +137,34 @@ namespace The_Post.Services
             return string.Join("", paragraphs);
         }
 
+        // Checks if there is a like made by the user for the article. If there is, the like gets removed. If not, a new like is added.
+        public async Task AddRemoveLikeAsync(int articleID, string userID)
+        {
+            var existingLike = await _applicationDBContext.Likes
+                            .FirstOrDefaultAsync(l => l.ArticleId == articleID && l.UserId == userID);
+
+            if (existingLike == null)
+            {
+                var newLike = new Like
+                {
+                    ArticleId = articleID,
+                    UserId = userID
+                };
+
+                await _applicationDBContext.AddAsync(newLike);
+            }
+            else
+                _applicationDBContext.Likes.Remove(existingLike);
+
+
+            await _applicationDBContext.SaveChangesAsync();
+        }
+
+        public async Task<int> GetLikeCountAsync(int articleID)
+        {
+            var count = await _applicationDBContext.Likes.Where(l => l.ArticleId.Equals(articleID)).CountAsync();
+
+            return count;
+        }
     }
 }
