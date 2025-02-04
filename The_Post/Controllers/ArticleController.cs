@@ -83,7 +83,8 @@ namespace The_Post.Controllers
         {
             return View();
         }
-
+        
+        // Also removes a like if the user has already liked the article.
         [HttpPost]
         public async Task<IActionResult> LikeArticle(int articleId)
         {
@@ -94,7 +95,8 @@ namespace The_Post.Controllers
             if (loggedInUser == null)
                 return Json(-1);
 
-            // Add like to  the datbase
+            // Add or remove like to the datbase, depending on whether or not the user has liked
+            // the article before.
             await _articleService.AddRemoveLikeAsync(articleId, loggedInUser.Id);
 
             // Get the updated like count
