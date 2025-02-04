@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using The_Post.Models;
@@ -11,10 +12,12 @@ namespace The_Post.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly UserManager<User> _userManager;
 
-        public ArticleController(IArticleService articleService)
+        public ArticleController(IArticleService articleService, UserManager<User> userManager)
         {
             _articleService = articleService;
+            _userManager = userManager;
         }
 
         [Route("Articles")]
@@ -80,5 +83,25 @@ namespace The_Post.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LikeArticle(int articleId)
+        {
+            // Gets the logged in user
+            var loggedInUser = await _userManager.GetUserAsync(User);
+
+            // If the user isn't logged in the return value is -1 (which triggers an error message in the view)
+            if (loggedInUser == null)
+                return Json(-1);
+
+            // Add like to  the datbase
+            await _articleService.AddRemoveLikeAsync(articleId, loggedInUser.Id);
+
+            // Get the updated like count
+            var updatedLikes = await _articleService.GetLikeCountAsync(articleId);
+
+            return Json(updatedLikes);
+        }
+
     }
 }

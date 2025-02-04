@@ -33,5 +33,6 @@ namespace The_Post.Models
         public bool IsEmployee { get; set; }
 
         public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public ICollection<Like> Likes { get; set; } = [];
     }
 }
