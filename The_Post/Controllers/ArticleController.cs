@@ -53,29 +53,43 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddArticle(AddArticleVM model)
+        public async Task<IActionResult> AddArticle(AddArticleVM model)
         {
-            if (ModelState.IsValid)
+            model.AvailableCategories = _articleService.GetAllCategoriesSelectList();
+
+            if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+
+            try
+            {
+                if (model.ImageLink == null || model.ImageLink.Length == 0)
+                {
+                    return Content("File not selected");
+                }
+                string imageUrl = await _articleService.UploadFileToContainer(model);
+
                 var article = new Article
                 {
                     HeadLine = model.HeadLine,
                     LinkText = model.LinkText,
                     ContentSummary = model.ContentSummary,
                     Content = _articleService.GetProcessedArticleContent(model.Content),
-                    ImageLink = model.ImageLink,
+                    ImageLink = imageUrl,
                     Categories = _articleService.GetSelectedCategories(model.SelectedCategoryIds)
                 };
 
                 _articleService.CreateArticle(article);
 
-                TempData["ArticleMessage"] = "The article has been added to the database.";
+                TempData["ArticleMessage"] = "The article has been added successfully.";
+                return RedirectToAction("ArticleAdded");
             }
-            else
-                TempData["ArticleMessage"] = "Something went wrong";
-
-
-            return RedirectToAction("ArticleAdded");
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Failed to upload image. Please try again.");
+                return View(model);
+            }
         }
 
 

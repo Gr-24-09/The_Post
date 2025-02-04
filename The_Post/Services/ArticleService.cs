@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using The_Post.Data;
 using The_Post.Models;
+using Azure.Storage.Blobs;
+using The_Post.Models.VM;
 
 namespace The_Post.Services
 {
@@ -9,11 +11,13 @@ namespace The_Post.Services
     {
         private readonly IHttpContextAccessor _IHttpContextAccessor;
         private readonly ApplicationDbContext _applicationDBContext;
+        private readonly IConfiguration _configuration;
 
-        public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext)
+        public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext, IConfiguration configuration)
         {
             _IHttpContextAccessor = iHttpContextAccessor;
             _applicationDBContext = applicationDbContext;
+            _configuration = configuration;
         }
         public void CreateArticle(Article article)
         {
@@ -34,6 +38,30 @@ namespace The_Post.Services
             _applicationDBContext.SaveChanges();
 
         }
+                
+        public async Task<string> UploadFileToContainer(AddArticleVM model)
+        {
+            string connectionString = _configuration["AzureBlobStorage:ConnectionString"];
+            string containerName = _configuration["AzureBlobStorage:ContainerName"];
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            // Create the container if it does not exist
+
+            await containerClient.CreateIfNotExistsAsync();
+
+            string uniqueFileName = $"{Guid.NewGuid()}_{model.ImageLink.FileName}";
+            BlobClient blobClient = containerClient.GetBlobClient(uniqueFileName);
+
+            using (var stream = model.ImageLink.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, true);
+            }
+
+            return blobClient.Uri.ToString();
+        }
+
         public List<Article> GetAllArticles() // Pagination
         {
             var article = _applicationDBContext.Articles.Include(a => a.Categories).ToList();
