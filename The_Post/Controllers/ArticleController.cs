@@ -54,9 +54,7 @@ namespace The_Post.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddArticle(AddArticleVM model)
-        {
-            model.AvailableCategories = _articleService.GetAllCategoriesSelectList();
-
+        {            
             if (!ModelState.IsValid)
             {
                 return View(model);
