@@ -23,8 +23,7 @@ namespace The_Post.Models.VM
         public string Content { get; set; }
 
         [Required]
-        [StringLength(500)]
-        public string ImageLink { get; set; }
+        public IFormFile ImageLink { get; set; }
 
         public List<SelectListItem> AvailableCategories { get; set; } = new List<SelectListItem>();
 
