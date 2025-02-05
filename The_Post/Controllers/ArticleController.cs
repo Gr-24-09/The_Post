@@ -54,7 +54,9 @@ namespace The_Post.Controllers
 
         [HttpPost]
         public async Task<IActionResult> AddArticle(AddArticleVM model)
-        {            
+        {
+            model.AvailableCategories = _articleService.GetAllCategoriesSelectList();
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -65,6 +67,10 @@ namespace The_Post.Controllers
                 if (model.ImageLink == null || model.ImageLink.Length == 0)
                 {
                     return Content("File not selected");
+                }
+                else if (!model.ImageLink.ContentType.StartsWith("image/"))
+                {
+                    throw new ArgumentException("File is not an image");
                 }
                 string imageUrl = await _articleService.UploadFileToContainer(model);
 
@@ -83,9 +89,14 @@ namespace The_Post.Controllers
                 TempData["ArticleMessage"] = "The article has been added successfully.";
                 return RedirectToAction("ArticleAdded");
             }
+            catch (ArgumentException ex)
+            {
+                ModelState.AddModelError("ImageLink", ex.Message);
+                return View(model);
+            }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Failed to upload image. Please try again.");
+                ModelState.AddModelError("", ex.Message);
                 return View(model);
             }
         }

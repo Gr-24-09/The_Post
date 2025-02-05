@@ -23,6 +23,7 @@ namespace The_Post.Models.VM
         public string Content { get; set; }
 
         [Required]
+        [FileExtensions(Extensions = ".jpg,.jpeg,.png,.gif", ErrorMessage = "Please select an image file (.jpg, .jpeg, .png, .gif)")]
         public IFormFile ImageLink { get; set; }
 
         public List<SelectListItem> AvailableCategories { get; set; } = new List<SelectListItem>();
