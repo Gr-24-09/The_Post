@@ -13,7 +13,7 @@
                 <div class="scrollable-sidebar-content">
                     @foreach (var article in Model.GetEditorsChoiceArticles)
                     {
-                        <div class="card mt-1 mb-3">
+                        <div class="card fpCard mt-1 mb-3">
                             <img src="@article.ImageLink" class="card-img-top" alt="@article.HeadLine">
                             <div class="card-body">
                                 <h5 class="card-title">@article.HeadLine</h5>
@@ -42,7 +42,7 @@
                 <div class="scrollable-sidebar-content">
                     @foreach (var article in Model.GetFiveMostPopularArticles)
                     {
-                        <div class="card mt-1 mb-3">
+                        <div class="card fpCard mt-1 mb-3">
                             <div class="card-body">
                                 <h5 class="card-title">@article.HeadLine</h5>
                                 <p class="card-text small"><em>@article.LinkText</em></p>
