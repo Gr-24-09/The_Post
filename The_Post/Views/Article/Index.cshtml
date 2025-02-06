@@ -4,9 +4,13 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>All articles</h1>
+<h1><strong><em>All articles</em></strong></h1>
+<hr />
 
-@foreach(Article article in Model)
-{
-    <partial name="../Shared/_ArticleListingPartial" model="article"></partial>
-}
+<div class="row mt-3">
+    @foreach (Article article in Model)
+    {
+        <partial name="_AdminArticlePartial" model="article"></partial>
+    }
+</div>
+
