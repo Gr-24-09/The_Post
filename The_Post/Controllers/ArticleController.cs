@@ -52,6 +52,42 @@ namespace The_Post.Controllers
             return View(viewModel);
         }
 
+        public IActionResult DeleteArticle(int articleID)
+        {
+            _articleService.DeleteArticle(articleID);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EditArticle(int articleID)
+        {
+            var article = _articleService.GetArticleById(articleID);
+
+            if(article == null)
+            {
+                return NotFound();
+            }
+
+            return View(article);
+        }
+
+        [HttpPost]
+        public IActionResult EditArticle(Article updatedArticle)
+        {
+            if (updatedArticle == null)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                _articleService.UpdateArticle(updatedArticle);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }           
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddArticle(AddArticleVM model)
         {

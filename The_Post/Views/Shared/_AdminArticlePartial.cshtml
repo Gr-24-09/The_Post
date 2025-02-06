@@ -27,11 +27,11 @@
             </div>
             <div class="vr"></div>
             <div class="p-2 ms-auto">
-                <a asp-action="EditArticle" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning">Edit</a>
+                <a asp-controller="Article" asp-action="EditArticle" asp-route-articleID="@Model.Id" class="btn btn-sm btn-outline-warning">Edit</a>
             </div>
             <div class="vr"></div>
             <div class="p-2">
-                <form asp-action="DeleteArticle" asp-route-id="@Model.Id" method="post" style="display:inline;">
+                <form asp-controller="Article" asp-action="DeleteArticle" asp-route-articleID="@Model.Id" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-sm btn-outline-danger"
                             onclick="return confirm('Are you sure you want to delete this Article?')">
                         Delete
