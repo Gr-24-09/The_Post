@@ -1,4 +1,4 @@
-﻿@model The_Post.Models.Article
+﻿@model The_Post.Models.VM.EditArticleVM
 
 @{
     ViewData["Title"] = "EditArticle";
@@ -10,6 +10,7 @@
     <div class="col-md-4">
         <form asp-action="EditArticle" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="HeadLine" class="control-label">Headline</label>
                 <input asp-for="HeadLine" class="form-control" />
@@ -31,20 +32,21 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageLink">Select file to upload:</label>
+                <label asp-for="ImageLink" class="control-label">Select file to upload:</label>
                 <input type="file" asp-for="ImageLink" class="form-control" />
                 <span asp-validation-for="ImageLink" class="text-danger"></span>
+                <small>Current Image: @(ViewBag.CurrentImage ?? "none")</small>
             </div>
-            @* <div class="form-group m-2">
+            <div class="form-group m-2">
                 <label>Categories:</label>
                 @foreach (var category in Model.AvailableCategories)
                 {
                     <div class="form-check">
-                        <input type="checkbox" name="SelectedCategoryIds" value="@category.Value" class="form-check-input" />
+                        <input type="checkbox" name="SelectedCategoryIds" value="@category.Value" class="form-check-input" @(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)) ? "checked" : "")/>
                         <label class="form-check-label">@category.Text</label>
                     </div>
                 }
-            </div> *@
+            </div>
             <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -53,7 +55,7 @@
 </div>
 
 <div class="mt-1">
-    <a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-controller="Article" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

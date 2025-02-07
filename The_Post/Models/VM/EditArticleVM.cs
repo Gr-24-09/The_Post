@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using The_Post.Middleware;
 
 namespace The_Post.Models.VM
 {
     public class EditArticleVM
-    {      
-        public int ArticleId { get; set; }
+    {
+        [Required]
+        public int Id { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -24,9 +26,8 @@ namespace The_Post.Models.VM
         [StringLength(10000)]
         public string Content { get; set; }
 
-        [Required]
-        [FileExtensions(Extensions = ".jpg,.jpeg,.png,.gif", ErrorMessage = "Please select an image file (.jpg, .jpeg, .png, .gif)")]
-        public IFormFile ImageLink { get; set; }
+        [AllowedExtensions(new string[] { "jpg", "jpeg", "png", "gif" })]
+        public IFormFile? ImageLink { get; set; }
 
         public List<SelectListItem> AvailableCategories { get; set; } = new List<SelectListItem>();
 

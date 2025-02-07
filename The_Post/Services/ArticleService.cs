@@ -36,7 +36,6 @@ namespace The_Post.Services
         { 
             _applicationDBContext.Articles.Update(updatedArticle);
             _applicationDBContext.SaveChanges();
-
         }
                 
         public async Task<string> UploadFileToContainer(AddArticleVM model)
