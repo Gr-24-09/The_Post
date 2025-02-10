@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using The_Post.Data;
 using The_Post.Models;
 using The_Post.Models.VM;
@@ -11,12 +12,15 @@ namespace The_Post.Controllers
         private readonly IArticleService _articleService;
         private readonly IEmployeeService _employeeService;
         private readonly IRoleService _roleService;
+        private readonly ApplicationDbContext _db;
+        private const int MaxEditorsChoice = 5;
 
-        public AdminController(IArticleService articleService, IEmployeeService employeeService, IRoleService roleService)
+        public AdminController(IArticleService articleService, IEmployeeService employeeService, IRoleService roleService, ApplicationDbContext db)
         {            
             _articleService = articleService;
             _employeeService = employeeService;
             _roleService = roleService;
+            _db = db;
         }
 
         public IActionResult Index()
@@ -122,14 +126,60 @@ namespace The_Post.Controllers
             return View(model);
         }
 
-        public IActionResult EditorsChoice()
+        public async Task<IActionResult> UpdateEditorsChoice(int articleId, bool isEditorsChoice)
         {
-            return View();
+            try
+            {
+                var article = await _db.Articles.FindAsync(articleId);
+                if (article == null)
+                {
+                    return NotFound("Article not found");
+                }
+
+                if (isEditorsChoice)
+                {
+                    var currentCount = await _db.Articles
+                        .Where(a => a.EditorsChoice)
+                        .CountAsync();
+
+                    if(currentCount >= MaxEditorsChoice)
+                    {
+                        return Json(new
+                        {
+                            success = false,
+                            message = $"Maximum number of Editor's Choices ({MaxEditorsChoice}) has been reached."
+                        });
+                    }
+                }
+
+                article.EditorsChoice = isEditorsChoice;
+                await _db.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred" });
+            }
         }
 
-        public IActionResult ArchiveArticle()
+        [HttpPost]
+        public async Task<IActionResult> ArchiveArticle(int articleId, bool isArchived)
         {
-            return View();
+            try
+            {
+                var article = await _db.Articles.FindAsync(articleId);
+                if (article == null)
+                {
+                    return NotFound(new { success = false, message = "Article not found" });
+                }
+                article.IsArchived = isArchived;
+                await _db.SaveChangesAsync();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred" });
+            }
         }
                 
         public IActionResult SubscriptionStats()
