@@ -207,9 +207,6 @@ namespace The_Post.Data.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Likes")
-                        .HasColumnType("int");
-
                     b.Property<string>("LinkText")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -239,6 +236,30 @@ namespace The_Post.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("The_Post.Models.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArticleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("The_Post.Models.Subscription", b =>
@@ -465,6 +486,25 @@ namespace The_Post.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("The_Post.Models.Like", b =>
+                {
+                    b.HasOne("The_Post.Models.Article", "Article")
+                        .WithMany("Likes")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("The_Post.Models.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("The_Post.Models.Subscription", b =>
                 {
                     b.HasOne("The_Post.Models.SubscriptionType", null)
@@ -480,6 +520,11 @@ namespace The_Post.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("The_Post.Models.Article", b =>
+                {
+                    b.Navigation("Likes");
+                });
+
             modelBuilder.Entity("The_Post.Models.SubscriptionType", b =>
                 {
                     b.Navigation("Subscriptions");
@@ -487,6 +532,8 @@ namespace The_Post.Data.Migrations
 
             modelBuilder.Entity("The_Post.Models.User", b =>
                 {
+                    b.Navigation("Likes");
+
                     b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using The_Post.Data;
 using The_Post.Models;
+using Azure.Storage.Blobs;
+using The_Post.Models.VM;
 
 namespace The_Post.Services
 {
@@ -9,11 +11,13 @@ namespace The_Post.Services
     {
         private readonly IHttpContextAccessor _IHttpContextAccessor;
         private readonly ApplicationDbContext _applicationDBContext;
+        private readonly IConfiguration _configuration;
 
-        public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext)
+        public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext, IConfiguration configuration)
         {
             _IHttpContextAccessor = iHttpContextAccessor;
             _applicationDBContext = applicationDbContext;
+            _configuration = configuration;
         }
         public void CreateArticle(Article article)
         {
@@ -32,8 +36,31 @@ namespace The_Post.Services
         { 
             _applicationDBContext.Articles.Update(updatedArticle);
             _applicationDBContext.SaveChanges();
-
         }
+                
+        public async Task<string> UploadFileToContainer(AddArticleVM model)
+        {
+            string connectionString = _configuration["AzureBlobStorage:ConnectionString"];
+            string containerName = _configuration["AzureBlobStorage:ContainerName"];
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            // Create the container if it does not exist
+
+            await containerClient.CreateIfNotExistsAsync();
+
+            string uniqueFileName = $"{Guid.NewGuid()}_{model.ImageLink.FileName}";
+            BlobClient blobClient = containerClient.GetBlobClient(uniqueFileName);
+
+            using (var stream = model.ImageLink.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, true);
+            }
+
+            return blobClient.Uri.ToString();
+        }
+
         public List<Article> GetAllArticles() // Pagination
         {
             var article = _applicationDBContext.Articles.Include(a => a.Categories).ToList();
@@ -44,6 +71,7 @@ namespace The_Post.Services
         {
             var article = _applicationDBContext.Articles
                 .Include(a => a.Categories)
+                .Include(a => a.Likes)
                 .FirstOrDefault(c => c.Id == articleID);
             return article;
         }
@@ -136,5 +164,34 @@ namespace The_Post.Services
             return string.Join("", paragraphs);
         }
 
+        // Checks if there is a like made by the user for the article. If there is, the like gets removed. If not, a new like is added.
+        public async Task AddRemoveLikeAsync(int articleID, string userID)
+        {
+            var existingLike = await _applicationDBContext.Likes
+                            .FirstOrDefaultAsync(l => l.ArticleId == articleID && l.UserId == userID);
+
+            if (existingLike == null)
+            {
+                var newLike = new Like
+                {
+                    ArticleId = articleID,
+                    UserId = userID
+                };
+
+                await _applicationDBContext.AddAsync(newLike);
+            }
+            else
+                _applicationDBContext.Likes.Remove(existingLike);
+
+
+            await _applicationDBContext.SaveChangesAsync();
+        }
+
+        public async Task<int> GetLikeCountAsync(int articleID)
+        {
+            var count = await _applicationDBContext.Likes.Where(l => l.ArticleId.Equals(articleID)).CountAsync();
+
+            return count;
+        }
     }
 }

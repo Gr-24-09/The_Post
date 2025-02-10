@@ -36,9 +36,6 @@ namespace The_Post.Models
         public int Views { get; set; } = 0;
 
         [Required]
-        public int Likes { get; set; } = 0;
-
-        [Required]
         [StringLength(500)]
         public string ImageLink { get; set; }
 
@@ -46,6 +43,7 @@ namespace The_Post.Models
         public bool IsArchived { get; set; }
 
         public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
+        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }
 

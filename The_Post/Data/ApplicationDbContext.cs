@@ -18,6 +18,7 @@ namespace The_Post.Data
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<SubscriptionType> SubscriptionTypes { get; set; }
+        public DbSet<Like> Likes { get; set; }
     }
 
 }

@@ -5,13 +5,11 @@
     ViewData["Title"] = "AddArticle";
 }
 
-<h1>AddArticle</h1>
-
-<h4>Article</h4>
+<h1><strong><em>Add Article</em></strong></h1>
 <hr />
 <div class="row">
     <div class="col-md-8">
-        <form asp-action="AddArticle">
+        <form asp-action="AddArticle" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="HeadLine" class="control-label">Headline</label>
@@ -34,12 +32,12 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageLink" class="control-label">Image link</label>
-                <input asp-for="ImageLink" class="form-control" />
+                <label asp-for="ImageLink">Select file to upload:</label>
+                <input type="file" asp-for="ImageLink" class="form-control" />
                 <span asp-validation-for="ImageLink" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label>Categories</label>
+            <div class="form-group m-2">
+                <label>Categories:</label>
                 @foreach (var category in Model.AvailableCategories)
                 {
                     <div class="form-check">
@@ -49,15 +47,15 @@
                 }
             </div>
 
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a class="btn btn-primary mt-1" asp-controller="Admin" asp-action="Index">Back</a>
+<div class="mt-1">
+    <a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Back</a>
 </div>
 
 @section Scripts {

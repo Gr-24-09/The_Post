@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using The_Post.Middleware;
 
 namespace The_Post.Models.VM
 {
@@ -23,8 +24,8 @@ namespace The_Post.Models.VM
         public string Content { get; set; }
 
         [Required]
-        [StringLength(500)]
-        public string ImageLink { get; set; }
+        [AllowedExtensions(new string[] { "jpg", "jpeg", "png", "gif" })]
+        public IFormFile ImageLink { get; set; }
 
         public List<SelectListItem> AvailableCategories { get; set; } = new List<SelectListItem>();
 
