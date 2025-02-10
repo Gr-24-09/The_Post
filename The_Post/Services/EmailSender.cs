@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
-using System.Net.Mail;
-using System.Net;
 
 namespace The_Post.Services
 {
@@ -17,37 +19,43 @@ namespace The_Post.Services
         }
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var smtpClient = new SmtpClient(_configuration["EmailSettings:SmtpServer"])
-            {
-                Port = int.Parse(_configuration["EmailSettings:Port"]),
-                Credentials = new NetworkCredential(
-                    _configuration["EmailSettings:Username"],
-                    _configuration["EmailSettings:Password"]
-                ),
-                EnableSsl = bool.Parse(_configuration["EmailSettings:EnableSsl"])
-            };
+             try
+             {
+                var senderEmail = _configuration["EmailSettings:SenderEmail"];
+                var senderName = _configuration["EmailSettings:SenderName"];
+                var smtpServer = _configuration["EmailSettings:SmtpServer"];
+                var smtpPort = int.Parse(_configuration["EmailSettings:Port"]);
+                var username = _configuration["EmailSettings:Username"];
+                var password = _configuration["EmailSettings:Password"];
+                var enableSsl = bool.Parse(_configuration["EmailSettings:EnableSsl"]);
 
-            var senderEmail = _configuration["EmailSettings:SenderEmail"];
-            var senderName = _configuration["EmailSettings:SenderName"];
+                // Create email message
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress(senderName, senderEmail));
+                message.To.Add(new MailboxAddress(email, email));
+                message.Subject = subject;
 
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(senderEmail, senderName), // Uses SenderEmail and SenderName
-                Subject = subject,
-                Body = htmlMessage,
-                IsBodyHtml = true
-            };
+                var bodyBuilder = new BodyBuilder
+                {
+                    HtmlBody = htmlMessage,  // Email content in HTML format
+                    TextBody = "This is a plain text version of the email." // Fallback for non-HTML clients
+                };
+
+                message.Body = bodyBuilder.ToMessageBody();
+
+                using var smtpClient = new SmtpClient();
+                await smtpClient.ConnectAsync(smtpServer, smtpPort, SecureSocketOptions.StartTls);
+                await smtpClient.AuthenticateAsync(username, password);
+                await smtpClient.SendAsync(message);
+                await smtpClient.DisconnectAsync(true);
+             }
+            catch (Exception ex)
+             {
+                 Console.WriteLine($"Error sending email: {ex.Message}");
+                 // Log the error (optional)
+             }
 
 
-            mailMessage.To.Add(email);
-
-            await smtpClient.SendMailAsync(mailMessage);
-
-            //Email Adress:
-            // The.post990@gmail.com
-
-            //App Password :
-            //twqy lpqr agjc muww
 
         }
     }
@@ -55,3 +63,8 @@ namespace The_Post.Services
 
 
 
+//Email Adress:
+            // The.post990@gmail.com
+
+            //App Password :
+            //twqy lpqr agjc muww
