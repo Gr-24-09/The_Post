@@ -5,6 +5,8 @@ using MailKit.Security;
 using MimeKit;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
+using MimeKit.Text;
+using System.Text.RegularExpressions;
 
 namespace The_Post.Services
 {
@@ -35,13 +37,17 @@ namespace The_Post.Services
                 message.To.Add(new MailboxAddress(email, email));
                 message.Subject = subject;
 
-                var bodyBuilder = new BodyBuilder
+                var plainTextBody = Regex.Replace(htmlMessage, "<.*?>", string.Empty);
+
+                // Create a multipart email with both HTML and plain text versions
+                var multipart = new MultipartAlternative
                 {
-                    HtmlBody = htmlMessage,  // Email content in HTML format
-                    TextBody = "This is a plain text version of the email." // Fallback for non-HTML clients
+                    new TextPart(TextFormat.Plain) { Text = plainTextBody }, // Plain-text fallback
+                    new TextPart(TextFormat.Html) { Text = htmlMessage } // HTML version
                 };
 
-                message.Body = bodyBuilder.ToMessageBody();
+                // Set email body
+                message.Body = multipart;  
 
                 using var smtpClient = new SmtpClient();
                 await smtpClient.ConnectAsync(smtpServer, smtpPort, SecureSocketOptions.StartTls);
