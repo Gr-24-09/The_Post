@@ -4,6 +4,7 @@ using The_Post.Data;
 using The_Post.Models;
 using The_Post.Models.VM;
 using The_Post.Services;
+using The_Post.Middleware;
 
 namespace The_Post.Controllers
 {
@@ -163,16 +164,16 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ArchiveArticle(int articleId, bool isArchived)
+        public async Task<IActionResult> ArchiveArticle([FromBody] ArchiveArticleRequest request)
         {
             try
             {
-                var article = await _db.Articles.FindAsync(articleId);
+                var article = await _db.Articles.FindAsync(request.ArticleId);
                 if (article == null)
                 {
                     return NotFound(new { success = false, message = "Article not found" });
                 }
-                article.IsArchived = isArchived;
+                article.IsArchived = request.IsArchived;
                 await _db.SaveChangesAsync();
                 return Json(new { success = true });
             }

@@ -2,7 +2,8 @@
 
 <div class="p-2 col-md-4">
     <div class="card mt-1 mb-3">   
-        <div class="position-relative"> @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
+        <div class="position-relative @(Model.IsArchived ? "archived-css" : "")">
+            @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
             <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="stretched-link"></a>
             <div class="ratio ratio-4x3 img-thumbnail">
                 <img src="@Model.ImageLink" class="card-img-top" alt="No Article Image">

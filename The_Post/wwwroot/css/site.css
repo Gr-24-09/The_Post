@@ -138,3 +138,9 @@ body {
         max-height: 250px; /* The max-height gets changed to 250px */
     }
 }
+
+/* Archived */
+.archived-css {
+    opacity: 0.6;
+    text-decoration: line-through;
+}

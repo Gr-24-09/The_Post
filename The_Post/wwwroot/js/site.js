@@ -47,8 +47,13 @@ $(document).ready(function () {
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".is-archive-check").forEach((checkbox) => {
         checkbox.addEventListener("change", async function () {
-            const articleId = this.dataset.articleId;
+            const articleId = parseInt(this.dataset.articleId);
             const isChecked = this.checked;
+
+            const cardWrapper = this.closest(".card").querySelector(".position-relative");
+            if (cardWrapper) {
+                cardWrapper.classList.toggle("archived-css", isChecked);
+            }
 
             try {
                 const response = await fetch('/Admin/ArchiveArticle', {
@@ -57,19 +62,29 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify({ articleId: articleId, isArchived: isChecked })
                 });
 
-                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-                if (response.ok && result.success) {
-                    toastr.success("Archived status updated successfully");
+                const result = await response.json();
+                if (result.success) {
+                    toastr.success("Archive status updated successfully");
                 }
                 else {
+                    if (cardWrapper) {
+                        cardWrapper.classList.toggle("archived-css", !isChecked);
+                    }
                     this.checked = !isChecked;
-                    toastr.error(result.message || "An error occurred while updating archived status");
+                    toastr.error(result.message || "Failed to update archive status");
                 }
             }
             catch (error) {
+                if (cardWrapper) {
+                    cardWrapper.classList.toggle("archived-css", !isChecked);
+                }
                 this.checked = !isChecked;
                 toastr.error("An unexpected error occurred");
+                console.error('Error:', error);
             }
         });
     });
