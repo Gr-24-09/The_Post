@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/The_Post.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 </head>
  <body>
   <header>
@@ -38,9 +39,15 @@
               <!-- Center section (Brand) -->
 
                 <div class="navbar-collapse collapse d-sm-inline-flex align-items-center justify-content-center">
-                    <ul class="navbar-nav flex-grow-1 text-center">
-                            <a class="navbar-brand fw-bold  display-3 " style="margin-left: 110px;" asp-area="" asp-controller="Home" asp-action="Index">The Post</a>
-                    </ul>
+                        <div class="row w-100 text-center">
+                            <div class="col-3"></div> <!-- Left empty section -->
+                            <div class="col-4">
+                                <a class="navbar-brand fw-bold display-3" asp-area="" asp-controller="Home" asp-action="Index">
+                                    The Post
+                                </a>
+                            </div> <!-- Center section (Brand) -->
+                            <div class="col-5"></div> <!-- Right empty section -->
+                        </div>
               <!-- Right section (Login) -->
                     <partial name="_LoginPartial" />
                 </div>
@@ -85,6 +92,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
