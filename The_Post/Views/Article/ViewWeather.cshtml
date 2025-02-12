@@ -1,0 +1,133 @@
+﻿@model IEnumerable<The_Post.Models.API.WeatherForecast>
+
+@{
+    ViewData["Title"] = "ViewWeather";
+}
+
+<!-- Wrapper for the background image and weather cards -->
+<div class="position-relative d-flex flex-column align-items-center" style="padding: 15px;">
+    <!-- Background image -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-cover bg-center opacity-50"
+         style="background-image: url('https://images.pexels.com/photos/53594/blue-clouds-day-fluffy-53594.jpeg'); height: 100%; pointer-events: none;">
+    </div>
+
+    <!-- Weather cards container-->
+    <div id="weatherCardsContainer" class="d-flex flex-nowrap overflow-auto gap-3 position-relative align-items-center"
+         style="scrollbar-color: rgba(0, 0, 0, 0.2) transparent; margin-bottom: -15px;">
+        @foreach (var forecast in Model)
+        {
+            <partial name="../Shared/_WeatherPartial" model="forecast" />
+        }
+    </div>
+</div>
+
+<div class="d-flex gap-3 justify-content-start mt-2">
+    <!-- Add City Button -->
+    <button class="btn btn-success d-flex align-items-center justify-content-center" style="width: 100px; height: 30px;" data-bs-toggle="modal" data-bs-target="#addCityModal">+</button>
+
+    <!-- Remove City Button -->
+    <button class="btn btn-danger d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;" id="removeCitiesBtn" onclick="enableRemoveMode()">-</button>
+</div>
+
+
+
+<!-- Modal for adding a city -->
+<div class="modal fade" id="addCityModal" tabindex="-1" aria-labelledby="addCityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCityModalLabel">Add City</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="cityNameInput" class="form-control" placeholder="Enter city name">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="addCityConfirm">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var removeMode = false;
+
+        // Adds a city when "Add" is clicked in the modal
+        $("#addCityConfirm").off("click").on("click", function () {
+            var cityName = $.trim($("#cityNameInput").val());
+
+            // Gets all city names from the cards
+            var existingCities = $(".weather-card").map(function () {
+                return $(this).data("city").toLowerCase();
+            }).get();
+
+            if (cityName === "") {
+                $("#cityNameInput").addClass("is-invalid");
+                return;
+            } else {
+                $("#cityNameInput").removeClass("is-invalid");
+            }
+
+            if (existingCities.includes(cityName.toLowerCase())) {
+                $("#cityNameInput").addClass("is-invalid");
+                return;
+            }
+
+            $.ajax({
+                url: '/Article/AddCity',
+                type: 'POST',
+                data: { city: cityName },
+                success: function (response) {
+                    $(".d-flex.flex-nowrap").append(response);
+                    $("#cityNameInput").val("");
+                    $("#addCityModal").modal("hide");
+                },
+                error: function () {
+                    alert("Failed to fetch weather data.");
+                }
+            });
+        });
+
+        // When the minus-button is clicked, "remove mode" is activated for the cards
+        $("#removeCitiesBtn").click(function () {
+            enableRemoveMode();
+        });
+
+        // If removeMode is enabled, a click on a card deletes the card 
+        $(document).on('click', '.weather-card', function () {
+            if (!removeMode) return;
+
+            var city = $(this).data('city');
+
+            $.ajax({
+                url: '/Article/RemoveCity',
+                type: 'POST',
+                data: { city: city },
+                success: function () {
+                    $(this).remove();
+                    disableRemoveMode();  // Disable remove mode after one card is removed
+                }.bind(this),
+                error: function () {
+                    alert("Failed to remove city.");
+                }
+            });
+        });
+
+        // Cities are able to be removed by clicking on them
+        function enableRemoveMode() {
+            removeMode = true;
+            $(".weather-card").addClass("removable");
+        }
+
+        function disableRemoveMode() {
+            removeMode = false;
+            $(".weather-card").removeClass("removable");
+        }
+    });
+</script>
