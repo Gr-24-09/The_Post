@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "AcceptCookies";
+}
+
+<h1>AcceptCookies</h1>
+
+<h3>Your Consent</h3>
+<p>By clicking "Accept All Cookies," you agree to our use of cookies. If you do not accept, we will only use the essential cookies to ensure the website works correctly. You can also withdraw your consent at any time by adjusting your browser settings.</p>
+
+<button id="accept-cookies-btn">Accept All Cookies</button>
+<button id="reject-cookies-btn">Reject Non-Essential Cookies</button>
+    </div>
+
+<script>
+    // Handle cookie consent button clicks
+    document.getElementById('accept-cookies-btn').onclick = function () {
+        // Set cookies consent to 'accepted'
+        document.cookie = "cookiesConsent=true; path=/; max-age=" + 60 * 60 * 24 * 365 + "; Secure; SameSite=Lax";
+
+        // Redirect to homepage or close the policy page
+        window.location.href = '/';
+    };
+
+    document.getElementById('reject-cookies-btn').onclick = function () {
+        // Set cookies consent to 'rejected'
+        document.cookie = "cookiesConsent=false; path=/; max-age=" + 60 * 60 * 24 * 365 + "; Secure; SameSite=Lax";
+
+        // Redirect to homepage or close the policy page
+        window.location.href = '/';
+    };
+</script>

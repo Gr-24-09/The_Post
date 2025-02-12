@@ -4,6 +4,7 @@ using The_Post.Data;
 using The_Post.Models;
 using Azure.Storage.Blobs;
 using The_Post.Models.VM;
+using System.ClientModel.Primitives;
 
 namespace The_Post.Services
 {
@@ -192,6 +193,22 @@ namespace The_Post.Services
             var count = await _applicationDBContext.Likes.Where(l => l.ArticleId.Equals(articleID)).CountAsync();
 
             return count;
+        }
+        public bool IsCookiesAccepted()
+        {
+            return _IHttpContextAccessor.HttpContext.Request.Cookies.ContainsKey("cookiesConsent");
+        }
+
+        public void AcceptCookies()
+        {
+            var options = new CookieOptions
+            {
+                Expires = DateTime.Now.AddYears(1),
+                SameSite = SameSiteMode.Lax,
+                HttpOnly = true,
+                Secure = true
+            };
+            _IHttpContextAccessor.HttpContext.Response.Cookies.Append("cookiesConsent", "true", options);
         }
     }
 }

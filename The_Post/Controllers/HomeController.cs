@@ -36,7 +36,18 @@ namespace The_Post.Controllers
 
         public IActionResult CookiesNotice()
         {
+            bool isCookiesAccepted = _articleService.IsCookiesAccepted();
+            ViewBag.IsCookiesAccepted = isCookiesAccepted;
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult AcceptCookies()
+        {
+            // Set the cookie to mark the user has accepted cookies
+            _articleService.AcceptCookies();
+
+            return Ok();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
