@@ -2,7 +2,8 @@
 
 <div class="p-2 col-md-4">
     <div class="card mt-1 mb-3">   
-        <div class="position-relative"> @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
+        <div class="position-relative @(Model.IsArchived ? "archived-css" : "")">
+            @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
             <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="stretched-link"></a>
             <div class="ratio ratio-4x3 img-thumbnail">
                 <img src="@Model.ImageLink" class="card-img-top" alt="No Article Image">
@@ -15,15 +16,27 @@
        
         <div class="card-footer p-0 hstack gap-2">
             <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label small" for="flexCheckDefault">
+                <input 
+                    class="form-check-input is-archive-check" 
+                    type="checkbox" 
+                    id="isArchived_@Model.Id"
+                    @(Model.IsArchived ? "checked" : "")
+                    data-article-id="@Model.Id"
+                >
+                <label class="form-check-label small" for="isArchived_@Model.Id">
                     Archived
                 </label>
             </div>
             <div class="vr"></div>
             <div class="form-check form-switch m-2">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label small" for="flexSwitchCheckDefault">Editor's Choice</label>
+                <input 
+                    class="form-check-input editors-choice-toggle" 
+                    type="checkbox" 
+                    role="switch"                    
+                    @(Model.EditorsChoice ? "checked" : "")
+                    data-article-id="@Model.Id"
+                >
+                <span class="form-check-label small">Editor's Choice</span>
             </div>
             <div class="vr"></div>
             <div class="p-2 ms-auto">

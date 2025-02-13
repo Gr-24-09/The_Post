@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using The_Post.Models;
+using The_Post.Models.API;
 using The_Post.Models.VM;
 using The_Post.Services;
 using System.ComponentModel.DataAnnotations;
@@ -14,12 +15,16 @@ namespace The_Post.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly IRequestService _requestService;
         private readonly UserManager<User> _userManager;
 
-        public ArticleController(IArticleService articleService, UserManager<User> userManager)
+        private readonly IEmployeeService _employeeService;
+        public ArticleController(IArticleService articleService, IRequestService requestService, UserManager<User> userManager, IEmployeeService employeeService)
         {
             _articleService = articleService;
+            _requestService = requestService;
             _userManager = userManager;
+            _employeeService = employeeService;
         }
 
         [Route("Articles")]
@@ -210,5 +215,101 @@ namespace The_Post.Controllers
             return Json(updatedLikes);
         }
 
+        public async Task<IActionResult> Weather(CategoryPageVM categoryPageVM)
+        {
+            var loggedInUser = await _userManager.GetUserAsync(User);
+
+            // Gets logged-in user's "weather cities"
+            var currentCities = loggedInUser.WeatherCities?.Split(',').Where(city => !string.IsNullOrEmpty(city)).ToList() ?? new List<string>();
+
+            // Adds the user's local city if not already included
+            if (!currentCities.Contains(loggedInUser.City))
+            {
+                currentCities.Insert(0, loggedInUser.City); 
+            }
+
+            // If no current cities (or local city) an empty list is returned
+            if (!currentCities.Any())
+            {
+                return View(new List<WeatherForecast>());
+            }
+
+            List<WeatherForecast> foreCasts = new List<WeatherForecast>();
+
+            // Adds forecast to the foreCasts-list, for each city in currentCities
+            foreach (string city in currentCities)
+            {
+                try
+                {
+                    var foreCast = await _requestService.GetForecastAsync(city);
+                    if (foreCast != null)
+                    {
+                        foreCasts.Add(foreCast);
+                    }
+                }
+                catch (Exception ex) 
+                {
+                    // Needs to be changed
+                    foreCasts.Add(new WeatherForecast() { City = city, Summary = "Error fetching data" });
+                }
+            }
+            
+            // Gets the articles relating to weather
+            var articles = _articleService.GetAllArticlesByCategoryName("Weather");
+
+            // Creates a WeatherVM object that holds the forecasts and articles
+            WeatherVM vM = new WeatherVM()
+            {
+                Forecasts = foreCasts,
+                Articles = articles
+            };
+
+            return View(vM);
+        }
+
+
+        // Adds a city to the user's string of cities, and returns a partial view with the new weather card 
+        [HttpPost]
+        public async Task<IActionResult> AddCity(string city)
+        {
+            if (string.IsNullOrWhiteSpace(city))
+            {
+                return BadRequest("No such city name.");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            // Gets the logged-in user's weather cities and puts them in a list
+            var cityList = user.WeatherCities?.Split(',').Select(c => c.Trim()).ToList() ?? new List<string>();
+
+            if (cityList.Contains(city, StringComparer.OrdinalIgnoreCase))
+            {
+                return BadRequest("The city is already displayed.");
+            }
+            // The new city is added
+            cityList.Add(city);
+
+            // Updated the user's Cities-string
+            user.WeatherCities = string.Join(",", cityList);
+            await _userManager.UpdateAsync(user);
+
+            var weatherData = await _requestService.GetForecastAsync(city); // Gets weather data for the new city
+
+            return PartialView("_WeatherPartial", weatherData);
+        }
+
+        // Removes a city from the logged-in user's Cities-string and returns the new updated list of forecasts
+        [HttpPost]
+        public async Task<IActionResult> RemoveCity(string city)
+        {
+
+            // Removes
+            await _requestService.RemoveCity(city);
+
+            // Gets the updated list of forecast-objects
+            var weatherData = await _requestService.GetForecastsUserAsync();
+
+            return PartialView("_WeatherListPartial", weatherData);
+        }
     }
 }

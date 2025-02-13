@@ -82,15 +82,15 @@ body {
     background-image: linear-gradient(white,#81baa0);
 }
 
-/* For all cards */
+/* For Homepage cards */
 .fpCard {
     transition: transform 0.2s, box-shadow 0.2s;
 }
-
     .fpCard:hover {
         transform: translateY(-3px);
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+
 
 /* ---- Sidebars ---- */
 
@@ -137,14 +137,74 @@ body {
     .article-image-height {
         max-height: 250px; /* The max-height gets changed to 250px */
     }
+
 }
 
-
-
 .toast {
-    z-index: 1056; /* Higher than modal backdrop */
+    z-index: 1056;
 
     max-width: 400px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
  
+
+
+    .button-text {
+        font-size: 4rem;
+        font-weight: bold;
+    }
+}
+
+.weather-card {
+    width: 150px; /* Fixed width for each card */
+    height: 150px; /* Fixed height for each card */
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Cursor changes to pointer when cards are removable */
+.weather-card.removable {
+    cursor: pointer; 
+}
+
+
+/* Flex container for the cards with scroll functionality */
+.d-flex.flex-nowrap {
+    flex-wrap: nowrap; /* Prevent wrapping to the next row */
+    overflow-x: auto; /* Enable horizontal scrolling if necessary */
+    max-width: 100%; /* Ensure it doesn't exceed the container's width */
+    padding-bottom: 10px; /* Optional padding to prevent overlap with buttons */
+}
+
+#weatherCardsContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Transparent scrollbar */
+    border-radius: 10px;
+}
+
+#weatherCardsContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.button-text {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 3rem;
+    cursor: pointer;
+    color: inherit;
+}
+
+.modal-weather-color{
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+}
+
+/* Archived */
+.archived-css {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+

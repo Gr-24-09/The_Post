@@ -130,11 +130,16 @@ namespace The_Post.Areas.Identity.Pages.Account
         }
 
 
+        //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
+
+
+        //---------------------------------------------------------------------------------------------------------------------------------------------------------
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -193,6 +198,10 @@ namespace The_Post.Areas.Identity.Pages.Account
             return Page();
         }
 
+
+        //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
         private User CreateUser()
         {
             try
@@ -206,6 +215,10 @@ namespace The_Post.Areas.Identity.Pages.Account
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
+
+
+        //---------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
         private IUserEmailStore<User> GetEmailStore()
         {
