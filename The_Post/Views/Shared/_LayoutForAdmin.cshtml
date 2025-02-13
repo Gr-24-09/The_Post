@@ -1,12 +1,9 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - The_Post</title>
-    <link rel="icon"
-          href="assets/img/kaiadmin/favicon.ico"
-          type="image/x-icon" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -15,19 +12,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
 
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-   <div class="d-flex flex-nowrap">
-        @* ------ Sidebar ------ *@
-        <div style="width: 280px;" class="d-flex flex-column flex-shrink-0 p-3 bg-body-dark">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                <span class="fs-4">Sidebar</span>
+    <div class="d-flex flex-nowrap h-100">
+        <!-- Sidebar -->
+        <div style="width: 280px;" class="d-flex flex-column flex-shrink-0 p-3 border-end border-dark bg-dark-subtle">
+
+            <a href="/" class="d-flex align-items-center pb-3 border-bottom border-dark link-body-emphasis text-decoration-none">                
+                <span class="fs-4"><strong>ThePost</strong><em>Admin</em></span>
             </a>
-            <hr>
+
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    <a href="#" class="nav-link link-body-emphasis" aria-current="page">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
                         Home
                     </a>
@@ -58,31 +60,14 @@
                 </li>
             </ul>
             <hr>
-            <div class="dropdown">
-                <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <strong>mdo</strong>
-                </a>
-                <ul class="dropdown-menu text-small shadow">
-                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                </ul>
-            </div>
         </div>
-        @* ------ Sidebar End ------ *@
-        
-        <main class="">
 
-            <header class="p-3 mb-3 border-bottom">
-                <div class="container">
-                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none">
-                            <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
-                        </a>
-
+        <!-- Main Content Area -->
+        <main class="flex-grow-1 d-flex flex-column min-vh-100">
+            <!-- Header -->
+            <header class="p-3 border-bottom border-dark bg-dark-subtle">
+                <div class="container-fluid">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                             <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
                             <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
@@ -90,41 +75,44 @@
                             <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
                         </ul>
 
-                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                            <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                        </form>
+                        <div class="d-flex align-items-center">
+                            <form class="me-3" role="search">
+                                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                            </form>
 
-                        <div class="dropdown text-end">
-                            <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                            </a>
-                            <ul class="dropdown-menu text-small">
-                                <li><a class="dropdown-item" href="#">New project...</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Sign out</a></li>
-                            </ul>
+                            <div class="dropdown text-end">
+                                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                                </a>
+                                <ul class="dropdown-menu text-small">
+                                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <div class="container">
-                <main role="main" class="pb-3">
+            <!-- Main Content -->
+            <div class="container-fluid flex-grow-1">
+                <main role="main" class="py-3">
                     @RenderBody()
                 </main>
             </div>
 
-            <footer class="py-3 my-4">
+            <!-- Footer -->
+            <footer class="py-3 mt-auto border-top">
                 <ul class="nav justify-content-center border-bottom pb-3 mb-3">
                 </ul>
                 <p class="text-center text-body-secondary">© 2025, made with <i class="fa fa-heart heart text-danger"></i> by Team Post</p>
             </footer>
         </main>
-                
-   </div>
-    
+    </div>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
