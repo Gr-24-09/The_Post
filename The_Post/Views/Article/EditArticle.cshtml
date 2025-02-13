@@ -1,0 +1,63 @@
+﻿@model The_Post.Models.VM.EditArticleVM
+
+@{
+    ViewData["Title"] = "EditArticle";
+}
+
+<h1><strong><em>Edit Article</em></strong></h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditArticle" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="HeadLine" class="control-label">Headline</label>
+                <input asp-for="HeadLine" class="form-control" />
+                <span asp-validation-for="HeadLine" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LinkText" class="control-label">Link Text</label>
+                <input asp-for="LinkText" class="form-control" />
+                <span asp-validation-for="LinkText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContentSummary" class="control-label"></label>
+                <textarea asp-for="ContentSummary" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="ContentSummary" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control" rows="10"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageLink" class="control-label">Select file to upload:</label>
+                <input type="file" asp-for="ImageLink" class="form-control" />
+                <span asp-validation-for="ImageLink" class="text-danger"></span>
+                <small>Current Image: @(ViewBag.CurrentImage ?? "none")</small>
+            </div>
+            <div class="form-group m-2">
+                <label>Categories:</label>
+                @foreach (var category in Model.AvailableCategories)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" name="SelectedCategoryIds" value="@category.Value" class="form-check-input" @(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)) ? "checked" : "")/>
+                        <label class="form-check-label">@category.Text</label>
+                    </div>
+                }
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-1">
+    <a class="btn btn-primary" asp-controller="Article" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

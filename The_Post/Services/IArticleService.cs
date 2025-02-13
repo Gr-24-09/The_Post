@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using The_Post.Models;
+using The_Post.Models.VM;
 
 namespace The_Post.Services
 {
@@ -22,6 +23,6 @@ namespace The_Post.Services
         public void DeleteArticle(int articleID);
         public Task AddRemoveLikeAsync(int articleID, string userID);
         public Task<int> GetLikeCountAsync(int articleID);
-
+        public Task<string> UploadFileToContainer(AddArticleVM model);
     }
 }

@@ -83,14 +83,14 @@ body {
 }
 
 /* For all cards */
-.card {
+.fpCard {
     transition: transform 0.2s, box-shadow 0.2s;
 }
+    .fpCard:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
 
 /* ---- Sidebars ---- */
 
@@ -176,4 +176,10 @@ body {
 
 #weatherCardsContainer::-webkit-scrollbar-track {
     background: transparent;
+}
+
+/* Archived */
+.archived-css {
+    opacity: 0.6;
+    text-decoration: line-through;
 }

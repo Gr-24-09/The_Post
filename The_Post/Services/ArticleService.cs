@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using The_Post.Data;
 using The_Post.Models;
+using Azure.Storage.Blobs;
+using The_Post.Models.VM;
 
 namespace The_Post.Services
 {
@@ -9,11 +11,13 @@ namespace The_Post.Services
     {
         private readonly IHttpContextAccessor _IHttpContextAccessor;
         private readonly ApplicationDbContext _applicationDBContext;
+        private readonly IConfiguration _configuration;
 
-        public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext)
+        public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext, IConfiguration configuration)
         {
             _IHttpContextAccessor = iHttpContextAccessor;
             _applicationDBContext = applicationDbContext;
+            _configuration = configuration;
         }
         public void CreateArticle(Article article)
         {
@@ -32,8 +36,31 @@ namespace The_Post.Services
         { 
             _applicationDBContext.Articles.Update(updatedArticle);
             _applicationDBContext.SaveChanges();
-
         }
+                
+        public async Task<string> UploadFileToContainer(AddArticleVM model)
+        {
+            string connectionString = _configuration["AzureBlobStorage:ConnectionString"];
+            string containerName = _configuration["AzureBlobStorage:ContainerName"];
+
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+
+            // Create the container if it does not exist
+
+            await containerClient.CreateIfNotExistsAsync();
+
+            string uniqueFileName = $"{Guid.NewGuid()}_{model.ImageLink.FileName}";
+            BlobClient blobClient = containerClient.GetBlobClient(uniqueFileName);
+
+            using (var stream = model.ImageLink.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, true);
+            }
+
+            return blobClient.Uri.ToString();
+        }
+
         public List<Article> GetAllArticles() // Pagination
         {
             var article = _applicationDBContext.Articles.Include(a => a.Categories).ToList();
@@ -42,7 +69,7 @@ namespace The_Post.Services
 
         public Article GetArticleById(int articleID)
         {
-            var article = _applicationDBContext.Articles
+            var article = _applicationDBContext.Articles                
                 .Include(a => a.Categories)
                 .Include(a => a.Likes)
                 .FirstOrDefault(c => c.Id == articleID);
@@ -60,6 +87,7 @@ namespace The_Post.Services
         public List<Article> TenLatestArticles()
         {
             var tenlatest = _applicationDBContext.Articles
+                .Where(a => a.IsArchived == false)
                 .Include(a => a.Categories)
                 .OrderByDescending(article => article.DateStamp).Take(10).ToList();
                 
@@ -69,6 +97,7 @@ namespace The_Post.Services
         public List<Article> GetFiveMostPopularArticles()
         {
             var mostPopular = _applicationDBContext.Articles
+                .Where(a => a.IsArchived == false)
                 .Include(a => a.Categories)
                 .OrderByDescending(m => m.Views).Take(5).ToList();
             return mostPopular;
@@ -79,6 +108,7 @@ namespace The_Post.Services
             var mostpopularbycategory = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
                                           .SelectMany(c => c.Articles)
                                           .Include(a => a.Categories)
+                                          .Where(a => a.IsArchived == false)
                                           .OrderByDescending(m => m.Views).FirstOrDefault();
 
             return (Article)mostpopularbycategory;
@@ -88,7 +118,8 @@ namespace The_Post.Services
         {
             var articles = _applicationDBContext.Categories.Where(c => c.Id == categoryID)
                             .SelectMany(c => c.Articles)
-                            .Include(a => a.Categories).ToList();
+                            .Include(a => a.Categories)
+                            .Where(a => a.IsArchived == false).ToList();
             return articles;
 
         }
@@ -97,7 +128,8 @@ namespace The_Post.Services
         {
             var articles = _applicationDBContext.Categories.Where(c => c.Name == categoryName)
                             .SelectMany(c => c.Articles)
-                            .Include(a => a.Categories).ToList();
+                            .Include(a => a.Categories)
+                            .Where(a => a.IsArchived == false).ToList();
             return articles;
 
         }
