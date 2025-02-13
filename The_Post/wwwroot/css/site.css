@@ -82,7 +82,7 @@ body {
     background-image: linear-gradient(white,#81baa0);
 }
 
-/* For all cards */
+/* For Homepage cards */
 .fpCard {
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -137,6 +137,17 @@ body {
     .article-image-height {
         max-height: 250px; /* The max-height gets changed to 250px */
     }
+
+}
+
+.toast {
+    z-index: 1056;
+
+    max-width: 400px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+ 
+
 
     .button-text {
         font-size: 4rem;
@@ -196,3 +207,4 @@ body {
     opacity: 0.6;
     text-decoration: line-through;
 }
+

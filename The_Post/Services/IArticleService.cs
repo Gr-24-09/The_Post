@@ -24,5 +24,9 @@ namespace The_Post.Services
         public Task AddRemoveLikeAsync(int articleID, string userID);
         public Task<int> GetLikeCountAsync(int articleID);
         public Task<string> UploadFileToContainer(AddArticleVM model);
+
+        public bool IsCookiesAccepted();
+
+        public void AcceptCookies();
     }
 }
