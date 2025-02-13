@@ -137,7 +137,10 @@ body {
     .article-image-height {
         max-height: 250px; /* The max-height gets changed to 250px */
     }
-
+    .weather-button-text {
+        font-size: 4rem;
+        font-weight: bold;
+    }
 }
 
 .toast {
@@ -148,12 +151,6 @@ body {
 }
  
 
-
-    .button-text {
-        font-size: 4rem;
-        font-weight: bold;
-    }
-}
 
 .weather-card {
     width: 150px; /* Fixed width for each card */
@@ -166,18 +163,17 @@ body {
     flex-shrink: 0; /* Prevent shrinking */
 }
 
-/* Cursor changes to pointer when cards are removable */
+/* When cards are removable, cursor changes to pointer and the border turns red */
 .weather-card.removable {
-    cursor: pointer; 
+    cursor: pointer;
+    border: solid red;
 }
-
 
 /* Flex container for the cards with scroll functionality */
 .d-flex.flex-nowrap {
     flex-wrap: nowrap; /* Prevent wrapping to the next row */
     overflow-x: auto; /* Enable horizontal scrolling if necessary */
     max-width: 100%; /* Ensure it doesn't exceed the container's width */
-    padding-bottom: 10px; /* Optional padding to prevent overlap with buttons */
 }
 
 #weatherCardsContainer::-webkit-scrollbar-thumb {
@@ -189,7 +185,7 @@ body {
     background: transparent;
 }
 
-.button-text {
+.weather-button-text {
     background: none;
     border: none;
     padding: 0;

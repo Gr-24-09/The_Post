@@ -9,13 +9,13 @@
 <!-- Wrapper for the background image and weather cards -->
 <div class="position-relative d-flex flex-column align-items-center" style="padding: 15px;">
     <!-- Background image -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-cover bg-center opacity-50"
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-cover bg-center"
          style="background-image: url('https://images.pexels.com/photos/53594/blue-clouds-day-fluffy-53594.jpeg'); height: 100%; pointer-events: none;">
     </div>
 
     <!-- Weather cards container-->
     <div id="weatherCardsContainer" class="d-flex flex-nowrap overflow-auto gap-3 position-relative align-items-center"
-         style="scrollbar-color: rgba(0, 0, 0, 0.2) transparent; margin-bottom: -15px;">
+         style="scrollbar-color: rgba(0, 0, 0, 0.2) transparent; min-height: 150px;">
         @foreach (var forecast in Model.Forecasts)
         {
             <partial name="../Shared/_WeatherPartial" model="forecast" />
@@ -23,14 +23,13 @@
     </div>
 </div>
 
-<div class="d-flex justify-content-start gap-3">
+<div class="d-flex justify-content-start gap-3 pb-3">
     <!-- Add City Button -->
-    <button id="addCityButton" class="d-flex align-items-center justify-content-center button-text px-3" data-bs-toggle="modal" data-bs-target="#addCityModal">+</button>
+    <button id="addCityButton" class="d-flex align-items-center justify-content-center weather-button-text px-3" data-bs-toggle="modal" data-bs-target="#addCityModal">+</button>
 
     <!-- Remove City Button -->
-    <button class="d-flex align-items-center justify-content-center button-text"  id="removeCitiesBtn" onclick="enableRemoveMode()">-</button>
+    <button class="d-flex align-items-center justify-content-center weather-button-text" id="removeCitiesBtn" onclick="enableRemoveMode()">-</button>
 </div>
-
 
 
 <!-- Modal for adding a city -->
@@ -53,9 +52,8 @@
 </div>
 
 
-
+<!--Displays weather articles-->
 <div>
-
     @foreach (var article in Model.Articles)
     {
         <partial name="_ArticleListingPartial" model="article"></partial>
@@ -65,16 +63,36 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         var removeMode = false;
+        var isAuthenticated = @Json.Serialize(User.Identity.IsAuthenticated);
 
         // Adds a city when "Add" is clicked in the modal
         $("#addCityConfirm").off("click").on("click", function () {
             var cityName = $.trim($("#cityNameInput").val());
 
+            // If the user isn't logged in, a different action is called that doesn't store the city
+            if(!isAuthenticated){
+                $.ajax({
+                    url: '/Article/AddCityNotLoggedIn',
+                    type: 'POST',
+                    data: { city: cityName },
+                    success: function (response) {
+                        $(".d-flex.flex-nowrap").append(response);
+                        $("#cityNameInput").val("");
+                        $("#addCityModal").modal("hide");
+                    },
+                    error: function () {
+                        alert("Failed to fetch weather data.");
+                    }
+                });
+            }
+            // If the user is logged in
+            else{
             // Gets all city names from the cards
             var existingCities = $(".weather-card").map(function () {
                 return $(this).data("city").toLowerCase();
@@ -91,7 +109,7 @@
                 $("#cityNameInput").addClass("is-invalid");
                 return;
             }
-
+            // Calls action that adds the city to the user's other cities
             $.ajax({
                 url: '/Article/AddCity',
                 type: 'POST',
@@ -105,6 +123,8 @@
                     alert("Failed to fetch weather data.");
                 }
             });
+            }
+            
         });
 
         // When the minus-button is clicked, "remove mode" is activated for the cards
@@ -121,7 +141,13 @@
         $(document).on('click', '.weather-card', function () {
             if (!removeMode) return;
 
-            var city = $(this).data('city');
+            // If the user isn't logged in, the card is just removed from the html
+            if(!isAuthenticated){
+                $(this).remove();
+                disableRemoveMode();
+            }
+            else{
+                var city = $(this).data('city');
 
             $.ajax({
                 url: '/Article/RemoveCity',
@@ -135,11 +161,13 @@
                     alert("Failed to remove city.");
                 }
             });
+            }
         });
 
-        document.getElementById("addCityButton").addEventListener("click", function () {
+        $("#addCityButton").on("click", function(){
             disableRemoveMode();
         });
+
 
         // Cities are able to be removed by clicking on them
         function enableRemoveMode() {
@@ -151,7 +179,5 @@
             removeMode = false;
             $(".weather-card").removeClass("removable");
         }
-
-
     });
 </script>

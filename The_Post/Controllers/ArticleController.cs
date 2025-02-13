@@ -217,42 +217,47 @@ namespace The_Post.Controllers
 
         public async Task<IActionResult> Weather(CategoryPageVM categoryPageVM)
         {
+            List<WeatherForecast> foreCasts = new List<WeatherForecast>();
             var loggedInUser = await _userManager.GetUserAsync(User);
 
-            // Gets logged-in user's "weather cities"
-            var currentCities = loggedInUser.WeatherCities?.Split(',').Where(city => !string.IsNullOrEmpty(city)).ToList() ?? new List<string>();
-
-            // Adds the user's local city if not already included
-            if (!currentCities.Contains(loggedInUser.City))
+            // If a user is logged in
+            if (loggedInUser != null)
             {
-                currentCities.Insert(0, loggedInUser.City); 
-            }
 
-            // If no current cities (or local city) an empty list is returned
-            if (!currentCities.Any())
-            {
-                return View(new List<WeatherForecast>());
-            }
+                // Gets logged-in user's "weather cities"
+                var currentCities = loggedInUser.WeatherCities?.Split(',').Where(city => !string.IsNullOrEmpty(city)).ToList() ?? new List<string>();
 
-            List<WeatherForecast> foreCasts = new List<WeatherForecast>();
-
-            // Adds forecast to the foreCasts-list, for each city in currentCities
-            foreach (string city in currentCities)
-            {
-                try
+                // Adds the user's local city if not already included
+                if (!currentCities.Contains(loggedInUser.City))
                 {
-                    var foreCast = await _requestService.GetForecastAsync(city);
-                    if (foreCast != null)
+                    currentCities.Insert(0, loggedInUser.City);
+                }
+
+                // If no current cities (or local city) an empty list is returned
+                if (!currentCities.Any())
+                {
+                    return View(new List<WeatherForecast>());
+                }
+
+                // Adds forecast to the foreCasts-list, for each city in currentCities
+                foreach (string city in currentCities)
+                {
+                    try
                     {
-                        foreCasts.Add(foreCast);
+                        var foreCast = await _requestService.GetForecastAsync(city);
+                        if (foreCast != null)
+                        {
+                            foreCasts.Add(foreCast);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Needs to be changed
+                        foreCasts.Add(new WeatherForecast() { City = city, Summary = "Error fetching data" });
                     }
                 }
-                catch (Exception ex) 
-                {
-                    // Needs to be changed
-                    foreCasts.Add(new WeatherForecast() { City = city, Summary = "Error fetching data" });
-                }
             }
+
             
             // Gets the articles relating to weather
             var articles = _articleService.GetAllArticlesByCategoryName("Weather");
@@ -279,21 +284,39 @@ namespace The_Post.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            // Gets the logged-in user's weather cities and puts them in a list
-            var cityList = user.WeatherCities?.Split(',').Select(c => c.Trim()).ToList() ?? new List<string>();
-
-            if (cityList.Contains(city, StringComparer.OrdinalIgnoreCase))
+            // If the user isn't logged in
+            if (user != null)
             {
-                return BadRequest("The city is already displayed.");
+                // Gets the logged-in user's weather cities and puts them in a list
+                var cityList = user.WeatherCities?.Split(',').Select(c => c.Trim()).ToList() ?? new List<string>();
+
+                if (cityList.Contains(city, StringComparer.OrdinalIgnoreCase))
+                {
+                    return BadRequest("The city is already displayed.");
+                }
+                // The new city is added
+                cityList.Add(city);
+
+                // Updated the user's Cities-string
+                user.WeatherCities = string.Join(",", cityList);
+                await _userManager.UpdateAsync(user);
             }
-            // The new city is added
-            cityList.Add(city);
 
-            // Updated the user's Cities-string
-            user.WeatherCities = string.Join(",", cityList);
-            await _userManager.UpdateAsync(user);
+            // Gets weather data for the city
+            var weatherData = await _requestService.GetForecastAsync(city); 
 
-            var weatherData = await _requestService.GetForecastAsync(city); // Gets weather data for the new city
+            return PartialView("_WeatherPartial", weatherData);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCityNotLoggedIn(string city)
+        {
+            if (string.IsNullOrWhiteSpace(city))
+            {
+                return BadRequest("No such city name.");
+            }
+
+            var weatherData = await _requestService.GetForecastAsync(city); // Gets weather data for the city
 
             return PartialView("_WeatherPartial", weatherData);
         }
