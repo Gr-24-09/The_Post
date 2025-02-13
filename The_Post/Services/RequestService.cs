@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using System.Globalization;
 using The_Post.Models;
 using The_Post.Models.API;
 
@@ -26,11 +27,11 @@ namespace The_Post.Services
             // Make an HTTP GET request and parse the data into a WeatherForecast object
             var weatherForecast = await _httpClient.GetFromJsonAsync<WeatherForecast>(url);
 
-            // Makes the first character in the first word upper-case. Needs to be changed for cities with several words (e g New York)
+            // Makes the first character in each word upper-case. Only applied to the first word for summary.
             if (weatherForecast != null)
             {
                 weatherForecast.Summary = char.ToUpper(weatherForecast.Summary[0]) + weatherForecast.Summary[1..];
-                weatherForecast.City = char.ToUpper(weatherForecast.City[0]) + weatherForecast.City[1..];
+                weatherForecast.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(weatherForecast.City.ToLower());
             }
 
             // Return am empty forecast-object if null

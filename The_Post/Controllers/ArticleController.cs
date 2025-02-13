@@ -215,7 +215,7 @@ namespace The_Post.Controllers
             return Json(updatedLikes);
         }
 
-        public async Task<IActionResult> ViewWeather()
+        public async Task<IActionResult> Weather(CategoryPageVM categoryPageVM)
         {
             var loggedInUser = await _userManager.GetUserAsync(User);
 
@@ -253,8 +253,18 @@ namespace The_Post.Controllers
                     foreCasts.Add(new WeatherForecast() { City = city, Summary = "Error fetching data" });
                 }
             }
+            
+            // Gets the articles relating to weather
+            var articles = _articleService.GetAllArticlesByCategoryName("Weather");
 
-            return View(foreCasts);
+            // Creates a WeatherVM object that holds the forecasts and articles
+            WeatherVM vM = new WeatherVM()
+            {
+                Forecasts = foreCasts,
+                Articles = articles
+            };
+
+            return View(vM);
         }
 
 

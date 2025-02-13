@@ -1,8 +1,10 @@
-﻿@model IEnumerable<The_Post.Models.API.WeatherForecast>
+﻿@model The_Post.Models.VM.WeatherVM
 
 @{
-    ViewData["Title"] = "ViewWeather";
+    ViewData["Title"] = "Weather";
 }
+
+<h1>Weather</h1>
 
 <!-- Wrapper for the background image and weather cards -->
 <div class="position-relative d-flex flex-column align-items-center" style="padding: 15px;">
@@ -14,19 +16,19 @@
     <!-- Weather cards container-->
     <div id="weatherCardsContainer" class="d-flex flex-nowrap overflow-auto gap-3 position-relative align-items-center"
          style="scrollbar-color: rgba(0, 0, 0, 0.2) transparent; margin-bottom: -15px;">
-        @foreach (var forecast in Model)
+        @foreach (var forecast in Model.Forecasts)
         {
             <partial name="../Shared/_WeatherPartial" model="forecast" />
         }
     </div>
 </div>
 
-<div class="d-flex gap-3 justify-content-start mt-2">
+<div class="d-flex justify-content-start gap-3">
     <!-- Add City Button -->
-    <button class="btn btn-success d-flex align-items-center justify-content-center" style="width: 100px; height: 30px;" data-bs-toggle="modal" data-bs-target="#addCityModal">+</button>
+    <button id="addCityButton" class="d-flex align-items-center justify-content-center button-text px-3" data-bs-toggle="modal" data-bs-target="#addCityModal">+</button>
 
     <!-- Remove City Button -->
-    <button class="btn btn-danger d-flex align-items-center justify-content-center" style="width: 50px; height: 30px;" id="removeCitiesBtn" onclick="enableRemoveMode()">-</button>
+    <button class="d-flex align-items-center justify-content-center button-text"  id="removeCitiesBtn" onclick="enableRemoveMode()">-</button>
 </div>
 
 
@@ -35,19 +37,30 @@
 <div class="modal fade" id="addCityModal" tabindex="-1" aria-labelledby="addCityModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header modal-weather-color">
                 <h5 class="modal-title" id="addCityModalLabel">Add City</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-weather-color">
                 <input type="text" id="cityNameInput" class="form-control" placeholder="Enter city name">
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer modal-weather-color">
+                <button type="button" class="btn btn-primary" id="addCityConfirm">Add</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" id="addCityConfirm">Add</button>
             </div>
         </div>
     </div>
+</div>
+
+
+
+<div>
+
+    @foreach (var article in Model.Articles)
+    {
+        <partial name="_ArticleListingPartial" model="article"></partial>
+    }
+
 </div>
 
 
@@ -96,7 +109,12 @@
 
         // When the minus-button is clicked, "remove mode" is activated for the cards
         $("#removeCitiesBtn").click(function () {
-            enableRemoveMode();
+            if (removeMode) {
+                disableRemoveMode();
+            }
+            else    {
+                enableRemoveMode();
+            }
         });
 
         // If removeMode is enabled, a click on a card deletes the card 
@@ -119,6 +137,10 @@
             });
         });
 
+        document.getElementById("addCityButton").addEventListener("click", function () {
+            disableRemoveMode();
+        });
+
         // Cities are able to be removed by clicking on them
         function enableRemoveMode() {
             removeMode = true;
@@ -129,5 +151,7 @@
             removeMode = false;
             $(".weather-card").removeClass("removable");
         }
+
+
     });
 </script>

@@ -22,6 +22,10 @@ namespace The_Post.Controllers
 
         public IActionResult CategoryView(string categoryName)
         {
+            // Redirects to the weather action if category is weather
+            if (categoryName == "Weather")
+                return RedirectToAction("Weather", "Article");
+
             var articles = _articleService.GetAllArticlesByCategoryName(categoryName);
 
             var model = new CategoryPageVM()
@@ -29,7 +33,8 @@ namespace The_Post.Controllers
                 Articles = articles,
                 Category = categoryName
             };
-   
+
+            
             return View(model);
         }
     }
