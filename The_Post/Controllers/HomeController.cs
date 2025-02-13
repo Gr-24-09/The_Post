@@ -4,6 +4,7 @@ using The_Post.Models;
 using The_Post.Services;
 using The_Post.Data;
 using The_Post.Models.VM;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace The_Post.Controllers
 {
@@ -22,12 +23,16 @@ namespace The_Post.Controllers
 
         public IActionResult Index()
         {
+            bool isCookiesAccepted = _articleService.IsCookiesAccepted();
+            ViewBag.IsCookiesAccepted = isCookiesAccepted;
             ArticleQueriesVM obj = new ArticleQueriesVM();
             obj.GetFiveMostPopularArticles = _articleService.GetFiveMostPopularArticles();
             obj.GetEditorsChoiceArticles = _articleService.GetEditorsChoiceArticles();
             obj.TenLatestArticles = _articleService.TenLatestArticles();
             return View(obj);
+           
         }
+        
 
         public IActionResult Privacy()
         {
@@ -47,7 +52,7 @@ namespace The_Post.Controllers
             // Set the cookie to mark the user has accepted cookies
             _articleService.AcceptCookies();
 
-            return Ok();
+            return NoContent();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

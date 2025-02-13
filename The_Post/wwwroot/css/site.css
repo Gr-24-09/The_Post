@@ -138,3 +138,13 @@ body {
         max-height: 250px; /* The max-height gets changed to 250px */
     }
 }
+
+
+
+.toast {
+    z-index: 1056; /* Higher than modal backdrop */
+
+    max-width: 400px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+ 
