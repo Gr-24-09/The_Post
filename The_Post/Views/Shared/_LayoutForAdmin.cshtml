@@ -21,66 +21,60 @@
 <body>
     <div class="d-flex flex-nowrap h-100">
         <!-- Sidebar -->
-        <div style="width: 280px;" class="d-flex flex-column flex-shrink-0 p-3 border-end border-dark bg-dark-subtle">
+        <div style="width: 270px;" class="d-flex flex-column flex-shrink-0 border-end border-dark bg-dark-subtle">
 
-            <a href="/" class="d-flex align-items-center pb-3 border-bottom border-dark link-body-emphasis text-decoration-none">                
-                <span class="fs-4"><strong>ThePost</strong><em>Admin</em></span>
+            <a asp-action="Index" asp-controller="Admin" class="d-flex align-items-center justify-content-center p-3 border-bottom border-dark link-body-emphasis text-decoration-none" style="height: 70px;">
+                <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
             </a>
 
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis" aria-current="page">
-                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                        Home
+                <li>
+                    <a href="/" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-home p-2"></i>
+                        Homepage
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
-                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                        Dashboard
+                    <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-home p-2"></i>
+                        View Employees
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
-                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                        Orders
+                    <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-home p-2"></i>
+                        Add Article
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
-                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                        Products
+                    <a asp-action="Index" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-home p-2"></i>
+                        View Articles
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">
-                        <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                        Customers
+                    <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-home p-2"></i>
+                        Roles Management
                     </a>
                 </li>
-            </ul>
-            <hr>
+            </ul>            
         </div>
 
         <!-- Main Content Area -->
         <main class="flex-grow-1 d-flex flex-column min-vh-100">
             <!-- Header -->
-            <header class="p-3 border-bottom border-dark bg-dark-subtle">
+            <header class="p-3 border-bottom border-dark" style="height: 70px;">
                 <div class="container-fluid">
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
-                        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                            <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-                            <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
-                            <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-                            <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
-                        </ul>
-
-                        <div class="d-flex align-items-center">
-                            <form class="me-3" role="search">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <form class="me-3" style="width: 400px;" role="search">
                                 <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
                             </form>
+                        </div>
 
-                            <div class="dropdown text-end">
+                        <div class="d-flex align-items-center">
+                            <div class="dropdown text-end me-3">
                                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                                 </a>
@@ -105,10 +99,11 @@
             </div>
 
             <!-- Footer -->
-            <footer class="py-3 mt-auto border-top">
-                <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <footer class="pb-3 mt-auto border-top">
+                <p class="text-center m-1"><strong>ThePost</strong><em>Admin</em></p>
+                <ul class="nav justify-content-center border-bottom mx-5 m-1">
                 </ul>
-                <p class="text-center text-body-secondary">© 2025, made with <i class="fa fa-heart heart text-danger"></i> by Team Post</p>
+                <p class="text-center m-0">© 2025, made with <i class="fa fa-heart heart text-danger"></i> by Team Post</p>
             </footer>
         </main>
     </div>
