@@ -34,5 +34,6 @@ namespace The_Post.Models
 
         public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
         public ICollection<Like> Likes { get; set; } = [];
+        public string WeatherCities { get; set; }  // CSV (comma-separated values) string
     }
 }

@@ -86,11 +86,11 @@ body {
 .fpCard {
     transition: transform 0.2s, box-shadow 0.2s;
 }
-
     .fpCard:hover {
         transform: translateY(-3px);
         box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+
 
 /* ---- Sidebars ---- */
 
@@ -137,6 +137,45 @@ body {
     .article-image-height {
         max-height: 250px; /* The max-height gets changed to 250px */
     }
+}
+
+.weather-card {
+    width: 150px; /* Fixed width for each card */
+    height: 150px; /* Fixed height for each card */
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Cursor changes to pointer when cards are removable */
+.weather-card.removable {
+    cursor: pointer; 
+}
+
+/* Optional: Mark the card as being hovered over for removal */
+/*.weather-card.removable:hover {
+    opacity: 0.7;
+}*/
+
+
+/* Flex container for the cards with scroll functionality */
+.d-flex.flex-nowrap {
+    flex-wrap: nowrap; /* Prevent wrapping to the next row */
+    overflow-x: auto; /* Enable horizontal scrolling if necessary */
+    max-width: 100%; /* Ensure it doesn't exceed the container's width */
+    padding-bottom: 10px; /* Optional padding to prevent overlap with buttons */
+}
+
+#weatherCardsContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3); /* Transparent scrollbar */
+    border-radius: 10px;
+}
+
+#weatherCardsContainer::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 /* Archived */

@@ -26,10 +26,12 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
+builder.Services.AddHttpContextAccessor(); // Used for accessing UserManager in services
 
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IArticleService,ArticleService>();
 builder.Services.AddScoped<IEmployeeService,EmployeeService>();
+builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
