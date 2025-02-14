@@ -14,11 +14,11 @@
 </head>
  <body>
   <header>
-     <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow p-0 mb-3 ">
+     <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow p-0 mb-3">
         <div class="container-fluid d-flex flex-column px-1">
-           <div class="d-flex justify-content-between align-items-center border-bottom w-100 border-bottoom">
+           <div class="header-container">
               <!-- Left section (Offcanvas menu button & Search) -->
-              <div class="d-flex align-items-center gap-3">
+              <div class="d-flex align-items-center gap-3 side-controls left-controls">
                   <!-- Offcanvas Toggle Button -->
                   <button class="btn btn-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions" aria-expanded="false" title="Menu">
                       <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
@@ -27,31 +27,27 @@
                   </button>
     
                   <!-- Search Bar -->
-                  <div class="d-flex align-items-center rounded-lg overflow-hidden">
+                  <div class="align-items-center rounded-lg overflow-hidden hide-button">
                       <button role="button" aria-label="Search The Post" title="Search" style="all: unset; cursor: pointer; " class="p-2 bg-white hover:bg-gray-100 border-none outline-none" >
                              <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true" fill="currentColor">
                                 <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
                              </svg>
                       </button>
-                       <input type="text" placeholder="Search..." class="d-none d-md-flex px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">     
+                       <input type="text" placeholder="Search..." class="responsive-search px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-500">     
                   </div>
               </div>
-    
-              <!-- Center section (Brand) -->
 
-                <div class="navbar-collapse collapse d-sm-inline-flex align-items-center justify-content-center">
-                        <div class="row w-100 text-center">
-                            <div class="col-3"></div> <!-- Left empty section -->
-                            <div class="col-4">
-                                <a class="navbar-brand fw-bold display-3" asp-area="" asp-controller="Home" asp-action="Index">
-                                    The Post
-                                </a>
-                            </div> <!-- Center section (Brand) -->
-                            <div class="col-5"></div> <!-- Right empty section -->
-                        </div>
-              <!-- Right section (Login) -->
-                    <partial name="_LoginPartial" />
-                </div>
+                    <!-- Center section (Brand) -->
+                    <div class="brand-container">
+                        <a class ="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+                            The Post
+                        </a>
+                    </div>
+
+                    <!-- Right section (Login) -->
+                    <div class="side-controls right-controls">
+                        <partial name="_LoginPartial" />
+                    </div>
                
            </div>
 

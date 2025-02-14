@@ -20,6 +20,104 @@
     transition: background-color 0.3s ease-in-out;
  }
 
+/* Custom styles for better responsive behavior */
+.header-container {
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+    margin: 10px 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+    .header-container::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+.brand-container {
+    position: absolute; 
+    left: 0; 
+    right: 0;       
+    top: 50%; 
+    transform: translateY(-50%); 
+    text-align: center;
+    width: 100%;
+    pointer-events: none; 
+    z-index: 1;
+}
+
+    .brand-container a.navbar-brand {
+        pointer-events: auto;
+        font-family: 'Merriweather', serif;
+        font-size: 4rem;
+        font-weight: bold;
+        margin: 0 auto;
+        white-space: nowrap;
+        word-break: normal;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #333;
+    }
+
+.side-controls {
+    position: relative;
+    z-index: 2;
+}
+
+.left-controls {
+    float: left;
+}
+
+.right-controls {
+    float: right;
+}
+
+/* Default */
+.responsive-search {
+    width: 300px;
+}
+.hide-button{}
+
+@media (max-width: 1200px) {
+    .responsive-search {
+        width: 250px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .responsive-search {
+        width: 200px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .responsive-search {
+        width: 150px;
+    }
+}
+
+/* Smaller logo */
+@media (max-width: 900px) {
+    .brand-container a.navbar-brand {
+        font-size: 3rem;
+    }    
+}
+
+@media (max-width: 810px) {
+    .responsive-search {
+        display: none;
+    }
+}
+
+@media (max-width: 450px) {
+    .side-controls{
+        display: none;
+    }
+    .hide-button{
+        display: none;
+    }
+}
 
 /*-----------------------------------------------------*/
 
@@ -35,7 +133,7 @@
 @media (max-width: 768px) {
     .offcanvas {
         width: 50% !important; /* Make it full width on mobile */
-    }
+    }    
 }
 
 /*-----------------------------------------------------*/
@@ -65,13 +163,13 @@ body {
   margin-bottom: 60px;
 }
 
-.navbar-brand {
+/*.navbar-brand {
     font-family: 'Merriweather', serif;
     font-size: 4rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: #333;
-}
+}*/
 
 /* For Modals */
 .modal-header {
