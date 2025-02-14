@@ -68,14 +68,41 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+
         var removeMode = false;
+
         var isAuthenticated = @Json.Serialize(User.Identity.IsAuthenticated);
+
+        // Get temporary stored weather cards if user is not logged in
+        if (!isAuthenticated) {
+            var storedCities = JSON.parse(sessionStorage.getItem("weatherCards"));
+
+            // If storedCities is not null, each html-element (card) is added to the page
+            if (storedCities) {
+                storedCities.forEach(function (city) {
+                    $.ajax({
+                        url: '/Article/AddCityNotLoggedIn',
+                        type: 'POST',
+                        data: { city: city },
+                        success: function (response) {
+                            $(".d-flex.flex-nowrap").append(response);
+                        },
+                        error: function () {
+                            console.error("Failed to load weather data for " + city);
+                        }
+                    });  
+                });  
+            }
+        }
+
 
         // Adds a city when "Add" is clicked in the modal
         $("#addCityConfirm").off("click").on("click", function () {
+            
+
             var cityName = $.trim($("#cityNameInput").val());
 
-            // If the user isn't logged in, a different action is called that doesn't store the city
+            // If the user isn't logged in, a different action is called that stores the city using sessionStorage
             if(!isAuthenticated){
                 $.ajax({
                     url: '/Article/AddCityNotLoggedIn',
@@ -83,6 +110,14 @@
                     data: { city: cityName },
                     success: function (response) {
                         $(".d-flex.flex-nowrap").append(response);
+
+                         // Store city name in sessionStorage if not included already
+                        var storedCities = JSON.parse(sessionStorage.getItem("weatherCards")) || [];
+                        if (!storedCities.includes(cityName)){
+                            storedCities.push(cityName);
+                            sessionStorage.setItem("weatherCards", JSON.stringify(storedCities));
+                        }
+
                         $("#cityNameInput").val("");
                         $("#addCityModal").modal("hide");
                     },
@@ -127,7 +162,8 @@
             
         });
 
-        // When the minus-button is clicked, "remove mode" is activated for the cards
+        // When the minus-button is clicked, "remove mode" is activated for the cards. 
+        // If you click again, it gets deactivated.
         $("#removeCitiesBtn").click(function () {
             if (removeMode) {
                 disableRemoveMode();
@@ -139,15 +175,25 @@
 
         // If removeMode is enabled, a click on a card deletes the card 
         $(document).on('click', '.weather-card', function () {
+            // If remove mode isn't enabled, nothing happens
             if (!removeMode) return;
 
-            // If the user isn't logged in, the card is just removed from the html
+            var city = $(this).data('city'); // Get city name from the data attribute
+
+            // If not logged in
             if(!isAuthenticated){
+                // Removes the card from the html page.
                 $(this).remove();
+
+                // Removes the card from session storage
+                var storedCities = JSON.parse(sessionStorage.getItem("weatherCards")) || [];
+                storedCities = storedCities.filter(c => c !== city);
+                sessionStorage.setItem("weatherCards", JSON.stringify(storedCities));
+
+                // Disables "remove mode"
                 disableRemoveMode();
             }
             else{
-                var city = $(this).data('city');
 
             $.ajax({
                 url: '/Article/RemoveCity',

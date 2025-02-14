@@ -321,6 +321,7 @@ namespace The_Post.Controllers
             return PartialView("_WeatherPartial", weatherData);
         }
 
+
         // Removes a city from the logged-in user's Cities-string and returns the new updated list of forecasts
         [HttpPost]
         public async Task<IActionResult> RemoveCity(string city)
