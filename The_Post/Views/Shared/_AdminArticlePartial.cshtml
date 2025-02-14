@@ -1,6 +1,6 @@
 ﻿@model The_Post.Models.Article
 
-<div class="p-2 col-md-4">
+<div class="p-2 col-md-3">
     <div class="card mt-1 mb-3">   
         <div class="position-relative @(Model.IsArchived ? "archived-css" : "")">
             @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
@@ -38,8 +38,8 @@
                 >
                 <span class="form-check-label small">Editor's Choice</span>
             </div>
-            <div class="vr"></div>
-            <div class="p-2 ms-auto">
+            <div class="vr ms-auto"></div>
+            <div class="p-2 ">
                 <a asp-controller="Article" asp-action="EditArticle" asp-route-articleID="@Model.Id" class="btn btn-sm btn-outline-warning">Edit</a>
             </div>
             <div class="vr"></div>
