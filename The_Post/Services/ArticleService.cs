@@ -156,6 +156,25 @@ namespace The_Post.Services
             return categories;
         }
 
+        public List<Article> GetSearchResults(string searchTerm)
+        {
+           var results =  _applicationDBContext.Articles
+                .Where(a => a.IsArchived == false)
+                .Where(a => a.HeadLine.Contains(searchTerm) ||
+                            a.LinkText.Contains(searchTerm) ||
+                            a.ContentSummary.Contains(searchTerm) ||
+                            a.Content.Contains(searchTerm))
+                .OrderByDescending(a => a.HeadLine.Contains(searchTerm) ? 3 : 0)  
+                .ThenByDescending(a => a.LinkText.Contains(searchTerm) ? 2 : 0)   
+                .ThenByDescending(a => a.ContentSummary.Contains(searchTerm) ? 2 : 0)  
+                .ThenByDescending(a => a.Content.Contains(searchTerm) ? 1 : 0)  
+                .ThenBy(a => a.HeadLine) // Optional fallback sorting by HeadLine
+                .Take(20)
+                .ToList();
+
+            return results;
+        }
+
         public string GetProcessedArticleContent(string content)
         {
             if (string.IsNullOrWhiteSpace(content))

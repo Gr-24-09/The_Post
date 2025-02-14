@@ -311,5 +311,10 @@ namespace The_Post.Controllers
 
             return PartialView("_WeatherListPartial", weatherData);
         }
+
+        public IActionResult SearchResults(string searchTerm)
+        {
+
+        }
     }
 }

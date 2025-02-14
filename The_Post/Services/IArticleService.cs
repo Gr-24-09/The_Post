@@ -15,6 +15,7 @@ namespace The_Post.Services
         public List<Article> GetEditorsChoiceArticles();
         public List<SelectListItem> GetAllCategoriesSelectList();
         public List<Category> GetSelectedCategories(List<int> categoryIDs);
+        public List<Article> GetSearchResults(string searchTerm);
         public string GetProcessedArticleContent(string content);
         public List<Article> TenLatestArticles();
         public Article GetMostPopularArticleByCategory(int categoryID);
