@@ -314,7 +314,14 @@ namespace The_Post.Controllers
 
         public IActionResult SearchResults(string searchTerm)
         {
+            var articles = _articleService.GetSearchResults(searchTerm);
+            SearchVM searchVM = new SearchVM()
+            {
+                Articles = articles,
+                SearchTerm = searchTerm
+            };
 
+            return View(searchVM);
         }
     }
 }

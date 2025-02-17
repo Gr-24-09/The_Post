@@ -1,18 +1,10 @@
-﻿@model The_Post.Models.VM.CategoryPageVM
+﻿@model The_Post.Models.VM.SearchVM
 
-@{
-    ViewData["Title"] = Model.Category;
-}
-
-<h1 class="pb-2 mb-4">@Model.Category</h1>
+<h2 class="pb-2 mb-4">Search results for "@Model.SearchTerm"</h2>
 
 <div class="col-lg-8 mx-auto">
-
     @foreach (var article in Model.Articles)
     {
         <partial name="_ArticleListingPartial" model="article"></partial>
     }
-
 </div>
-
-
