@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - The_Post</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/The_Post.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex flex-nowrap h-100">
+        <!-- Sidebar -->
+        <div style="position: fixed; top: 0; left: 0; bottom: 0; width: 270px;" class="d-flex flex-column flex-shrink-0 border-end border-dark bg-dark-subtle">
+
+            <a asp-action="Index" asp-controller="Admin" class="d-flex align-items-center justify-content-center p-3 border-bottom border-dark link-body-emphasis text-decoration-none" style="height: 70px;">
+                <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
+            </a>
+
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li>
+                    <a href="/" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-home p-2"></i>
+                        Homepage
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-address-card p-2"></i>
+                        View Employees
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AddEmployee" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-plus p-2"></i>
+                        Add New Employee
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-newspaper p-2"></i>
+                        View Articles
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-file-circle-plus p-2"></i>
+                        Add Article
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-user-tie p-2"></i>
+                        Roles Management
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Create" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-plus p-2"></i>
+                        Add New Role
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AssignRole" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-plus p-2"></i>
+                        Assign Role
+                    </a>
+                </li>
+            </ul>            
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="flex-grow-1 d-flex flex-column min-vh-100">
+            <!-- Header -->
+            <header class="p-3 border-bottom border-dark fixed-top text-bg-light" style="height: 70px; left: 270px; width: calc(100% - 270px);">
+                <div class="container-fluid">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                        <div class="d-flex align-items-center justify-content-start">
+                            <form class="me-3" style="width: 400px;" role="search">
+                                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                            </form>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+                            <div class="dropdown text-end me-3">
+                                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                                </a>
+                                <ul class="dropdown-menu text-small">
+                                    <li><a class="dropdown-item" href="#">New project...</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Sign out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <div style="margin-top: 70px; margin-left: 270px; padding-bottom: 70px;">
+                <main role="main" class="container-fluid py-2 px-5">
+                    @RenderBody()
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="mt-auto border-top fixed-bottom text-bg-light" style="height: 70px; left: 270px; width: calc(100% - 270px);">
+                <p class="text-center m-1"><strong>ThePost</strong><em>Admin</em></p>
+                <ul class="nav justify-content-center border-bottom mx-5 m-1">
+                </ul>
+                <p class="text-center m-0">© 2025, made with <i class="fa fa-heart heart text-danger"></i> by Team Post</p>
+            </footer>
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
