@@ -335,5 +335,17 @@ namespace The_Post.Controllers
 
             return PartialView("_WeatherListPartial", weatherData);
         }
+
+        public IActionResult SearchResults(string searchTerm)
+        {
+            var articles = _articleService.GetSearchResults(searchTerm);
+            SearchVM searchVM = new SearchVM()
+            {
+                Articles = articles,
+                SearchTerm = searchTerm
+            };
+
+            return View(searchVM);
+        }
     }
 }

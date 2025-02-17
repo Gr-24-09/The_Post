@@ -5,6 +5,7 @@ using The_Post.Models;
 using Azure.Storage.Blobs;
 using The_Post.Models.VM;
 using System.ClientModel.Primitives;
+using System.Text.RegularExpressions;
 
 namespace The_Post.Services
 {
@@ -130,7 +131,8 @@ namespace The_Post.Services
             var articles = _applicationDBContext.Categories.Where(c => c.Name == categoryName)
                             .SelectMany(c => c.Articles)
                             .Include(a => a.Categories)
-                            .Where(a => a.IsArchived == false).ToList();
+                            .Where(a => a.IsArchived == false)
+                            .OrderByDescending(a => a.DateStamp).ToList();
             return articles;
 
         }
@@ -154,6 +156,50 @@ namespace The_Post.Services
                                         .Where(c => categoryIDs.Contains(c.Id)).ToList();
 
             return categories;
+        }
+
+        public List<Article> GetSearchResults(string searchTerm)
+        {
+            // Splits into multiple strings if the search term contains multiple words (divided by an empty space)
+           var words = searchTerm.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            // Regular expression used to match only the exact word
+            var wordRegex = new Func<string, Regex>((word) =>
+                new Regex(@"\b" + Regex.Escape(word) + @"\b", RegexOptions.IgnoreCase));
+
+            // Regular expression used to match the exact word + "s", for plural forms of words
+            var pluralRegex = new Func<string, Regex>((word) =>
+                new Regex(@"\b" + Regex.Escape(word + "s") + @"\b", RegexOptions.IgnoreCase));
+
+            // Returns the top 20 articles that match the word(s)
+            // The matches are given different weights/priority (3, 2 or 1) based on the element (Headline, LinkText etc.)
+            var results = _applicationDBContext.Articles
+                .Include(a => a.Categories)
+                .Where(a => a.IsArchived == false)
+                .ToList() // ToList() is needed otherwise the Regex won't work
+                .Where(a => words.All(word =>
+                    wordRegex(word).IsMatch(a.HeadLine) ||
+                    wordRegex(word).IsMatch(a.LinkText) ||
+                    wordRegex(word).IsMatch(a.ContentSummary) ||
+                    wordRegex(word).IsMatch(a.Content) ||
+                    pluralRegex(word).IsMatch(a.HeadLine) ||
+                    pluralRegex(word).IsMatch(a.LinkText) ||
+                    pluralRegex(word).IsMatch(a.ContentSummary) ||
+                    pluralRegex(word).IsMatch(a.Content))) 
+                .OrderByDescending(a => words.Any(word =>
+                    wordRegex(word).IsMatch(a.HeadLine) || pluralRegex(word).IsMatch(a.HeadLine)) ? 3 : 0)
+                .ThenByDescending(a => words.Any(word =>
+                    wordRegex(word).IsMatch(a.LinkText) || pluralRegex(word).IsMatch(a.LinkText)) ? 2 : 0)  
+                .ThenByDescending(a => words.Any(word =>
+                    wordRegex(word).IsMatch(a.ContentSummary) || pluralRegex(word).IsMatch(a.ContentSummary)) ? 2 : 0)  
+                .ThenByDescending(a => words.Any(word =>
+                    wordRegex(word).IsMatch(a.Content) || pluralRegex(word).IsMatch(a.Content)) ? 1 : 0) 
+                .ThenByDescending(a => a.DateStamp)  // Fallback-sorting by date (most recent first) if two articles have the same weight
+                .Take(20)
+                .ToList();
+
+
+            return results;
         }
 
         public string GetProcessedArticleContent(string content)
