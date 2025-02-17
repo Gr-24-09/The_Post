@@ -21,7 +21,7 @@
 <body>
     <div class="d-flex flex-nowrap h-100">
         <!-- Sidebar -->
-        <div style="width: 270px;" class="d-flex flex-column flex-shrink-0 border-end border-dark bg-dark-subtle">
+        <div style="position: fixed; top: 0; left: 0; bottom: 0; width: 270px;" class="d-flex flex-column flex-shrink-0 border-end border-dark bg-dark-subtle">
 
             <a asp-action="Index" asp-controller="Admin" class="d-flex align-items-center justify-content-center p-3 border-bottom border-dark link-body-emphasis text-decoration-none" style="height: 70px;">
                 <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                    <a asp-action="AddEmployee" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
                         <i class="fa fa-plus p-2"></i>
                         Add New Employee
                     </a>
@@ -65,13 +65,13 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                    <a asp-action="Create" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
                         <i class="fa fa-plus p-2"></i>
                         Add New Role
                     </a>
                 </li>
                 <li>
-                    <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                    <a asp-action="AssignRole" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
                         <i class="fa fa-plus p-2"></i>
                         Assign Role
                     </a>
@@ -82,7 +82,7 @@
         <!-- Main Content Area -->
         <main class="flex-grow-1 d-flex flex-column min-vh-100">
             <!-- Header -->
-            <header class="p-3 border-bottom border-dark" style="height: 70px;">
+            <header class="p-3 border-bottom border-dark fixed-top text-bg-light" style="height: 70px; left: 270px; width: calc(100% - 270px);">
                 <div class="container-fluid">
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex align-items-center justify-content-start">
@@ -110,14 +110,14 @@
             </header>
 
             <!-- Main Content -->
-            <div class="container-fluid flex-grow-1">
-                <main role="main" class="py-3">
+            <div style="margin-top: 70px; margin-left: 270px; padding-bottom: 70px;">
+                <main role="main" class="container-fluid py-2 px-5">
                     @RenderBody()
                 </main>
             </div>
 
             <!-- Footer -->
-            <footer class="pb-3 mt-auto border-top">
+            <footer class="mt-auto border-top fixed-bottom text-bg-light" style="height: 70px; left: 270px; width: calc(100% - 270px);">
                 <p class="text-center m-1"><strong>ThePost</strong><em>Admin</em></p>
                 <ul class="nav justify-content-center border-bottom mx-5 m-1">
                 </ul>
