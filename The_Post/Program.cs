@@ -33,6 +33,8 @@ builder.Services.AddScoped<IArticleService,ArticleService>();
 builder.Services.AddScoped<IEmployeeService,EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<ISubscriptionTypeService, SubscriptionTypeService>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 
 
 var app = builder.Build();
