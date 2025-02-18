@@ -35,18 +35,6 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
-                        <i class="fa fa-address-card p-2"></i>
-                        View Employees
-                    </a>
-                </li>
-                <li>
-                    <a asp-action="AddEmployee" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
-                        <i class="fa fa-plus p-2"></i>
-                        Add New Employee
-                    </a>
-                </li>
-                <li>
                     <a asp-action="Index" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
                         <i class="fa fa-newspaper p-2"></i>
                         View Articles
@@ -58,24 +46,41 @@
                         Add Article
                     </a>
                 </li>
-                <li>
-                    <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
-                        <i class="fa fa-user-tie p-2"></i>
-                        Roles Management
-                    </a>
-                </li>
-                <li>
-                    <a asp-action="Create" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
-                        <i class="fa fa-plus p-2"></i>
-                        Add New Role
-                    </a>
-                </li>
-                <li>
-                    <a asp-action="AssignRole" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
-                        <i class="fa fa-plus p-2"></i>
-                        Assign Role
-                    </a>
-                </li>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li>
+                        <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-address-card p-2"></i>
+                            View Employees
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="AddEmployee" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-plus p-2"></i>
+                            Add New Employee
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-user-tie p-2"></i>
+                            Roles Management
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="Create" asp-controller="Roles" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-plus p-2"></i>
+                            Add New Role
+                        </a>
+                    </li>
+                    <li>
+                        <a asp-action="AssignRole" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-plus p-2"></i>
+                            Assign Role
+                        </a>
+                    </li>
+                }
+              
             </ul>            
         </div>
 
