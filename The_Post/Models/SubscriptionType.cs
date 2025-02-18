@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace The_Post.Models
 {
@@ -11,11 +12,13 @@ namespace The_Post.Models
         [StringLength(100)]
         [Display(Name ="Subscription Type")]
         public string TypeName { get; set; }
-        public string Description { get; set; }
+
+        public string? Description { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         [DataType(DataType.Currency)]
-         public decimal Price { get; set; }
+        public decimal Price { get; set; }
 
         public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
     }

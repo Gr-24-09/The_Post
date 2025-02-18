@@ -4,5 +4,6 @@ namespace The_Post.Services
 {
     public interface ISubscriptionService
     {
+        Task<bool> AddSubscription(string userId, int subscriptionTypeId);
     }
 }
