@@ -5,9 +5,11 @@ using The_Post.Models;
 using The_Post.Models.VM;
 using The_Post.Services;
 using The_Post.Middleware;
+using Microsoft.AspNetCore.Authorization;
 
 namespace The_Post.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class AdminController : Controller
     {        
         private readonly IArticleService _articleService;
@@ -127,6 +129,7 @@ namespace The_Post.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Editor")]
         public async Task<IActionResult> UpdateEditorsChoice(int articleId, bool isEditorsChoice)
         {
             try
@@ -164,6 +167,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Editor")]
         public async Task<IActionResult> ArchiveArticle([FromBody] ArchiveArticleRequest request)
         {
             try
