@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace The_Post.Controllers
 {
-    [Authorize(Roles ="Admin")]
+    
     public class AdminController : Controller
     {        
         private readonly IArticleService _articleService;
@@ -30,9 +30,9 @@ namespace The_Post.Controllers
         {
             return View();
         }
-        
-        //------------------------- EMPLOYEE ACTIONS -------------------------
 
+        //------------------------- EMPLOYEE ACTIONS -------------------------
+        [Authorize(Roles = "Admin")]
         public IActionResult AddEmployee()
         {
             return View();
@@ -78,16 +78,19 @@ namespace The_Post.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult EditEmployee()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployee(string userId)
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllEmployees()
         {
             var employees = await _employeeService.GetAllEmployeesWithRolesAsync();
@@ -96,6 +99,7 @@ namespace The_Post.Controllers
 
         //------------------------- OTHER ACTIONS -------------------------
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole()
         {
             var model = new AssignRoleVM
@@ -108,6 +112,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole(AssignRoleVM model)
         {
             if (ModelState.IsValid)
@@ -193,3 +198,18 @@ namespace The_Post.Controllers
         }
     }
 }
+
+
+/*
+basel @example.com
+B_e123456
+
+john.editor@email.com
+John@1234
+
+emily.admin@email.com
+Emily@5678
+
+ahmed.writer@email.com
+Ahmed@9876
+*/

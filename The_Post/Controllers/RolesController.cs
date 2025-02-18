@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using The_Post.Services;
 
 namespace The_Post.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly IRoleService _roleService;
@@ -11,6 +13,8 @@ namespace The_Post.Controllers
         {
             _roleService = roleService;
         }
+
+
         public async Task<IActionResult> Index()
         {
             var roles = await _roleService.GetAllRolesAsync();  
