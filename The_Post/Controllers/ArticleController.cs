@@ -9,6 +9,7 @@ using The_Post.Models.API;
 using The_Post.Models.VM;
 using The_Post.Services;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace The_Post.Controllers
 {
@@ -50,6 +51,7 @@ namespace The_Post.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Writer")]
         public IActionResult AddArticle()
         {
             var viewModel = new AddArticleVM()
@@ -61,6 +63,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> AddArticle(AddArticleVM model)
         {
             model.AvailableCategories = _articleService.GetAllCategoriesSelectList();
@@ -114,6 +117,7 @@ namespace The_Post.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Writer")]
         public IActionResult DeleteArticle(int articleID)
         {
             _articleService.DeleteArticle(articleID);
@@ -121,6 +125,7 @@ namespace The_Post.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Writer,Editor")]
         public IActionResult EditArticle(int articleID)
         {
             var article = _articleService.GetArticleById(articleID);
@@ -147,6 +152,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Writer,Editor")]
         public async Task<IActionResult> EditArticle(EditArticleVM vm)
         {
             if (!ModelState.IsValid)
