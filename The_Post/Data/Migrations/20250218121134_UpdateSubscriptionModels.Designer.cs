@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using The_Post.Data;
 
@@ -11,9 +12,11 @@ using The_Post.Data;
 namespace The_Post.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218121134_UpdateSubscriptionModels")]
+    partial class UpdateSubscriptionModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace The_Post.Data.Migrations
 
                     b.HasIndex("CategoriesId");
 
-                    b.ToTable("ArticleCategory", (string)null);
+                    b.ToTable("ArticleCategory");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -217,7 +220,7 @@ namespace The_Post.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("The_Post.Models.Category", b =>
@@ -235,7 +238,7 @@ namespace The_Post.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("The_Post.Models.Like", b =>
@@ -259,7 +262,7 @@ namespace The_Post.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes", (string)null);
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("The_Post.Models.Subscription", b =>
@@ -296,7 +299,7 @@ namespace The_Post.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("The_Post.Models.SubscriptionType", b =>
@@ -320,7 +323,7 @@ namespace The_Post.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes", (string)null);
+                    b.ToTable("SubscriptionTypes");
                 });
 
             modelBuilder.Entity("The_Post.Models.User", b =>

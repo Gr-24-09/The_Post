@@ -7,27 +7,30 @@ namespace The_Post.Models
     {
         [Key]
         public int Id { get; set; }
-
+                
         [Required]
-        [StringLength(50)]
-        [Display(Name = "Subscription Type")]
-        public string SubscriptionType { get; set; } = string.Empty;
-
-        [Required]
-        [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
+        [Column("Price", TypeName = "decimal(18,2)")]
+        public decimal HistoricalPrice { get; set; }
 
         [Required]
         public DateTime Created { get; set; } = DateTime.UtcNow;
 
+        [Required]
+        public DateTime Expires { get; set; }
 
         [Required]
         public bool PaymentComplete { get; set; }
 
-        [Required]
+        [Required]        
         public string UserId { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; } = null!;
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
+
+        [Required]
+        public int SubscriptionTypeId { get; set; }
+
+        [ForeignKey("SubscriptionTypeId")]
+        public virtual SubscriptionType SubscriptionType { get; set; }
     }
 }

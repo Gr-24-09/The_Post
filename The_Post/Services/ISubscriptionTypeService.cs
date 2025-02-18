@@ -4,11 +4,11 @@ namespace The_Post.Services
 {
     public interface ISubscriptionTypeService
     {
-        Task<List<SubscriptionType>> GetAllSubTypes();
+        Task<List<SubscriptionType>> GetAllSubscriptionTypes();
         Task<SubscriptionType?> GetByIdAsync(int id);
-        Task CreateSubType(SubscriptionType subType);
-        Task EditSubType(SubscriptionType subType);
-        Task DeleteSubType(int id);
+        Task Create(SubscriptionType subType);
+        Task Edit(SubscriptionType subType);
+        Task Delete(int id);
         Task<bool> Exists(int id);
     }
 }

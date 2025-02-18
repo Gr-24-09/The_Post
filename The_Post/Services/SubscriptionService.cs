@@ -16,7 +16,7 @@ namespace The_Post.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> AddSubscriptionAsync(string userId, int subscriptionTypeId)
+        public async Task<bool> AddSubscription(string userId, int subscriptionTypeId)
         {
             // Retrieve the subscription type details
             var subscriptionType = await _db.SubscriptionTypes.FindAsync(subscriptionTypeId);
@@ -28,9 +28,10 @@ namespace The_Post.Services
             // Create a new subscription record
             var subscription = new Subscription
             {
-                SubscriptionType = subscriptionType.TypeName,
-                Price = subscriptionType.Price,
+                SubscriptionTypeId = subscriptionTypeId,                
+                HistoricalPrice = subscriptionType.Price,
                 Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddYears(1),
                 PaymentComplete = false, // Initially false until payment is confirmed
                 UserId = userId
             };
@@ -46,7 +47,9 @@ namespace The_Post.Services
 
             if (!paymentSuccess)
             {
-                // Maybe implement logic to delete the subscription record if payment fails.
+                // Delete the subscription record if payment fails.
+                _db.Subscriptions.Remove(subscription);
+                await _db.SaveChangesAsync();
                 return false;
             }
 

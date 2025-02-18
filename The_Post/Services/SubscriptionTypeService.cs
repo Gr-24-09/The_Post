@@ -13,7 +13,7 @@ namespace The_Post.Services
             _db = db;
         }
 
-        public async Task<List<SubscriptionType>> GetAllSubTypes()
+        public async Task<List<SubscriptionType>> GetAllSubscriptionTypes()
         {
             return await _db.SubscriptionTypes.ToListAsync();
         }
@@ -23,19 +23,25 @@ namespace The_Post.Services
             return await _db.SubscriptionTypes.FindAsync(id);
         }
 
-        public async Task CreateSubType(SubscriptionType subType)
+        public async Task Create(SubscriptionType subType)
         {
             _db.SubscriptionTypes.Add(subType);
             await _db.SaveChangesAsync();
         }
 
-        public async Task EditSubType(SubscriptionType subType)
+        public async Task Edit(SubscriptionType subType)
         {
-            _db.SubscriptionTypes.Update(subType);
+            var existingSubType = await _db.SubscriptionTypes.FindAsync(subType.Id);
+            if (existingSubType == null)
+            {
+                throw new ArgumentException("SubscriptionType not found", nameof(subType.Id));
+            }
+
+            _db.Entry(existingSubType).CurrentValues.SetValues(subType);
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeleteSubType(int id)
+        public async Task Delete(int id)
         {
             var subType = await GetByIdAsync(id);
             if (subType == null)

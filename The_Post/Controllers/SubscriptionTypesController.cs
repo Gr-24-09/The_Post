@@ -8,15 +8,17 @@ namespace The_Post.Controllers
     public class SubscriptionTypesController : Controller
     {
         private readonly ISubscriptionTypeService _subscriptionTypeService;
+        private readonly ILogger<SubscriptionTypesController> _logger;
 
-        public SubscriptionTypesController(ISubscriptionTypeService subscriptionTypeService)
+        public SubscriptionTypesController(ISubscriptionTypeService subscriptionTypeService, ILogger<SubscriptionTypesController> logger)
         {
             _subscriptionTypeService = subscriptionTypeService;
+            _logger = logger;
         }
                
         public async Task<IActionResult> Index()
         {
-            var subTypes = await _subscriptionTypeService.GetAllSubTypes();
+            var subTypes = await _subscriptionTypeService.GetAllSubscriptionTypes();
             return View(subTypes);
         }
                 
@@ -24,13 +26,13 @@ namespace The_Post.Controllers
         {
             if (id == null)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return NotFound("SubscriptionType ID is required.");
             }
 
             var subType = await _subscriptionTypeService.GetByIdAsync(id.Value);
             if (subType == null)
             {
-                throw new ArgumentException("SubscriptionType not found", nameof(subType));
+                return NotFound($"SubscriptionType with ID {id.Value} not found.");
             }
 
             return View(subType);
@@ -47,7 +49,7 @@ namespace The_Post.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _subscriptionTypeService.CreateSubType(subType);
+                await _subscriptionTypeService.Create(subType);
                 return RedirectToAction(nameof(Index));
             }
             return View(subType);
@@ -57,13 +59,13 @@ namespace The_Post.Controllers
         {
             if (id == null)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return NotFound("SubscriptionType ID is required.");
             }
 
             var subType = await _subscriptionTypeService.GetByIdAsync(id.Value);
             if (subType == null)
             {
-                throw new ArgumentException("SubscriptionType not found", nameof(subType));
+                return NotFound($"SubscriptionType with ID {id.Value} not found.");
             }
             return View(subType);
         }
@@ -73,23 +75,27 @@ namespace The_Post.Controllers
         {
             if (id != subType.Id)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return BadRequest($"Mismatched ID. The provided ID {id} does not match SubscriptionType ID {subType.Id}.");
             }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    await _subscriptionTypeService.EditSubType(subType);
+                    await _subscriptionTypeService.Edit(subType);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!await _subscriptionTypeService.Exists(subType.Id))
                     {
-                        return NotFound();
+                        return NotFound($"SubscriptionType with ID {subType.Id} does not exist");
                     }
                     else
                     {
+                        // Log the exception with additional details
+                        _logger.LogError(ex, "Concurrency conflict occurred while updating SubscriptionType with ID {SubscriptionTypeId}", subType.Id);
+
+                        // Re-throw the original exception
                         throw;
                     }
                 }
@@ -102,13 +108,13 @@ namespace The_Post.Controllers
         {
             if (id == null)
             {
-                throw new ArgumentException("Id not found", nameof(id));
+                return NotFound("SubscriptionType ID is required.");
             }
 
             var subType = await _subscriptionTypeService.GetByIdAsync(id.Value);
             if (subType == null)
             {
-                return NotFound();
+                return NotFound($"SubscriptionType with ID {id.Value} not found.");
             }
 
             return View(subType);
@@ -117,8 +123,15 @@ namespace The_Post.Controllers
         [HttpPost]       
         public async Task<IActionResult> Delete(int id)
         {
-            await _subscriptionTypeService.DeleteSubType(id);
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _subscriptionTypeService.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ArgumentException)
+            {
+                return NotFound($"SubscriptionType with ID {id} not found.");
+            }
         }
     }
 }
