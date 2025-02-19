@@ -49,5 +49,47 @@ namespace The_Post.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Renew()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            bool result = await _subscriptionService.RenewSubscription(userId);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Your subscription has been renewed successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to renew your subscription. Please try again.";
+            }
+            return RedirectToAction("Index", "Home");
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Cancel()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+
+            bool result = await _subscriptionService.CancelSubscriptionAsync(userId);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Your subscription has been canceled successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to cancel your subscription. Please try again.";
+            }
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
