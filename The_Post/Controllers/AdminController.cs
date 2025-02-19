@@ -134,7 +134,7 @@ namespace The_Post.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "Editor")]
+        [Authorize(Roles = "Editor,Admin")]
         public async Task<IActionResult> UpdateEditorsChoice(int articleId, bool isEditorsChoice)
         {
             try
@@ -172,7 +172,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor")]
+        [Authorize(Roles = "Editor,Admin")]
         public async Task<IActionResult> ArchiveArticle([FromBody] ArchiveArticleRequest request)
         {
             try
