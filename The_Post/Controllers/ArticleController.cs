@@ -51,7 +51,7 @@ namespace The_Post.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Writer")]
+        [Authorize(Roles ="Writer,Admin")]
         public IActionResult AddArticle()
         {
             var viewModel = new AddArticleVM()
@@ -63,7 +63,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer,Admin")]
         public async Task<IActionResult> AddArticle(AddArticleVM model)
         {
             model.AvailableCategories = _articleService.GetAllCategoriesSelectList();
@@ -117,7 +117,7 @@ namespace The_Post.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Writer")]
+        [Authorize(Roles = "Writer,Admin")]
         public IActionResult DeleteArticle(int articleID)
         {
             _articleService.DeleteArticle(articleID);
@@ -125,7 +125,7 @@ namespace The_Post.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Writer,Editor")]
+        [Authorize(Roles ="Writer,Editor,Admin")]
         public IActionResult EditArticle(int articleID)
         {
             var article = _articleService.GetArticleById(articleID);
@@ -152,7 +152,7 @@ namespace The_Post.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Writer,Editor")]
+        [Authorize(Roles = "Writer,Editor,Admin")]
         public async Task<IActionResult> EditArticle(EditArticleVM vm)
         {
             if (!ModelState.IsValid)
