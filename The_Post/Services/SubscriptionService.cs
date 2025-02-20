@@ -31,7 +31,7 @@ namespace The_Post.Services
                 SubscriptionTypeId = subscriptionTypeId,                
                 HistoricalPrice = subscriptionType.Price,
                 Created = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddYears(1),
+                Expires = DateTime.UtcNow.AddMonths(1),
                 PaymentComplete = false, // Initially false until payment is confirmed
                 UserId = userId
             };
@@ -67,6 +67,44 @@ namespace The_Post.Services
             // Add the Subscriber role while keeping the Member role intact.
             var addRoleResult = await _userManager.AddToRoleAsync(user, "Subscriber");
             return addRoleResult.Succeeded;
+        }
+
+        // Method to renew the subscription
+        public async Task<bool> RenewSubscription(string userId, int months = 1)
+        {
+            var subscription = await _db.Subscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.Expires > DateTime.UtcNow);
+
+            if (subscription == null)
+            {
+                return false;
+            }                
+
+            subscription.Expires = subscription.Expires.AddMonths(months);
+            await _db.SaveChangesAsync();
+
+            return true;
+        }
+
+        // Method to cancel the subscription
+        public async Task<bool> CancelSubscriptionAsync(string userId)
+        {
+            var subscription = await _db.Subscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.Expires > DateTime.UtcNow);
+
+            if (subscription == null)
+            {
+                return false;
+            }                
+
+            subscription.Expires = DateTime.UtcNow;
+            await _db.SaveChangesAsync();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null && await _userManager.IsInRoleAsync(user, "Subscriber"))
+            {
+                await _userManager.RemoveFromRoleAsync(user, "Subscriber");
+            }
+
+            return true;
         }
     }
     

@@ -21,7 +21,47 @@
 
     <p class="fs-4 fw-bold mt-2"> @Model.ContentSummary </p>
 
-    <div class="fs-5"> @Html.Raw(Model.Content) </div> <!--Html.Raw is needed in order for the generated <p> and <br /> elements to be processed correctly-->
+    @if (User.IsInRole("Subscriber") || User.IsInRole("Admin"))
+    {
+        <!-- Show full content if user is a Subscriber or Admin -->
+        <div class="fs-5"> @Html.Raw(Model.Content) </div> <!--Html.Raw is needed in order for the generated <p> and <br /> elements to be processed correctly-->
+    }
+    else
+    {
+        <!-- Show only a preview if user is not a subscriber -->
+        <div class="alert alert-warning m-0" role="alert">
+            <p class="fs-6 fw-light m-0">This content is only available for subscribers.</p>
+            <div class="card">
+                <div class="card-body fs-5">@Html.Raw(Model.Content.Substring(0, 150))...</div>
+            </div>
+            <p class="fs-6 fw-light m-0 text-end">If you already are a subscriber <a asp-area="Identity" asp-page="/Account/Login">login here</a></p>
+        </div>        
+               
+        <div class="alert alert-warning mt-2 mx-auto" role="alert">
+            <p class="fs-6 fw-light mb-0">or subscribe to Read More.</p>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title text-center"><strong>The Post: Premium</strong></h4>
+                    <p class="card-subtitle text-center fw-lighter">Unlimited access to all articles</p>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-center"><strong>Become a The Post: Premium member to read this article and more.</strong></p>
+                    <div class="card-body border mx-auto">
+                        <p class="card-text">For only 99kr/month, you can:</p>
+                        <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Read all the articles as much as you want</em></p>
+                        <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Search and read archived articles</em></p>
+                        <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Keep up with the latest news</em></p>
+                    </div>                    
+                    <div class="d-grid col-6 mx-auto mb-0">
+                        <a href="@Url.Action("Index", "Subscription")" class="btn btn-primary mt-5 mb-1 rounded-pill">
+                            Subscribe Now
+                        </a>
+                    </div>                    
+                    <p class="fs-6 fw-lighter mb-0 text-center">After the first month it will be renewed for 199kr/month. Cancel at anytime.</p>                    
+                </div>                    
+            </div>            
+        </div>
+    }  
 
     <div>
         <button type="button" class="btn btn-success" id="likeButton">

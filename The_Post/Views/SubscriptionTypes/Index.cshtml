@@ -1,0 +1,54 @@
+﻿@model IEnumerable<The_Post.Models.SubscriptionType>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1><strong><em>Index</em></strong></h1>
+<hr />
+
+<p>
+    <a asp-controller="SubscriptionTypes" asp-action="Create" class="btn btn-success btn-sm">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-controller="SubscriptionTypes" asp-action="Edit" class="btn btn-warning btn-sm" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-controller="SubscriptionTypes" asp-action="Details" class="btn btn-secondary btn-sm" asp-route-id="@item.Id">Details</a> |
+                    <form asp-controller="SubscriptionTypes" asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-danger"
+                                onclick="return confirm('Are you sure you want to delete this Subscription Type?')">
+                            Delete
+                        </button>
+                    </form>                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

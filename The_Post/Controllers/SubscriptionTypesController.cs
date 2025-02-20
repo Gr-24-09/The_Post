@@ -103,24 +103,7 @@ namespace The_Post.Controllers
             }
             return View(subType);
         }
-               
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound("SubscriptionType ID is required.");
-            }
-
-            var subType = await _subscriptionTypeService.GetByIdAsync(id.Value);
-            if (subType == null)
-            {
-                return NotFound($"SubscriptionType with ID {id.Value} not found.");
-            }
-
-            return View(subType);
-        }
-                
-        [HttpPost]       
+                       
         public async Task<IActionResult> Delete(int id)
         {
             try
