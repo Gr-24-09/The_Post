@@ -89,17 +89,3 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
-
-//// Toastr Message for Subscriptions
-//document.addEventListener("DOMContentLoaded", function () {
-//    var successMessage = '@TempData["SuccessMessage"]';
-//    var errorMessage = '@TempData["ErrorMessage"]';
-
-//    if (successMessage) {
-//        toastr.success(successMessage);
-//    }
-
-//    if (errorMessage) {
-//        toastr.error(errorMessage);
-//    }
-//});

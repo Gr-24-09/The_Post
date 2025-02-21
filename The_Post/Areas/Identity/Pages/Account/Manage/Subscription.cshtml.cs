@@ -1,35 +1,36 @@
-﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using The_Post.Models;
 using The_Post.Services;
 
-namespace The_Post.Controllers
+namespace The_Post.Areas.Identity.Pages.Account.Manage
 {
-    //[Authorize] Only logged-in users can access these actions.
-    public class SubscriptionController : Controller
+    public class SubscriptionModel : PageModel
     {
         private readonly ISubscriptionService _subscriptionService;
         private readonly ISubscriptionTypeService _subscriptionTypeService;
         private readonly UserManager<User> _userManager;
 
-        public SubscriptionController(ISubscriptionService subscriptionService, ISubscriptionTypeService subscriptionTypeService, UserManager<User> userManager)
+        public SubscriptionModel(ISubscriptionService subscriptionService, ISubscriptionTypeService subscriptionTypeService, UserManager<User> userManager)
         {
             _subscriptionService = subscriptionService;
             _subscriptionTypeService = subscriptionTypeService;
             _userManager = userManager;
         }
-                
-        // Displays all available subscription types.
-        public async Task<IActionResult> Index()
+
+        // Property to hold available subscription types for the view.
+        public IEnumerable<SubscriptionType> SubscriptionTypes { get; set; } = new List<SubscriptionType>();
+
+        // GET: Loads the subscription page with available types.
+        public async Task<IActionResult> OnGetAsync()
         {
-            var subscriptionTypes = await _subscriptionTypeService.GetAllSubscriptionTypes();
-            return View(subscriptionTypes);
+            SubscriptionTypes = await _subscriptionTypeService.GetAllSubscriptionTypes();
+            return Page();
         }
-                
-        // Handles the subscription process for a given subscription type.
-        [HttpPost]        
-        public async Task<IActionResult> Subscribe(int subscriptionTypeId)
+
+        // POST: Handles subscribing
+        public async Task<IActionResult> OnPostSubscribeAsync(int subscriptionTypeId)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
@@ -41,17 +42,18 @@ namespace The_Post.Controllers
             if (result)
             {
                 TempData["SuccessMessage"] = "You have successfully subscribed!";
-                return RedirectToAction("Index", "Home");
             }
             else
             {
                 TempData["ErrorMessage"] = "There was a problem processing your subscription. Please try again.";
-                return RedirectToAction("Index");
             }
+
+            // Redirect to the same page
+            return RedirectToPage();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Renew()
+        // POST: Handles renewing the subscription.
+        public async Task<IActionResult> OnPostRenewAsync()
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
@@ -68,11 +70,11 @@ namespace The_Post.Controllers
             {
                 TempData["ErrorMessage"] = "Failed to renew your subscription. Please try again.";
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToPage();
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> Cancel()
+
+        // POST: Handles canceling the subscription.
+        public async Task<IActionResult> OnPostCancelAsync()
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
@@ -89,7 +91,7 @@ namespace The_Post.Controllers
             {
                 TempData["ErrorMessage"] = "Failed to cancel your subscription. Please try again.";
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToPage();
         }
     }
 }

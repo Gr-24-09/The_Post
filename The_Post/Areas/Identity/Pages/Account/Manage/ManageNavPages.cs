@@ -20,6 +20,7 @@ namespace  The_Post.Areas.Identity.Pages.Account.Manage
         public static string Index => "Index";
 
         public static string Newsletters => "Newsletters";
+        public static string Subscription => "Subscription";
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -70,6 +71,7 @@ namespace  The_Post.Areas.Identity.Pages.Account.Manage
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string NewslettersNavClass(ViewContext viewContext) => PageNavClass(viewContext, Newsletters);
+        public static string SubscriptionNavClass(ViewContext viewContext) => PageNavClass(viewContext, Subscription);
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
