@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel;
 using The_Post.Models;
+using The_Post.Models.API;
 using The_Post.Models.VM;
 
 namespace The_Post.Services
@@ -29,5 +30,7 @@ namespace The_Post.Services
         public bool IsCookiesAccepted();
 
         public void AcceptCookies();
+
+        public Task<SpotNow> GetData();
     }
 }
