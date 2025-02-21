@@ -6,6 +6,8 @@ using Azure.Storage.Blobs;
 using The_Post.Models.VM;
 using System.ClientModel.Primitives;
 using System.Text.RegularExpressions;
+using The_Post.Models.API;
+using Newtonsoft.Json;
 
 namespace The_Post.Services
 {
@@ -14,12 +16,14 @@ namespace The_Post.Services
         private readonly IHttpContextAccessor _IHttpContextAccessor;
         private readonly ApplicationDbContext _applicationDBContext;
         private readonly IConfiguration _configuration;
+        private readonly HttpClient _httpclient;
 
         public ArticleService(IHttpContextAccessor iHttpContextAccessor,ApplicationDbContext applicationDbContext, IConfiguration configuration)
         {
             _IHttpContextAccessor = iHttpContextAccessor;
             _applicationDBContext = applicationDbContext;
             _configuration = configuration;
+            _httpclient = new HttpClient();
         }
         public void CreateArticle(Article article)
         {
@@ -260,6 +264,19 @@ namespace The_Post.Services
                 Secure = true
             };
             _IHttpContextAccessor.HttpContext.Response.Cookies.Append("cookiesConsent", "true", options);
+        }
+        public async Task<SpotNow>GetData()
+        {
+            var response = await _httpclient.GetAsync("https://spotprices.lexlink.se/espot");
+            if (response.IsSuccessStatusCode)
+            {
+                var data = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<SpotNow>(data)!;
+            }
+            else
+            {
+                return new SpotNow();
+            }
         }
     }
 }
