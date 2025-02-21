@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using The_Post.Data;
 using The_Post.Models.VM;
 using The_Post.Services;
@@ -20,7 +21,7 @@ namespace The_Post.Controllers
             return View();
         }
 
-        public IActionResult CategoryView(string categoryName)
+        public  IActionResult CategoryView(string categoryName)
         {
             // Redirects to the weather action if category is weather
             if (categoryName == "Weather")
