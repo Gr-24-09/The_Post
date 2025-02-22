@@ -22,7 +22,6 @@
         </div>
     </div>
 }
-
 <div class="container-fluid">
     <div class="row">
         <!-- Editors Choice - Left Sidebar -->
@@ -33,8 +32,8 @@
                     @foreach (var article in Model.GetEditorsChoiceArticles)
                     {
                         <div class="card fpCard mt-1 mb-3" style=" border-bottom: 2px solid #A8A8A8; ">
-                            <img src="@article.ImageLink" class="card-img-top" alt="@article.HeadLine">
-                            <div class="card-body">
+                            <img src="@article.ImageOriginalLink" class="card-img-top" alt="@article.HeadLine">
+                        <div class="card-body">
                                 <h5 class="card-title">@article.HeadLine</h5>
                                 <p class="card-text small">@article.LinkText</p>
                                 <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@article.Id" class="btn btn-outline-primary btn-sm">Read More</a>

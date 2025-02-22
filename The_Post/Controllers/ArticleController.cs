@@ -91,7 +91,7 @@ namespace The_Post.Controllers
                     LinkText = model.LinkText,
                     ContentSummary = model.ContentSummary,
                     Content = _articleService.GetProcessedArticleContent(model.Content),
-                    ImageLink = imageUrl,
+                    ImageOriginalLink = imageUrl,
                     Categories = _articleService.GetSelectedCategories(model.SelectedCategoryIds)
                 };
 
@@ -146,7 +146,7 @@ namespace The_Post.Controllers
                 AvailableCategories = _articleService.GetAllCategoriesSelectList()
             };
 
-            ViewBag.CurrentImage = article.ImageLink;
+            ViewBag.CurrentImage = article.ImageOriginalLink;
             TempData["ID"] = article.Id;
             return View(vm);
         }
@@ -183,7 +183,7 @@ namespace The_Post.Controllers
                     }
 
                     var imageUrl = await _articleService.UploadFileToContainer(new AddArticleVM { ImageLink = vm.ImageLink });
-                    article.ImageLink = imageUrl;
+                    article.ImageOriginalLink = imageUrl;
                 }
 
                 article.Categories = _articleService.GetSelectedCategories(vm.SelectedCategoryIds);

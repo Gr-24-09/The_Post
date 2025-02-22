@@ -37,7 +37,21 @@ namespace The_Post.Models
 
         [Required]
         [StringLength(500)]
-        public string ImageLink { get; set; }
+        public string ImageOriginalLink { get; set; }
+        public string? ImageMediumLink
+        {
+            get
+            {
+                return ImageOriginalLink?.Replace("articleimages/", "articleimages-md/");
+            }
+        }
+        public string? ImageSmallLink 
+        {
+            get
+            {
+                return ImageOriginalLink?.Replace("articleimages/", "articleimages-sm/");
+            }
+        }
 
         [Required]
         public bool IsArchived { get; set; }

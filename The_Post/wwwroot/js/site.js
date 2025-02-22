@@ -89,3 +89,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+// When the document is ready, add an error event listener to all images with data-original attribute
+// This event listener will be triggered when an image fails to load
+// If the image fails to load, it will use the original image source instead
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("img[data-original]").forEach(img => {
+        img.onerror = function () {
+            console.log("Image not found, using original image instead.");
+            let originalSrc = img.getAttribute("data-original");
+            if (originalSrc) {
+                img.src = originalSrc;
+            }
+        };
+    });
+});

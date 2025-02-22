@@ -3,7 +3,7 @@
 
 <div class="mx-auto col-lg-10 d-flex flex-column align-items-start gap-1">
 
-    <img src="@Model.ImageLink" class="img-fluid article-image-height mx-auto" alt="" /> <!--We maybe should add an alt-text to the image in the Article table -->
+    <img id="articleImage" src="@Model.ImageMediumLink" data-original="@Model.ImageOriginalLink" class="img-fluid article-image-height mx-auto" alt="Article  image" /> <!--We maybe should add an alt-text to the image in the Article table -->
 
 
     <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="h2 text-dark text-decoration-none fw-bolder mb-0">
@@ -25,6 +25,3 @@
     
     <hr class="w-100 border border-dark mt-5 mb-5" />
 </div>
-
-
-
