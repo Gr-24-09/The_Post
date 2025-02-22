@@ -32,7 +32,7 @@
                     @foreach (var article in Model.GetEditorsChoiceArticles)
                     {
                         <div class="card fpCard mt-1 mb-3" style=" border-bottom: 2px solid #A8A8A8; ">
-                            <img src="@article.ImageOriginalLink" class="card-img-top" alt="@article.HeadLine">
+                            <img src="@article.ImageMediumLink" data-original="@article.ImageOriginalLink" class="card-img-top" alt="@article.HeadLine">
                         <div class="card-body">
                                 <h5 class="card-title">@article.HeadLine</h5>
                                 <p class="card-text small">@article.LinkText</p>
