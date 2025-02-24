@@ -84,10 +84,20 @@ namespace The_Post.Controllers
             return View();
         }
 
+        [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployee(string userId)
         {
-            return View();
+            var result = await _employeeService.DeleteEmployee(userId);
+
+            if (!result) 
+            {
+                TempData["ErrorMessage"] = "Failed to delete employee.";
+                return RedirectToAction("AllEmployees"); 
+            }
+
+            TempData["SuccessMessage"] = "Employee deleted successfully.";
+            return RedirectToAction("AllEmployees");
         }
 
         [Authorize(Roles = "Admin")]

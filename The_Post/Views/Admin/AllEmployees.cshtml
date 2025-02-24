@@ -5,6 +5,16 @@
     Layout = "_LayoutForAdmin";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
 <h1 class="text-center"><em><strong>Employees</strong></em></h1>
 <hr />
 <div class="d-grid gap-2 col-md-3 mx-auto">

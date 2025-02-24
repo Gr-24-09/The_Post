@@ -31,14 +31,28 @@ namespace The_Post.Services
             await _userManager.AddToRoleAsync(user, role);
         }
 
-        public async Task DeleteEmployee(string userId)
+        public async Task<bool> DeleteEmployee(string userId)
         {
+            
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                throw new ArgumentException("User not found", nameof(userId));
+                return false;
             }
-            await _userManager.DeleteAsync(user);            
+            var roles = await _userManager.GetRolesAsync(user);
+            if (roles.Any())
+            {   
+                await _userManager.RemoveFromRolesAsync(user, roles);
+            }
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    Console.WriteLine($"Error deleting user: {error.Description}"); // ✅ Log error details
+                }
+            }
+            return result.Succeeded;
         }
 
         public async Task EditEmployee(User user)
