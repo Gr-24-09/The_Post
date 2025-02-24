@@ -15,8 +15,8 @@
 
     <!-- Search Bar (Only on Small Screens) -->
     <div class="p-3 d-md-none">
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search news, topics and more" aria-label="Search">
+        <form asp-controller="Article" asp-action="SearchResults" method="get" class="d-flex">
+            <input class="form-control me-2" type="text" name="searchTerm" placeholder="Search articles..." aria-label="Search">
             <button class="btn btn-dark" type="submit">
                 <svg viewBox="0 0 32 32" width="20" height="20" fill="white" aria-hidden="true">
                     <path d="M13 3a10 10 0 0 1 7.54 16.68l7.39 7.39-1.41 1.41-7.39-7.39A10 10 0 1 1 13 3m0 2a8 8 0 1 0 5.6 13.6A8 8 0 0 0 13 5"></path>
