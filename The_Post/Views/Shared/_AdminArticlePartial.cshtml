@@ -6,7 +6,7 @@
             @* This div is for stretched-link focusing, so it only targets the Image and card-body *@
             <a asp-action="ViewArticle" asp-controller="Article" asp-route-articleID="@Model.Id" class="stretched-link"></a>
             <div class="ratio ratio-4x3 img-thumbnail">
-                <img src="@Model.ImageLink" class="card-img-top" alt="No Article Image">
+                <img src="@Model.ImageSmallLink" data-original="@Model.ImageOriginalLink" class="card-img-top" alt="No Article Image">
             </div>
             <div class="card-body" style="height:100px;">
                 <h5 class="card-title">@Model.HeadLine</h5>
