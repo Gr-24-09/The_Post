@@ -10,6 +10,7 @@ using The_Post.Models.VM;
 using The_Post.Services;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList.Extensions;
 
 namespace The_Post.Controllers
 {
@@ -28,9 +29,11 @@ namespace The_Post.Controllers
             _employeeService = employeeService;
         }
 
-        [Route("Articles")]
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
+            int pageNumber = page ?? 1;
+            int pageSize = 4;
+
             var articles = _articleService.GetAllArticles();
 
             if (articles.IsNullOrEmpty())
@@ -38,7 +41,9 @@ namespace The_Post.Controllers
                 articles = new List<Article>();
             }
 
-            return View(articles);
+            ViewBag.OnePageOfArticles = articles.ToPagedList(pageNumber, pageSize);
+
+            return View();
         }
 
         public IActionResult ViewArticle(int articleID)
