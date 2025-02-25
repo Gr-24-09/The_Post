@@ -2,9 +2,10 @@
 
 namespace The_Post.Models.VM
 {
-    public class SearchVM
+    public class AdminAllArticlesVM
     {
         public IPagedList<Article> Articles { get; set; } // For pagination
-        public string SearchTerm { get; set; }
+        public string? SortOrder { get; set; }
+        public bool IncludeArchived { get; set; }
     }
 }

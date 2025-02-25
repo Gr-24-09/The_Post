@@ -1,44 +1,86 @@
-﻿@* @model IEnumerable<The_Post.Models.Article> *@
+﻿@model The_Post.Models.VM.AdminAllArticlesVM;
+@using X.PagedList.Mvc.Core; 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "All Articles";
     Layout = "_LayoutForAdmin";
 }
-@using X.PagedList.Mvc.Core; @* import this so we get our HTML Helper *@
-@using X.PagedList; @* import this so we can cast our list to IPagedList (only necessary because ViewBag is dynamic) *@
+
 
 <h1><strong><em>All articles</em></strong></h1>
 <hr />
 
+<!-- Form for sorting and filtering -->
+<form method="get" class="mb-3">
+    <div class="row">
+        <!-- Sorting (order by date or alphabetically) -->
+        <div class="col-md-4">
+            <label for="sortOrder" class="form-label">Sort by:</label>
+            <select name="sortOrder" id="sortOrder" class="form-select" onchange="this.form.submit()">
+                <option value="date_desc" selected="@(Model.SortOrder == "date_desc" ? "selected" : null)">Newest First</option>
+                <option value="date_asc" selected="@(Model.SortOrder == "date_asc" ? "selected" : null)">Oldest First</option>
+                <option value="title_asc" selected="@(Model.SortOrder == "title_asc" ? "selected" : null)">Title (A-Z)</option>
+                <option value="title_desc" selected="@(Model.SortOrder == "title_desc" ? "selected" : null)">Title (Z-A)</option>
+            </select>
+        </div>
+
+        <!-- Filter for including or excluding archived articles-->
+        <div class="col-md-2">
+            <div class="form-check mt-4">
+                <input type="checkbox" class="form-check-input" id="includeArchived" name="includeArchived"
+                       value="true" @(Model.IncludeArchived ? "checked" : "") onchange="this.form.submit()" />
+                <label class="form-check-label" for="includeArchived">Include Archived</label>
+            </div>
+        </div>
+
+        <!-- Button for resetting selections -->
+        <div class="col-md-4 align-self-end">
+            <a href="@Url.Action("Index", "Article")" class="btn btn-secondary">Reset selections</a>
+        </div>
+    </div>
+</form>
+
+<!-- Article listing -->
 <div class="row">
-    @foreach (var article in ViewBag.OnePageOfArticles)
+    @foreach (var article in Model.Articles)
     {
         <partial name="_AdminArticlePartial" model="article"></partial>
     }
 </div>
 
-@* 
-@Html.PagedListPager((IPagedList)ViewBag.OnePageOfArticles, page => Url.Action("Index", "Article", new { page }))
-
- *@
-
-<nav aria-label="Admin All artices pages">
+<!-- Pagination -->
+<nav aria-label="Admin All articles pages">
     @Html.PagedListPager(
-        (IPagedList)ViewBag.OnePageOfArticles,
-        page => Url.Action("Index", "Article", new { page }),
-        new PagedListRenderOptions
-        {
-            LiElementClasses = new[] { "page-item" },
-            PageClasses = new[] { "page-link" },
-            UlElementClasses = new[] { "pagination", "justify-content-center", "mt-4" },
-            DisplayLinkToFirstPage = PagedListDisplayMode.Always,
-            DisplayLinkToLastPage = PagedListDisplayMode.Always,
-            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-            DisplayLinkToNextPage = PagedListDisplayMode.Always,
-            LinkToFirstPageFormat = "«",
-            LinkToPreviousPageFormat = "‹",
-            LinkToNextPageFormat = "›",
-            LinkToLastPageFormat = "»"
-        }
-    )
+            Model.Articles,
+            page => Url.Action("Index", "Article", new { page, sortOrder = Model.SortOrder, includeArchived = Model.IncludeArchived }),
+            new PagedListRenderOptions
+    {
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        UlElementClasses = new[] { "pagination", "justify-content-center", "mt-4" },
+        DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+        DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+        LinkToFirstPageFormat = "«",
+        LinkToPreviousPageFormat = "‹",
+        LinkToNextPageFormat = "›",
+        LinkToLastPageFormat = "»"
+    }
+            )
 </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
