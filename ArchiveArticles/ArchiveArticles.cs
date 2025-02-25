@@ -22,7 +22,7 @@ namespace ArchiveArticles
 
         // Timer setup to run every day at midnight
         [Function("ArchiveArticles")]
-        public void Run([TimerTrigger("0 0 * * * *")] TimerInfo myTimer)
+        public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
         {   
             var articlesToArchive = _db.Articles
                 .Where(a => !a.IsArchived && a.DateStamp.AddDays(30) <= DateTime.UtcNow).ToList();
