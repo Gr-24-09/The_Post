@@ -6,6 +6,7 @@ using The_Post.Models.VM;
 using The_Post.Services;
 using The_Post.Middleware;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList.Extensions;
 
 namespace The_Post.Controllers
 {
@@ -201,7 +202,28 @@ namespace The_Post.Controllers
                 return StatusCode(500, new { success = false, message = "An unexpected error occurred" });
             }
         }
-                
+
+
+        [Authorize(Roles = "Admin,Editor")]
+        // Gets the search results in a paginated list
+        public IActionResult SearchResultsAdmin(string searchTerm, int? page)
+        {
+            // Sets the page number to 1 if the page-parameter is null
+            int pageNumber = page ?? 1;
+            int pageSize = 12;
+
+            var articles = _articleService.GetSearchResults(searchTerm);
+            var onePageOfArticles = articles.ToPagedList(pageNumber, pageSize);
+            
+            SearchVM searchVM = new SearchVM
+            {
+                Articles = onePageOfArticles,
+                SearchTerm = searchTerm
+            };
+
+            return View(searchVM);
+        }
+
         public IActionResult SubscriptionStats()
         {
             return View();

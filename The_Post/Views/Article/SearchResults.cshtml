@@ -1,10 +1,36 @@
-﻿@model The_Post.Models.VM.SearchVM
+﻿@using X.PagedList.Mvc.Core; 
+@model The_Post.Models.VM.SearchVM
 
 <h2 class="pb-2 mb-4">Search results for "@Model.SearchTerm"</h2>
 
 <div class="col-lg-8 mx-auto">
     @foreach (var article in Model.Articles)
     {
-        <partial name="_ArticleListingPartial" model="article"></partial>
+            <partial name="_ArticleListingPartial" model="article"></partial>
     }
 </div>
+
+<!--If the results take up more than one page, page links are displayed (pagination)-->
+@if(Model.Articles.PageCount > 1)
+{
+    <nav aria-label="Search results">
+        @Html.PagedListPager(
+            Model.Articles,
+            page => Url.Action("SearchResults", "Article", new { searchTerm = Model.SearchTerm, page }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                UlElementClasses = new[] { "pagination", "justify-content-center", "mt-4" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToPreviousPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToNextPage = PagedListDisplayMode.IfNeeded,
+                LinkToFirstPageFormat = "«",
+                LinkToPreviousPageFormat = "‹",
+                LinkToNextPageFormat = "›",
+                LinkToLastPageFormat = "»"
+            }
+        )
+    </nav>
+}

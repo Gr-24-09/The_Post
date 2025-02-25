@@ -103,10 +103,16 @@
                 <div class="container-fluid">
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex align-items-center justify-content-start">
-                            <form class="me-3" style="width: 400px;" role="search">
-                                <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                            <form asp-controller="Admin" asp-action="SearchResultsAdmin" class="me-3 d-flex align-items-center" style="width: 400px;" role="search">
+                                <input type="search" name="searchTerm" class="form-control me-2" placeholder="Search..." aria-label="Search">
+                                <button aria-label="Search The Post" title="Search" style="all: unset; cursor: pointer;" class="p-2 hover:bg-gray-100 border-none outline-none">
+                                    <svg viewBox="0 0 32 32" width="25" height="25" category="actions" icon="search" aria-hidden="true" fill="currentColor">
+                                        <path d="m30.6 28.1-8.3-8.3c1.5-2 2.4-4.4 2.4-7.2C24.7 6 19.6 1 13 1S1.4 6.1 1.4 12.7 6.5 24.3 13 24.3c2.3 0 4.4-.6 6.2-1.8l8.5 8.5 2.9-2.9zM4 12.6c0-5.2 3.9-9.1 9-9.1s9 3.9 9 9.1c0 5.2-3.9 9.1-9 9.1s-9-3.9-9-9.1z"></path>
+                                    </svg>
+                                </button>
                             </form>
                         </div>
+
 
                         <div class="d-flex align-items-center">
                             <div class="dropdown text-end me-3">

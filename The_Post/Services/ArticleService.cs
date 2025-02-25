@@ -67,10 +67,15 @@ namespace The_Post.Services
             return blobClient.Uri.ToString();
         }
 
-        public List<Article> GetAllArticles() // Pagination
+        public List<Article> GetAllArticles()
         {
-            var article = _applicationDBContext.Articles.Include(a => a.Categories).ToList();
-            return article;
+            // Order by date, newest first
+            var articles = _applicationDBContext.Articles
+                .Include(a => a.Categories)
+                .OrderByDescending(a => a.DateStamp)
+                .ToList();
+
+            return articles;
         }
 
         public Article GetArticleById(int articleID)
@@ -199,7 +204,6 @@ namespace The_Post.Services
                 .ThenByDescending(a => words.Any(word =>
                     wordRegex(word).IsMatch(a.Content) || pluralRegex(word).IsMatch(a.Content)) ? 1 : 0) 
                 .ThenByDescending(a => a.DateStamp)  // Fallback-sorting by date (most recent first) if two articles have the same weight
-                .Take(20)
                 .ToList();
 
 

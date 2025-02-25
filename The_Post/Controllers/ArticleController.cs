@@ -10,6 +10,8 @@ using The_Post.Models.VM;
 using The_Post.Services;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList.Extensions;
+using System.Drawing.Printing;
 
 namespace The_Post.Controllers
 {
@@ -28,9 +30,14 @@ namespace The_Post.Controllers
             _employeeService = employeeService;
         }
 
-        [Route("Articles")]
-        public IActionResult Index()
+        // All articles, Admin page
+        public IActionResult Index(int? page, string sortOrder, bool? includeArchived)
         {
+            // Current page number
+            int pageNumber = page ?? 1;
+            // Number of articles per page
+            int pageSize = 12;
+
             var articles = _articleService.GetAllArticles();
 
             if (articles.IsNullOrEmpty())
@@ -38,7 +45,33 @@ namespace The_Post.Controllers
                 articles = new List<Article>();
             }
 
-            return View(articles);
+            // Excludes archived articles if the user has chosen to omit them
+            if (includeArchived != true)
+            {
+                articles = articles.Where(a => !a.IsArchived).ToList();
+            }
+
+            // Sorts the articles based on the sortOrder parameter
+            // If no sortOrder is provided, the articles are returned in their default order (newest first)
+            articles = sortOrder switch
+            {
+                "title_asc" => articles.OrderBy(a => a.HeadLine).ToList(),
+                "title_desc" => articles.OrderByDescending(a => a.HeadLine).ToList(),
+                "date_asc" => articles.OrderBy(a => a.DateStamp).ToList(),
+                "date_desc" => articles.OrderByDescending(a => a.DateStamp).ToList(),
+                _ => articles
+            };
+
+            var onePageOfArticles = articles.ToPagedList(pageNumber, pageSize);
+
+            var viewModel = new AdminAllArticlesVM()
+            {
+                Articles = onePageOfArticles,
+                IncludeArchived = includeArchived ?? false,
+                SortOrder = sortOrder
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult ViewArticle(int articleID)
@@ -342,12 +375,20 @@ namespace The_Post.Controllers
             return PartialView("_WeatherListPartial", weatherData);
         }
 
-        public IActionResult SearchResults(string searchTerm)
+        public IActionResult SearchResults(string searchTerm, int? page)
         {
+            // current page number, default is 1
+            int pageNumber = page ?? 1;
+
+            // number of articles per page
+            int pageSize = 10; 
+
             var articles = _articleService.GetSearchResults(searchTerm);
+            var onePageOfArticles = articles.ToPagedList(pageNumber, pageSize);
+
             SearchVM searchVM = new SearchVM()
             {
-                Articles = articles,
+                Articles = onePageOfArticles,
                 SearchTerm = searchTerm
             };
 
