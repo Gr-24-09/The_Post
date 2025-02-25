@@ -55,9 +55,41 @@ namespace The_Post.Services
             return result.Succeeded;
         }
 
-        public async Task EditEmployee(User user)
-        {                         
-            await _userManager.UpdateAsync(user);           
+        public async Task<EditEmployeeVM?> GetEmployeeById(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return null;
+
+            return new EditEmployeeVM
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                DOB = user.DOB ?? DateTime.MinValue,
+                Address = user.Address,
+                City = user.City,
+                Zip = user.Zip,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+            };
+        }
+
+        public async Task<bool> EditEmployee(EditEmployeeVM employeeVM)
+        {
+            var existingUser = await _userManager.FindByIdAsync(employeeVM.Id);
+            if (existingUser == null) return false;
+
+            existingUser.FirstName = employeeVM.FirstName;
+            existingUser.LastName = employeeVM.LastName;
+            existingUser.DOB = employeeVM.DOB;
+            existingUser.Address = employeeVM.Address;
+            existingUser.City = employeeVM.City;
+            existingUser.Zip = employeeVM.Zip;
+            existingUser.PhoneNumber = employeeVM.PhoneNumber;
+            existingUser.Email = employeeVM.Email;
+
+            var result = await _userManager.UpdateAsync(existingUser);
+            return result.Succeeded;
         }
 
         public async Task<List<User>> GetAllEmployees()
@@ -98,5 +130,6 @@ namespace The_Post.Services
 
             return employeeVMs;
         }
+
     }
 }

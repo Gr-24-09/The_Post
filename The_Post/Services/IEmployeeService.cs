@@ -9,8 +9,9 @@ namespace The_Post.Services
         public Task<IdentityResult> AddEmployee(User user, string password);
         public Task AssignRole(string userId, string role);        
         public Task<bool> DeleteEmployee(string userId);
-        public Task EditEmployee(User user);
+        public Task<bool> EditEmployee(EditEmployeeVM employeeVM);
         public Task<List<User>> GetAllEmployees();
         public Task<List<EmployeeVM>> GetAllEmployeesWithRolesAsync();
+        public Task<EditEmployeeVM?> GetEmployeeById(string userId);
     }
 }
