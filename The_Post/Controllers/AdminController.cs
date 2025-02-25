@@ -32,12 +32,45 @@ namespace The_Post.Controllers
         }
 
         //------------------------- EMPLOYEE ACTIONS -------------------------
+
+
+
+        
         [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> EditEmployee(string userId)
+        {
+            var employee = await _employeeService.GetEmployeeById(userId);
+            if (employee == null) return NotFound();
+
+            return View(employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditEmployee(EditEmployeeVM model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var success = await _employeeService.EditEmployee(model);
+            if (!success)
+            {
+                TempData["ErrorMessage"] = "Failed to update employee details.";
+                return View(model);
+            }
+
+            TempData["SuccessMessage"] = "Employee details updated successfully.";
+            return RedirectToAction("AllEmployees");
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult AddEmployee()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> AddEmployee(AddEmployeeVM model)
         {
@@ -73,16 +106,13 @@ namespace The_Post.Controllers
             return View(model);
         }
 
+
+
         public IActionResult EmployeeAdded()
         {
             return View();
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult EditEmployee()
-        {
-            return View();
-        }
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
