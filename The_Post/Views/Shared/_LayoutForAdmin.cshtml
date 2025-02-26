@@ -120,7 +120,8 @@
                 <div class="container-fluid p-0">
                   
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
-                        <div class="d-flex align-items-center justify-content-start">
+                        <div class="d-flex align-items-center header_Items_Admin justify-content-start">
+                        
                             <form asp-controller="Admin" asp-action="SearchResultsAdmin" class="me-3 d-flex align-items-center" style="width: 400px;" role="search">
                                 <input type="search" name="searchTerm" class="form-control me-2" placeholder="Search..." aria-label="Search">
                                 <button aria-label="Search The Post" title="Search" style="all: unset; cursor: pointer;" class="p-2 hover:bg-gray-100 border-none outline-none">
@@ -133,7 +134,7 @@
 
 
                         <div class="d-flex align-items-center">
-                            <div class="dropdown text-end me-3">
+                            <div class="dropdown text-end header_Items_Admin me-3">
                                 <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                                 </a>
@@ -153,14 +154,14 @@
             <partial name="_Sidebar_Admin_Mobile_Partial" />
 
             <!-- Main Content -->
-            <div style="margin-top: 70px; margin-left: 270px; padding-bottom: 70px;">
-                <main role="main" class="container-fluid py-2 px-5">
+            <div class="div-main-admin">
+                <main role="main" class="container-fluid py-2 px-3">
                     @RenderBody()
                 </main>
             </div>
 
             <!-- Footer -->
-            <footer class="mt-auto border-top fixed-bottom text-bg-light" style="height: 70px; left: 270px; width: calc(100% - 270px);">
+            <footer class="mt-auto footer_Admin border-top fixed-bottom text-bg-light">
                 <p class="text-center m-1"><strong>ThePost</strong><em>Admin</em></p>
                 <ul class="nav justify-content-center border-bottom mx-5 m-1">
                 </ul>
