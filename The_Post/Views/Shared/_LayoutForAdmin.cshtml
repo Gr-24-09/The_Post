@@ -99,8 +99,26 @@
         <!-- Main Content Area -->
         <main class="flex-grow-1 d-flex flex-column min-vh-100">
             <!-- Header -->
-            <header class="p-3 border-bottom border-dark fixed-top text-bg-light" style="height: 70px; left: 270px; width: calc(100% - 270px);">
-                <div class="container-fluid">
+            <header class="p-2 border-bottom headerAdmin border-dark  text-bg-light">
+                    <div class="d-flex align-items-center Mobile_Header-Admin p-0">
+                        <!-- Button -->
+                        <button class="btn btn-light Offcanvas_bottom_admin d-inline-flex d-md-none" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+                                aria-controls="offcanvasWithBothOptions" aria-expanded="false" title="Menu">
+                            <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">
+                                <path d="M1 7.5h30V1.9H1v5.6zm0 22.6h30v-5.6H1v5.6zm0-11.3h30v-5.6H1v5.6z" fill="#0A2472"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Admin Title -->
+                        <a asp-action="Index" asp-controller="Admin"
+                           class="d-inline-flex align-items-center title_admin flex-grow-1 justify-content-center p-1 link-body-emphasis text-decoration-none"
+                           style="height: 50px;">
+                            <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
+                        </a>
+                    </div>
+                <div class="container-fluid p-0">
+                  
                     <div class="d-flex flex-wrap align-items-center justify-content-between">
                         <div class="d-flex align-items-center justify-content-start">
                             <form asp-controller="Admin" asp-action="SearchResultsAdmin" class="me-3 d-flex align-items-center" style="width: 400px;" role="search">
