@@ -1,0 +1,109 @@
+﻿ <div class="offcanvas offcanvas-start " data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header p-1 ">
+        <!-- Sidebar -->
+        <div class="d-flex flex-column flex-shrink-0 ">
+            <div class="d-flex  align-items-center d-lg-none">
+                <button type="button" class="btn-close btn-close-dark position-absolute end-0 me-2 p-1" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="dropdown text-end me-3">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+     </div>
+    
+        <!-- small screen) -->
+         <a asp-action="Index" asp-controller="Admin" class="d-md-none d-flex align-items-center justify-content-center  px-2 border-bottom border-dark link-body-emphasis text-decoration-none" style="height: 38px;">
+            <span class="fs-3"><strong>ThePost</strong><em>Admin</em></span>
+        </a>
+
+        <!-- Search Bar (Only on Small Screens) -->
+        <div class="p-3 d-md-none">
+            <form asp-controller="Article" asp-action="SearchResults" method="get" class="d-flex">
+                <input class="form-control me-2" type="search" name="searchTerm" placeholder="Search articles..." aria-label="Search">
+                <button class="btn btn-dark" type="submit">
+                    <svg viewBox="0 0 32 32" width="20" height="20" fill="white" aria-hidden="true">
+                        <path d="M13 3a10 10 0 0 1 7.54 16.68l7.39 7.39-1.41 1.41-7.39-7.39A10 10 0 1 1 13 3m0 2a8 8 0 1 0 5.6 13.6A8 8 0 0 0 13 5"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+      <div class="offcanvas-body">
+          <ul class="nav nav-pills flex-column mb-auto">
+             <li>
+                <a href="/" class="nav-link link-body-emphasis text-white rounded-pill mt-2 ms-1 p-0 ps-3 text-bg-secondary">
+                    <i class="fa fa-home p-2"></i>
+                    Homepage
+                </a>
+            </li>
+            <li>
+                <a asp-action="Index" asp-controller="Article" class="nav-link link-body-emphasis text-soft-red-wine rounded-pill mt-4 ms-1 p-0 ps-3 text-bg-secondary">
+                    <i class="fa fa-newspaper p-2"></i>
+                    View Articles
+                </a>
+            </li>
+            <li>
+                <a asp-action="AddArticle" asp-controller="Article" class="nav-link link-body-emphasis  rounded-pill mt-2 ms-4 p-0 ps-3 text-bg-secondary">
+                    <i class="fa fa-file-circle-plus p-2"></i>
+                    Add Article
+                </a>
+            </li>
+
+             @if (User.IsInRole("Admin"))
+            {
+                <li>
+                    <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis text-soft-red-wine rounded-pill mt-4 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-address-card p-2"></i>
+                        View Employees
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AddEmployee" asp-controller="Admin" class="nav-link link-body-emphasis  rounded-pill mt-2 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-user-plus p-2"></i>
+                        Add New Employee
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis text-soft-red-wine rounded-pill mt-4 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-user-tie p-2"></i>
+                        Roles Management
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Create" asp-controller="Roles" class="nav-link link-body-emphasis  rounded-pill mt-2 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-square-plus p-2"></i>
+                        Add New Role
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="AssignRole" asp-controller="Admin" class="nav-link link-body-emphasis  rounded-pill mt-2 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-square-check p-2"></i>
+                        Assign Role
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="SubscriptionTypes" class="nav-link link-body-emphasis text-soft-red-wine rounded-pill mt-4 ms-1 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-pen-fancy p-2"></i>
+                        Subscription Management
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Create" asp-controller="SubscriptionTypes" class="nav-link link-body-emphasis rounded-pill mt-2 ms-4 p-0 ps-3 text-bg-secondary">
+                        <i class="fa fa-square-plus p-2 pe-1"></i>
+                        Add New Subscription Type
+                    </a>
+                </li>
+             }
+
+          </ul>
+      </div>
+ </div>

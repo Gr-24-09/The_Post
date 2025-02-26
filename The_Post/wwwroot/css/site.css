@@ -140,15 +140,6 @@
    width: 20% !important; /* 30% width on larger screens */
 }
 
-/* Full width on small screens */
-@media (max-width: 768px) {
-    .offcanvas {
-        width: 100% !important; /* Make sidebar full-width on mobile */
-    }    
-}
-
-/*-----------------------------------------------------*/
-
 
 
 html {
@@ -329,4 +320,72 @@ body {
     color: #0A2472; /* Navy Blue */
     border-bottom: 3px solid #A8A8A8; /* Light Silver */
 }
+@media (min-width:811px) {
+    .headerAdmin {
+        width: calc(100% - 270px);
+       margin-left: 270px !important;
+        height: 70px !important;
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: 0 !important;
+        z-index: 1030 !important;
+    }
+    .sidebar_Admin {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 270px;
+    }
+    .div-main-admin {
+        margin-top: 70px !important;
+        margin-left: 270px !important;
+        padding-bottom: 70px !important;
+    }
+    .title_admin {
+        display: none !important;
+    }
+    Offcanvas_bottom_admin {
+        display: none !important;
+    }
+    .Mobile_Header-Admin {
+        display: none !important;
+    }
+    .footer_Admin {
+        height: 70px;
+        left: 270px;
+        width: calc(100% - 270px);
+    }
+}
 
+
+@media (max-width:810px) {
+    .headerAdmin {
+        width: 100% ;
+       
+        height: 70px;
+    }
+    .header_Items_Admin {
+        display: none !important;
+    }
+    .sidebar_Admin {
+        display: none !important;
+    }
+    .div-main-admin {
+        width: 100%;
+    }
+    .offcanvas {
+        width: 100% !important;
+    }
+    .footer_Admin {
+        width: 100% !important;
+    }
+}
+
+.text-soft-white {
+    color: rgba(200, 200, 200, 0.8) !important;
+}
+.text-soft-red-wine {
+    color: rgba(128, 0, 32, 0.8) !important;
+}
