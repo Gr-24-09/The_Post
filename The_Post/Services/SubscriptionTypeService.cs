@@ -18,6 +18,19 @@ namespace The_Post.Services
             return await _db.SubscriptionTypes.ToListAsync();
         }
 
+        public async Task<SubscriptionType?> GetCurrentSubscriptionTypeAsync(string userId)
+        {
+            var activeSubscription = await _db.Subscriptions
+                .Include(s => s.SubscriptionType)  // Include the related subscription type
+                .Where(s => s.UserId == userId
+                            && s.PaymentComplete
+                            && s.Expires > DateTime.UtcNow)
+                .OrderByDescending(s => s.Created)  
+                .FirstOrDefaultAsync();
+
+            return activeSubscription?.SubscriptionType;
+        }
+
         public async Task<SubscriptionType?> GetByIdAsync(int id)
         {
             return await _db.SubscriptionTypes.FindAsync(id);

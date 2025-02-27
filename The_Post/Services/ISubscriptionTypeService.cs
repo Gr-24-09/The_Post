@@ -5,6 +5,7 @@ namespace The_Post.Services
     public interface ISubscriptionTypeService
     {
         Task<List<SubscriptionType>> GetAllSubscriptionTypes();
+        Task<SubscriptionType?> GetCurrentSubscriptionTypeAsync(string userId);
         Task<SubscriptionType?> GetByIdAsync(int id);
         Task Create(SubscriptionType subType);
         Task Edit(SubscriptionType subType);
