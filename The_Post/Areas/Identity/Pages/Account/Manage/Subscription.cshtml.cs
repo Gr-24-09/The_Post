@@ -59,7 +59,7 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
             }
 
             // Create the Stripe Checkout session options
-            var domain = "https://localhost:7116";
+            var domain = "https://thepost.azurewebsites.net";
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
