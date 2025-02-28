@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using The_Post.Data;
 using The_Post.Models;
 using The_Post.Services;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,10 +35,12 @@ builder.Services.AddScoped<IEmployeeService,EmployeeService>();
 builder.Services.AddScoped<IRequestService, RequestService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ISubscriptionTypeService, SubscriptionTypeService>();
-builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-
+builder.Services.AddScoped<ISubscriptionService, The_Post.Services.SubscriptionService>();
 
 var app = builder.Build();
+
+// This is our test secret API key.
+StripeConfiguration.ApiKey = "sk_test_51Quuo2LrGWpCD1CW2e0Hhf5NpM2Q3SXKZC5mx55cWkh5IQwsCPN25TELvXVrRFNdD3ZU7cC2IRpF6FmFy6nm8Zuy00BvOXAVIb";
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

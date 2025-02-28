@@ -16,13 +16,13 @@ namespace The_Post.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> AddSubscription(string userId, int subscriptionTypeId)
+        public async Task<Subscription?> AddSubscription(string userId, int subscriptionTypeId)
         {
             // Retrieve the subscription type details
             var subscriptionType = await _db.SubscriptionTypes.FindAsync(subscriptionTypeId);
             if (subscriptionType == null)
             {
-                return false;
+                return null;
             }
 
             // Create a new subscription record
@@ -32,59 +32,30 @@ namespace The_Post.Services
                 HistoricalPrice = subscriptionType.Price,
                 Created = DateTime.UtcNow,
                 Expires = DateTime.UtcNow.AddMonths(1),
-                PaymentComplete = false, // Initially false until payment is confirmed
+                PaymentComplete = true, // Since payment was confirmed via success handler
                 UserId = userId
             };
 
             _db.Subscriptions.Add(subscription);
             await _db.SaveChangesAsync();
-
-            // ---- Payment processing logic here ----
-            // Need to implement Stripe
-
-            // For simplicity, for now assume the payment goes through successfully:
-            bool paymentSuccess = true;
-
-            if (!paymentSuccess)
-            {
-                // Delete the subscription record if payment fails.
-                _db.Subscriptions.Remove(subscription);
-                await _db.SaveChangesAsync();
-                return false;
-            }
-
-            // Update the subscription to mark payment complete
-            subscription.PaymentComplete = true;
-            await _db.SaveChangesAsync();
-
+                       
             // Assign the "Subscriber" role to the user
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return false;
+                return null;
             }
-
             // Add the Subscriber role while keeping the Member role intact.
             var addRoleResult = await _userManager.AddToRoleAsync(user, "Subscriber");
-            return addRoleResult.Succeeded;
-        }
-
-        // Method to renew the subscription
-        public async Task<bool> RenewSubscription(string userId, int months = 1)
-        {
-            var subscription = await _db.Subscriptions.FirstOrDefaultAsync(s => s.UserId == userId && s.Expires > DateTime.UtcNow);
-
-            if (subscription == null)
+            if (!addRoleResult.Succeeded)
             {
-                return false;
-            }                
+                return null;
+            }
 
-            subscription.Expires = subscription.Expires.AddMonths(months);
-            await _db.SaveChangesAsync();
-
-            return true;
+            return subscription;
         }
 
+        
         // Method to cancel the subscription
         public async Task<bool> CancelSubscriptionAsync(string userId)
         {
@@ -106,6 +77,5 @@ namespace The_Post.Services
 
             return true;
         }
-    }
-    
+    }    
 }
