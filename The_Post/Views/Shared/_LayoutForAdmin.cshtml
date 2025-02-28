@@ -91,6 +91,12 @@
                             Add New Subscription Type
                         </a>
                     </li>
+                    <li>
+                        <a asp-action="SubscriptionStats" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-chart-column p-2"></i>
+                            Subscription Statistics
+                        </a>
+                    </li>
                 }
               
             </ul>            
@@ -170,6 +176,7 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
