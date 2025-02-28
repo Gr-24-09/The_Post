@@ -4,7 +4,7 @@ namespace The_Post.Services
 {
     public interface ISubscriptionService
     {
-        Task<bool> AddSubscription(string userId, int subscriptionTypeId);        
+        Task<Subscription?> AddSubscription(string userId, int subscriptionTypeId);        
         Task<bool> CancelSubscriptionAsync(string userId);
     }
 }

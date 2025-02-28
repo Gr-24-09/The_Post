@@ -16,13 +16,13 @@ namespace The_Post.Services
             _userManager = userManager;
         }
 
-        public async Task<bool> AddSubscription(string userId, int subscriptionTypeId)
+        public async Task<Subscription?> AddSubscription(string userId, int subscriptionTypeId)
         {
             // Retrieve the subscription type details
             var subscriptionType = await _db.SubscriptionTypes.FindAsync(subscriptionTypeId);
             if (subscriptionType == null)
             {
-                return false;
+                return null;
             }
 
             // Create a new subscription record
@@ -43,11 +43,16 @@ namespace The_Post.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return false;
+                return null;
             }
             // Add the Subscriber role while keeping the Member role intact.
             var addRoleResult = await _userManager.AddToRoleAsync(user, "Subscriber");
-            return addRoleResult.Succeeded;
+            if (!addRoleResult.Succeeded)
+            {
+                return null;
+            }
+
+            return subscription;
         }
 
         

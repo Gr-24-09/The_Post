@@ -100,17 +100,16 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
                 return Unauthorized();
             }
 
-            var success = await _subscriptionService.AddSubscription(userId, subscriptionTypeId);
-            if (!success)
+            var subscription = await _subscriptionService.AddSubscription(userId, subscriptionTypeId);
+            if (subscription == null)
             {
                 TempData["ErrorMessage"] = "Failed to add subscription.";
                 return RedirectToPage("Subscription");
             }
-
-            TempData["SuccessMessage"] = "Subscription successful!";
-            return RedirectToPage("Subscription");
+            // Redirect with the expiration date as a query parameter
+            return RedirectToPage("SubscriptionSuccess", new { expireDate = subscription.Expires.ToString("yyyy-MM-dd") });
         }
-
+        
         public IActionResult OnGetCancel(int subscriptionTypeId)
         {
             var userId = _userManager.GetUserId(User);
