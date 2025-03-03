@@ -32,8 +32,11 @@ namespace The_Post.Models
 
         public bool IsEmployee { get; set; }
 
+        public bool EditorsChoiceNewsletter { get; set; }
+
         public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
         public ICollection<Like> Likes { get; set; } = [];
         public string? WeatherCities { get; set; }  // CSV (comma-separated values) string
+        public ICollection<Category> NewsletterCategories { get; set; } = new List<Category>();
     }
 }
