@@ -22,5 +22,23 @@
     }
 
 </div>
+@if (Model.Category == "Economy")
+{
+    <div>
+        <h3>Historical Electricity Prices</h3>
+        <a href="@Url.Action("HistoricalPrices", "News", new { region = "SE1", date = DateTime.UtcNow.ToString("yyyy-MM-dd") })">View Prices for SE1</a>
+    </div>
+}
 
-
+@* <div>
+    <h3>Articles</h3>
+    <ul>
+        @foreach (var article in Model.Articles)
+        {
+            <li>
+                <a href="@Url.Action("Details", "Article", new { id = article.Id })">@article.HeadLine</a>
+            </li>
+        }
+    </ul>
+</div>
+ *@
