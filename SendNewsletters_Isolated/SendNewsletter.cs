@@ -1,5 +1,4 @@
 using System;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +23,13 @@ namespace SendNewsletters_Isolated
             _emailSender = emailSender;
         }
 
+        // The main function that sends the newsletter
         [Function("Function1")]
-        public async Task Run([TimerTrigger("0 * * * * *")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("0 0 12 * * 5")] TimerInfo myTimer)
         {
+            // For local testing
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-            
+
             if (myTimer.ScheduleStatus is not null)
             {
                 _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
@@ -40,24 +41,30 @@ namespace SendNewsletters_Isolated
                 .Include(u => u.NewsletterCategories)
                 .Where(u => u.EditorsChoiceNewsletter == true || u.NewsletterCategories.Any()).ToList();
 
+            // Get all articles that are not archived
             var allArticles = _dbContext.Articles
                 .Include(a => a.Categories)
                 .Where(a => a.IsArchived == false).ToList();
 
+            // Get all articles that are editors choice
             var fetchedEditorsChoiceArticles = allArticles.Where(a => a.EditorsChoice).ToList();
 
+            // Loop through each user and send them a newsletter
             foreach (var user in users)
             {
                 List<List<Article>> articlesByCategory = new List<List<Article>>();
                 List<Article> articlesEditorsChoice = new List<Article>();
 
-                if(user.EditorsChoiceNewsletter)
+                // Check if the user has opted in to include editors choice articles
+                if (user.EditorsChoiceNewsletter)
                 {
                     articlesEditorsChoice = fetchedEditorsChoiceArticles;
                 }
 
+                // If the user has opted in to receive articles by category
                 if (user.NewsletterCategories.Count != 0)
                 {
+                    // Get the latest 5 articles for each category
                     foreach (var category in user.NewsletterCategories)
                     {
                         var articles = allArticles
@@ -68,8 +75,10 @@ namespace SendNewsletters_Isolated
                     }
                 }
 
+                // Get the category names for the email-headings (e.g. "The latest in Sports news")
                 List<string> categoryNames = user.NewsletterCategories.Select(c => c.Name).ToList();
 
+                // Build the HTML content for the email, calls the BuildEmailHtml method
                 var emailContent =  BuildEmailHtml(articlesByCategory, categoryNames, fetchedEditorsChoiceArticles);
 
 
@@ -77,6 +86,7 @@ namespace SendNewsletters_Isolated
                 try
                 {
                     await _emailSender.SendEmailAsync(user.Email, "Your Weekly Newsletter", emailContent);
+
                     _logger.LogInformation($"Sending newsletter to {user.Email}");
                 }
                 catch (Exception ex)
@@ -87,19 +97,19 @@ namespace SendNewsletters_Isolated
 
         }
 
-
+        // Builds the HTML content for the email
         public string BuildEmailHtml(List<List<Article>> articlesByCategory, List<string> categoryNames, List<Article> articlesEditorsChoice)
         {
             var htmlContent = "<html><head>";
 
-            // Email-safe styles
+            // Email-safe styles (no external CSS)
             htmlContent += @"
             <style>
                 body {
                     text-align: center;
                     font-family: Arial, sans-serif;
                 }
-                .responsive-content {
+                .container {
                     width: 100%;
                     max-width: 600px; /* Set a max width */
                     margin: 0 auto;
@@ -114,10 +124,10 @@ namespace SendNewsletters_Isolated
             </style>";
 
             htmlContent += "</head><body style='text-align:center'>";
+
             htmlContent += "<h1>Your Weekly Newsletter</h1>";
 
-            // Wrap all content in a responsive container
-            htmlContent += "<div class='responsive-content'>";
+            htmlContent += "<div class='container'>";
 
             // Insert the Editors Choice section
             htmlContent += BuildEditorsChoiceHtml(articlesEditorsChoice);
@@ -129,26 +139,33 @@ namespace SendNewsletters_Isolated
                 htmlContent += BuildCategoryHtml(categoryArticles, categoryNames[categoryIndex++]);
             }
 
-            // Close the responsive container and the HTML document
+            // Close the container and the HTML document
             htmlContent += "</div></body></html>";
 
             return htmlContent;
         }
 
+
+        // Base URL for viewing an article. Only the article id is appended to this URL
         string baseUrlViewArticle = "https://localhost:7116/Article/ViewArticle?articleID=";
 
-
+        // Builds the HTML content for the Editors Choice section
         public string BuildEditorsChoiceHtml(List<Article> articles)
         {
             var htmlContent = "<h2>Editors Choice</h2><ul style='display: inline-block; padding: 0;'>";
 
             foreach (var article in articles)
             {
+                // Create the URL for viewing the article
                 var articleUrl = baseUrlViewArticle + article.Id;
+
+                // Encode spaces in the image URL. Otherwise, the email client may not display the image.
+                string encodedImage = article.ImageOriginalLink.Replace(" ", "%20"); 
+
                 htmlContent += $@"
                 <li style='list-style: none; text-align: center; margin-bottom: 40px;'>
                     <div>
-                        <img src='{article.ImageOriginalLink}'/>
+                        <img src='{encodedImage}'/> 
                     </div>
                     <h3>
                         <a href='{articleUrl}'>{article.HeadLine}</a>
@@ -157,10 +174,12 @@ namespace SendNewsletters_Isolated
                     <hr style='margin-top: 25px'>
                 </li>";
             }
+
             htmlContent += "</ul>";
             return htmlContent;
         }
 
+        // Builds the HTML content for a category section
         public string BuildCategoryHtml(List<Article> articles, string category)
         {
             var htmlContent = $"<h2>The latest in {category} news</h2><ul style='display: inline-block; padding: 0;'>";
@@ -168,10 +187,12 @@ namespace SendNewsletters_Isolated
             foreach (var article in articles)
             {
                 var articleUrl = baseUrlViewArticle + article.Id;
+                string encodedImage = article.ImageOriginalLink.Replace(" ", "%20");
+
                 htmlContent += $@"
                 <li style='list-style: none; text-align: center; margin-bottom: 40px;'>
                     <div>
-                        <img src='{article.ImageOriginalLink}' />
+                        <img src='{encodedImage}' />
                     </div>
                     <h3>
                         <a href='{articleUrl}'>{article.HeadLine}</a>
