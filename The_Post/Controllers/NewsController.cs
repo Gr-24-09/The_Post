@@ -77,7 +77,7 @@ namespace The_Post.Controllers
             }
             else
             {
-                return View("NoData"); // Create a NoData view to handle cases where no data is found
+                return View("NoHistoricalData"); // Create a NoData view to handle cases where no data is found
             }
         }
     }
