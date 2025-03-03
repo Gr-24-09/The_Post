@@ -29,49 +29,10 @@ namespace The_Post.Controllers
             _userManager = userManager;
             _employeeService = employeeService;
         }
-
-        // All articles, Admin page
-        public IActionResult Index(int? page, string sortOrder, bool? includeArchived)
-        {
-            // Current page number
-            int pageNumber = page ?? 1;
-            // Number of articles per page
-            int pageSize = 12;
-
-            var articles = _articleService.GetAllArticles();
-
-            if (articles.IsNullOrEmpty())
-            {
-                articles = new List<Article>();
-            }
-
-            // Excludes archived articles if the user has chosen to omit them
-            if (includeArchived != true)
-            {
-                articles = articles.Where(a => !a.IsArchived).ToList();
-            }
-
-            // Sorts the articles based on the sortOrder parameter
-            // If no sortOrder is provided, the articles are returned in their default order (newest first)
-            articles = sortOrder switch
-            {
-                "title_asc" => articles.OrderBy(a => a.HeadLine).ToList(),
-                "title_desc" => articles.OrderByDescending(a => a.HeadLine).ToList(),
-                "date_asc" => articles.OrderBy(a => a.DateStamp).ToList(),
-                "date_desc" => articles.OrderByDescending(a => a.DateStamp).ToList(),
-                _ => articles
-            };
-
-            var onePageOfArticles = articles.ToPagedList(pageNumber, pageSize);
-
-            var viewModel = new AdminAllArticlesVM()
-            {
-                Articles = onePageOfArticles,
-                IncludeArchived = includeArchived ?? false,
-                SortOrder = sortOrder
-            };
-
-            return View(viewModel);
+               
+        public IActionResult Index()
+        {           
+            return View();
         }
 
         public IActionResult ViewArticle(int articleID)
