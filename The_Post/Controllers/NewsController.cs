@@ -4,6 +4,7 @@ using The_Post.Data;
 using The_Post.Models.VM;
 using The_Post.Services;
 using Azure.Data.Tables;
+using System.Configuration;
 
 namespace The_Post.Controllers
 {
@@ -16,9 +17,9 @@ namespace The_Post.Controllers
         private readonly ApplicationDbContext _db;
 
 
-        public NewsController(IArticleService articleService, ApplicationDbContext db)
+        public NewsController(IArticleService articleService, ApplicationDbContext db, IConfiguration configuration)
         {
-            var connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+            var connectionString = configuration.GetSection("AzureTableStorage:ConnectionStrings:AzureWebJobsStorage").Value;
 
             if (string.IsNullOrEmpty(connectionString))
             {
@@ -44,7 +45,7 @@ namespace The_Post.Controllers
 
             if (categoryName == "Economy")
             {
-                return RedirectToAction("HistoricalPrices", new { region = "SE1", date = DateTime.UtcNow.ToString("yyyy-MM-dd") });
+                return RedirectToAction("HistoricalPrices", new { region = "SE1", date = "2025-02-26" });
             }
 
             var articles = _articleService.GetAllArticlesByCategoryName(categoryName);
@@ -66,10 +67,16 @@ namespace The_Post.Controllers
             var partitionKey = date;  // Partition key is the date
             var prices = new List<TableEntity>();
 
-            await foreach (var entity in _tableClient.QueryAsync<TableEntity>(e => e.PartitionKey == partitionKey && e.RowKey.StartsWith(region)))
+            var filter = TableClient.CreateQueryFilter($"PartitionKey eq {partitionKey} and RowKey ge {region} and RowKey lt {region}~");
+            await foreach (var entity in _tableClient.QueryAsync<TableEntity>(filter))
             {
                 prices.Add(entity);
             }
+
+            //await foreach (var entity in _tableClient.QueryAsync<TableEntity>(e => e.PartitionKey == partitionKey && e.RowKey.StartsWith(region)))
+            //{
+            //    
+            //}
 
             if (prices.Any())
             {
