@@ -24,6 +24,7 @@ namespace SendNewsletters_Isolated
         }
 
         // The main function that sends the newsletter
+        // This function is triggered every Friday at 12:00 PM
         [Function("Function1")]
         public async Task Run([TimerTrigger("0 0 12 * * 5")] TimerInfo myTimer)
         {
@@ -145,9 +146,11 @@ namespace SendNewsletters_Isolated
             return htmlContent;
         }
 
+        // The base URL for viewing an article. Only the article ID needs to be appended to this URL.
+        string baseUrlViewArticle = "https://thepost.azurewebsites.net/Article/ViewArticle?articleID=";
 
-        // Base URL for viewing an article. Only the article id is appended to this URL
-        string baseUrlViewArticle = "https://localhost:7116/Article/ViewArticle?articleID=";
+        // For local testing
+        //string baseUrlViewArticle = "https://localhost:7116/Article/ViewArticle?articleID=";
 
         // Builds the HTML content for the Editors Choice section
         public string BuildEditorsChoiceHtml(List<Article> articles)
@@ -156,6 +159,13 @@ namespace SendNewsletters_Isolated
 
             foreach (var article in articles)
             {
+                // Encode spaces in the image URL. Otherwise, the email client may not display the image.
+                string encodedImageSmall = article.ImageSmallLink.Replace(" ", "%20");
+
+                // If the small image is not available, use the original image
+                string encodedImageOriginal = article.ImageOriginalLink.Replace(" ", "%20");
+
+
                 // Create the URL for viewing the article
                 var articleUrl = baseUrlViewArticle + article.Id;
 
@@ -164,8 +174,10 @@ namespace SendNewsletters_Isolated
 
                 htmlContent += $@"
                 <li style='list-style: none; text-align: center; margin-bottom: 40px;'>
-                    <div>
-                        <img src='{encodedImage}'/> 
+                    <div style='max-width:100%; background:#cccccc; text-align:center;'>
+                        <img src='{encodedImageSmall}' 
+                             onerror=""this.onerror=null; this.src='{{encodedImageOriginal}}';"" 
+                             alt='Image not available'>
                     </div>
                     <h3>
                         <a href='{articleUrl}'>{article.HeadLine}</a>
@@ -186,13 +198,21 @@ namespace SendNewsletters_Isolated
 
             foreach (var article in articles)
             {
+                // Create the URL for viewing the article
                 var articleUrl = baseUrlViewArticle + article.Id;
-                string encodedImage = article.ImageOriginalLink.Replace(" ", "%20");
+
+                // Encode spaces in the image URL. Otherwise, the email client may not display the image.
+                string encodedImageSmall = article.ImageSmallLink.Replace(" ", "%20");
+
+                // If the small image is not available, use the original image
+                string encodedImageOriginal = article.ImageOriginalLink.Replace(" ", "%20");
 
                 htmlContent += $@"
                 <li style='list-style: none; text-align: center; margin-bottom: 40px;'>
-                    <div>
-                        <img src='{encodedImage}' />
+                    <div style='max-width:100%; background:#cccccc; text-align:center;'>
+                        <img src='{encodedImageSmall}' 
+                             onerror=""this.onerror=null; this.src='{{encodedImageOriginal}}';"" 
+                             alt='Image not available'>
                     </div>
                     <h3>
                         <a href='{articleUrl}'>{article.HeadLine}</a>
