@@ -53,11 +53,11 @@
                         <p class="card-text"><i class="fa-solid fa-check text-success"></i><em> Keep up with the latest news</em></p>
                     </div>                    
                     <div class="d-grid col-6 mx-auto mb-0">
-                        <a href="@Url.Action("Index", "Subscription")" class="btn btn-primary mt-5 mb-1 rounded-pill">
+                        <a asp-area="Identity" asp-page="/Account/Manage/Subscription" class="btn btn-primary mt-5 mb-1 rounded-pill">
                             Subscribe Now
                         </a>
-                    </div>                    
-                    <p class="fs-6 fw-lighter mb-0 text-center">After the first month it will be renewed for 199kr/month. Cancel at anytime.</p>                    
+                    </div>
+                    <p class="fs-6 fw-lighter mb-0 text-center">Only one month at a time, no long binding periods!</p>
                 </div>                    
             </div>            
         </div>
