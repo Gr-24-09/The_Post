@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using The_Post.Models;
 
-namespace ArchiveArticles
+namespace AzureFunctions_Isolated
 {
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Article> Articles { get; set; }
+
+        public DbSet<User> Users { get; set; }
     }
 }
