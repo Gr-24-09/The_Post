@@ -29,7 +29,7 @@
                     }
                     else
                     {
-                        <span class="fw-bold" style="font-size: 1rem;color: #0A2472 !important;">User</span>
+                        <span class="fw-bold" style="font-size: 1rem;color: #0A2472 !important;">Profile</span>
                     }
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -38,13 +38,13 @@
                     </svg>
                 }                
             </a>
-            <ul class="dropdown-menu dropdown-menu-end text-small">
+            <ul class="dropdown-menu dropdown-menu-end text-small" style="z-index: 2000 !important;">
                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">My Page</a></li>                
                 <li><hr class="dropdown-divider"></li>
-                <li>
-                    <a class="dropdown-item fw-bold display-4" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home")" style="font-size: 1rem;color: #0A2472 !important;">
-                    Sign out
-                    </a>
+                <li>                    
+                    <form method="post" class="dropdown-item" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="p-0 text-primary fw-bold bg-transparent border-0 w-100 text-start" style="font-size: 1rem;color: #0A2472 !important;">Sign out</button>
+                    </form>
                 </li>
             </ul>            
         </li>    
