@@ -63,24 +63,32 @@ namespace The_Post.Controllers
         [HttpGet]
         public async Task<IActionResult> HistoricalPrices(string region, string date)
         {
-            // Query the table for historical prices
-            var partitionKey = date;  // Partition key is the date
+            // The partition key is the date
+            var partitionKey = date;  
+
+            // The next region is the region after the one provided
+            // The prefix of the region is the same, only the last character changes
+            // For example, if region is SE1, nextRegion will be SE2
+            string nextRegion = region[..^1] + (char)(region[^1] + 1);
+
+
+            // Create a filter to query the table
+            // This filter will return all entities with PartitionKey = date,
+            // and RowKey = region (entities with RowKey for every hour of the day, for example SE1_00, SE2_01)
+            var filter = TableClient.CreateQueryFilter($"PartitionKey eq {partitionKey} and RowKey ge {region} and RowKey lt {nextRegion}");
+
+
             var prices = new List<TableEntity>();
 
-            var filter = TableClient.CreateQueryFilter($"PartitionKey eq {partitionKey} and RowKey ge {region} and RowKey lt {region}~");
             await foreach (var entity in _tableClient.QueryAsync<TableEntity>(filter))
             {
                 prices.Add(entity);
             }
 
-            //await foreach (var entity in _tableClient.QueryAsync<TableEntity>(e => e.PartitionKey == partitionKey && e.RowKey.StartsWith(region)))
-            //{
-            //    
-            //}
 
             if (prices.Any())
             {
-                return View(prices); // Assuming you'll display them in the view as a list of TableEntities
+                return View(prices);
             }
             else
             {
