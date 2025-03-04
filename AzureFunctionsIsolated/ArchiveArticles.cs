@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using The_Post.Data;
 using The_Post.Models;
 
-namespace AzureFunctions_Isolated
+namespace AzureFunctionsIsolated
 {
     public class ArchiveArticles
     {
@@ -21,10 +21,10 @@ namespace AzureFunctions_Isolated
             _db = db;
         }
 
-        // 0 * * * * *     0 0 0 * * *
+        // For testing: 0 * * * * *    
         // Timer setup to run every day at midnight
         [Function("ArchiveArticles")]
-        public void Run([TimerTrigger("0 * * * * *")] TimerInfo myTimer) // 0 0 * * * * runs every hour
+        public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
         {   
             var articlesToArchive = _db.Articles
                 .Where(a => !a.IsArchived && a.DateStamp.AddDays(30) <= DateTime.UtcNow).ToList();

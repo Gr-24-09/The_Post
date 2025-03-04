@@ -4,11 +4,11 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using The_Post.Data;
 using The_Post.Models;
+using The_Post.Data;
 using static System.Net.WebRequestMethods;
 
-namespace SendNewsletters_Isolated
+namespace AzureFunctions_Isolated
 {
     public class SendNewsletter
     {
@@ -22,11 +22,11 @@ namespace SendNewsletters_Isolated
             _dbContext = dbContext;
             _emailSender = emailSender;
         }
-
+        // For testing, triggers every minute:   0 * * * * *     0 0 12 * * 5
         // The main function that sends the newsletter
         // This function is triggered every Friday at 12:00 PM
         [Function("SendNewsletter")]
-        public async Task Run([TimerTrigger("0 0 12 * * 5")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("0 0 * * * * ")] TimerInfo myTimer) // Runs every hour
         {
             // For local testing
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
@@ -80,7 +80,7 @@ namespace SendNewsletters_Isolated
                 List<string> categoryNames = user.NewsletterCategories.Select(c => c.Name).ToList();
 
                 // Build the HTML content for the email, calls the BuildEmailHtml method
-                var emailContent =  BuildEmailHtml(articlesByCategory, categoryNames, fetchedEditorsChoiceArticles);
+                var emailContent = BuildEmailHtml(articlesByCategory, categoryNames, fetchedEditorsChoiceArticles);
 
 
                 // Send the newsletter
@@ -170,7 +170,7 @@ namespace SendNewsletters_Isolated
                 var articleUrl = baseUrlViewArticle + article.Id;
 
                 // Encode spaces in the image URL. Otherwise, the email client may not display the image.
-                string encodedImage = article.ImageOriginalLink.Replace(" ", "%20"); 
+                string encodedImage = article.ImageOriginalLink.Replace(" ", "%20");
 
                 htmlContent += $@"
                 <li style='list-style: none; text-align: center; margin-bottom: 40px;'>

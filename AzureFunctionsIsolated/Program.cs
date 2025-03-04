@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AzureFunctions_Isolated;
 using The_Post.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using The_Post.Data;
