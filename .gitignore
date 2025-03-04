@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /ResizeImages
 /SendNewsletters_Isolated/local.settings.json
+/ArchiveArticles/ArchiveArticles_Isolated.csproj
