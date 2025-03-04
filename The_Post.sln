@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "The_Post", "The_Post\The_Po
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResizeImages_InProcess", "ResizeImages_InProcess\ResizeImages_InProcess.csproj", "{8586D94A-A7E6-4C59-85D9-1939BFD98835}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SendNewsletters_Isolated", "SendNewsletters_Isolated\SendNewsletters_Isolated.csproj", "{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctions_Isolated", "AzureFunctionsIsolated\AzureFunctions_Isolated.csproj", "{3BF872C2-D7E2-4A6F-8B65-D8B1BD61955C}"
 EndProject
 Global
@@ -35,14 +33,6 @@ Global
 		{8586D94A-A7E6-4C59-85D9-1939BFD98835}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8586D94A-A7E6-4C59-85D9-1939BFD98835}.Release|x64.ActiveCfg = Release|Any CPU
 		{8586D94A-A7E6-4C59-85D9-1939BFD98835}.Release|x64.Build.0 = Release|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Debug|x64.Build.0 = Debug|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Release|x64.ActiveCfg = Release|Any CPU
-		{CABF9A98-75FD-4DB5-A38B-72ACC01BA6FE}.Release|x64.Build.0 = Release|Any CPU
 		{3BF872C2-D7E2-4A6F-8B65-D8B1BD61955C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BF872C2-D7E2-4A6F-8B65-D8B1BD61955C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BF872C2-D7E2-4A6F-8B65-D8B1BD61955C}.Debug|x64.ActiveCfg = Debug|Any CPU
