@@ -22,14 +22,17 @@ namespace SaveElecticityPrices_Isolated
         }
 
         [Function("SaveElectricityPrices")]
-        public async Task Run([TimerTrigger("0 * * * * *")] TimerInfo myTimer) // Every minute
+        public async Task Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer) // Run every day at midnight
         {
+            // For local testing
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 
             if (myTimer.ScheduleStatus is not null)
             {
                 _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus.Next}");
             }
+
+
 
             var yesterday = DateTime.UtcNow.AddDays(-1);
             var connectionstring = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
@@ -48,19 +51,22 @@ namespace SaveElecticityPrices_Isolated
             {
                 foreach (var data in prices)
                 {
-                    string rowKey = $"{data.Region}_{data.hour:00}";  // Använd rätt timme direkt
+                    // Create a unique row key for each entity
+                    string rowKey = $"{data.Region}_{data.hour:00}";
 
+                    // Create a new TableEntity with the partition key and row key and the data
                     var tableEntity = new TableEntity(yesterday.ToString("yyyy-MM-dd"), rowKey)
                     {
                         {"price_eur", data.price_eur},
                         {"price_sek", data.price_sek},
                         {"region", data.Region},
-                        {"hour", data.hour} // Använd rätt timme från API:t
+                        {"hour", data.hour}
                     };
 
                     // Save the entity to the table
                     await tableClient.UpsertEntityAsync(tableEntity, TableUpdateMode.Replace);
                 }
+                // Log success message
                 _logger.LogInformation($"ElectricityPrices for {yesterday.ToString("yyyy-MM-dd")} saved at {DateTime.UtcNow}");
             }
             catch (Exception ex)
@@ -70,6 +76,7 @@ namespace SaveElecticityPrices_Isolated
             }
         }
 
+        // Fetches electricity prices from the API
         private async Task<List<SERegion>> FetchPricesFromApi(DateTime date)
         {
             try
@@ -84,16 +91,20 @@ namespace SaveElecticityPrices_Isolated
                     return new List<SERegion>();
                 }
 
+                // Create a list to store all the entities
                 var priceEntities = new List<SERegion>();
 
+                // Create a dictionary with the regions and their data
+                // The string is the region name
                 var regions = new Dictionary<IEnumerable<SERegion>, string>
                 {
-                    { priceData.SE1 ?? Enumerable.Empty<SERegion>(), "SE1" },
+                    { priceData.SE1 ?? Enumerable.Empty<SERegion>(), "SE1" }, // If the region is null, use an empty list instead
                     { priceData.SE2 ?? Enumerable.Empty<SERegion>(), "SE2" },
                     { priceData.SE3 ?? Enumerable.Empty<SERegion>(), "SE3" },
                     { priceData.SE4 ?? Enumerable.Empty<SERegion>(), "SE4" }
                 };
 
+                // Add all the data to the list of entities
                 foreach (var (regionData, regionName) in regions)
                 {
                     foreach (var data in regionData)
@@ -102,11 +113,6 @@ namespace SaveElecticityPrices_Isolated
                         priceEntities.Add(data);
                     }
                 }
-
-                //foreach (var entity in priceEntities)
-                //{
-                //    _logger.LogInformation($"Region: {entity.Region}, Hour: {entity.hour}, EUR Price: {entity.price_eur}, SEK Price: {entity.price_sek}");
-                //}
 
                 return priceEntities;
             }
@@ -117,6 +123,7 @@ namespace SaveElecticityPrices_Isolated
             }
         }
 
+        // The data structure for the API response
         public class PriceData
         {
             public string Date { get; set; }
@@ -126,6 +133,8 @@ namespace SaveElecticityPrices_Isolated
             public SERegion[] SE4 { get; set; }
         }
 
+        // The data structure for the electricity price data
+        // This class is used to store the data in the table
         public class SERegion
         {
             public int hour { get; set; }
