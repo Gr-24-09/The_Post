@@ -81,7 +81,7 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
                 },
                 Mode = "payment", // For one-time payments
                 SuccessUrl = domain + Url.Page("Subscription", new { handler = "Success", subscriptionTypeId }),
-                CancelUrl = domain + Url.Page("Subscription", new { handler = "Cancel", subscriptionTypeId }),
+                CancelUrl = domain + Url.Page("Subscription", new { handler = "Cancel", subscriptionTypeId }) 
             };
 
             var service = new SessionService();
@@ -96,20 +96,15 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
-            {
                 return Unauthorized();
-            }
 
-            var subscription = await _subscriptionService.AddSubscription(userId, subscriptionTypeId);
-            if (subscription == null)
-            {
-                TempData["ErrorMessage"] = "Failed to add subscription.";
-                return RedirectToPage("Subscription");
-            }
-            // Redirect with the expiration date as a query parameter
-            return RedirectToPage("SubscriptionSuccess", new { expireDate = subscription.Expires.ToString("yyyy-MM-dd") });
+            // Send confirmation email before adding subscription
+            await _subscriptionService.SendConfirmationEmailAsync(userId, subscriptionTypeId, Request.Scheme + "://" + Request.Host);
+
+            // Redirect to confirmation page (informing user that an email has been sent)
+            return RedirectToPage("SubscriptionEmailSent");
         }
-        
+
         public IActionResult OnGetCancel(int subscriptionTypeId)
         {
             var userId = _userManager.GetUserId(User);
