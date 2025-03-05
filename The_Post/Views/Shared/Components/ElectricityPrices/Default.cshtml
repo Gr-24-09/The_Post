@@ -9,11 +9,11 @@
     float price = 0;
 }
 
- 
-    <div class="electricity-prices-container mt-3">
-    <h2 class=text-center Electricity Prices for @Model.Date</h2>
-        <div class="table-responsive text-center"> 
-    <table class="prices-table col-sm-8 table-bordered text-center">
+
+@* <div>class="electricity-prices-container mt-3"> *@
+<h2> Electricity Prices for Current Hour</h2>
+<div class="table-responsive">
+    <table class="prices-table col-sm-4 table-bordered bg- width:50% text-center">
         <thead>
             <tr>
                 <th>Region</th>
@@ -24,25 +24,25 @@
             </tr>
         </thead>
         <tbody>
-                @foreach (var region in new[] { Model.SE1, Model.SE2, Model.SE3, Model.SE4 })
-                {
-                    string regionName = region == Model.SE1 ? "SE1" :
-                    region == Model.SE2 ? "SE2" :
-                    region == Model.SE3 ? "SE3" : "SE4";
+            @foreach (var region in new[] { Model.SE1, Model.SE2, Model.SE3, Model.SE4 })
+            {
+                string regionName = region == Model.SE1 ? "SE1" :
+                region == Model.SE2 ? "SE2" :
+                region == Model.SE3 ? "SE3" : "SE4";
 
-                    @foreach (var spot in region)
-                    {
-                        <tr>
-                            <td>@regionName</td>
-                            <td>@spot.Hour:00</td>
-                            <td>@spot.price_eur</td>
-                            <td>@spot.price_sek</td>
-                            <td>@spot.kmeans</td>
-                        </tr>
-                    }
+                @foreach (var spot in region)
+                {
+                    <tr>
+                        <td>@regionName</td>
+                        <td>@spot.Hour:00</td>
+                        <td>@spot.price_eur</td>
+                        <td>@spot.price_sek</td>
+                        <td>@spot.kmeans</td>
+                    </tr>
                 }
-          
-         </tbody>
-        </table>
-    </div>
-</>
+            }
+
+        </tbody>
+    </table>
+</div>
+@* </div> *@
