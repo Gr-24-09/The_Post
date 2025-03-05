@@ -52,7 +52,7 @@
 <nav aria-label="Admin All articles pages">
     @Html.PagedListPager(
             Model.Articles,
-            page => Url.Action("Index", "Article", new { page, sortOrder = Model.SortOrder, includeArchived = Model.IncludeArchived }),
+            page => Url.Action("AllArticles", "Admin", new { page, sortOrder = Model.SortOrder, includeArchived = Model.IncludeArchived }),
             new PagedListRenderOptions
     {
         LiElementClasses = new[] { "page-item" },

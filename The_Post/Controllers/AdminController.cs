@@ -302,6 +302,26 @@ namespace The_Post.Controllers
             return View(searchVM);
         }
 
+        public async Task<IActionResult> YourAction()
+        {
+            var totalArticles = _db.Articles.Count();
+            var allEmployees = await _employeeService.GetAllEmployees();
+            var totalEmployees = allEmployees.Count();
+            var stats = await _subscriptionService.GetSubscriptionStats();
+
+            var viewModel = new AdminDashboardVM
+            {
+                TotalArticles = totalArticles,
+                TotalEmployees = totalEmployees,
+                TotalSubscribers = stats.TotalSubscribers,
+                ActiveSubscriptions = stats.ActiveSubscriptions,
+                ExpiredSubscriptions = stats.ExpiredSubscriptions
+
+            };
+
+            return View(viewModel);
+        }
+
 
         //------------------------- SUBSCRIPTION ACTIONS -------------------------
 

@@ -1,15 +1,117 @@
-﻿
+﻿@model The_Post.Models.VM.AdminDashboardVM
 @{
     ViewData["Title"] = "Index";
     Layout = "_LayoutForAdmin";
 }
 
-
-    <h1 class="text-center"><em><strong>Admin Page</strong></em></h1>
+<div class="container-fluid py-3 px-4">
+    <h1 class="mb-4"><em><strong>Admin Dashboard</strong></em</h1>
     <hr />
-    <div class="d-grid gap-2 col-md-6 mx-auto">
-        <p class="text-center mt-5">-- Content is coming --</p>
+    <div class="row g-3">
+        <!-- Statistics Cards -->
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Articles</h5>
+                    <p class="card-text display-6">@Model.TotalArticles</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Employees</h5>
+                    <p class="card-text display-6">@Model.TotalEmployees</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="card-text display-6">@Model.TotalEmployees</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Active Subscriptions</h5>
+                    <p class="card-text display-6">@Model.ActiveSubscriptions</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Approvals</h5>
+                    <p class="card-text display-6">@Model.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Recent Activity -->
+    @* <div class="mt-4">
+        <h4>Recent Activity</h4>
+        <ul class="list-group">
+            @foreach (var activity in Model.RecentActivities)
+            {
+                <li class="list-group-item">@activity</li>
+            }
+        </ul>
+    </div> *@
 
+    <!-- Chart Section -->
+    <div class="mt-4">
+        <h4>Subscription Trends</h4>
+        <canvas id="subscriptionBarChart"></canvas>
+    </div>
+</div>
+
+
+<script>
+    // Wait for the DOM to be loaded
+    document.addEventListener("DOMContentLoaded", async function () {
+
+        // ----- Bar Chart -----
+
+        var ctx = document.getElementById('subscriptionBarChart').getContext('2d'); // Get the canvas element and the rendering context type
+
+        // Create a new chart
+        var subscriptionBarChart = new Chart(ctx, {
+            type: 'bar', // We can also use 'pie' or 'line' here if we want
+            data: {
+                labels: ['Total', 'Active', 'Expired'], // Labels for the X axis
+                datasets: [{
+                    label: 'Subscriptions',
+                    data: [@Model.TotalSubscribers, @Model.ActiveSubscriptions, @Model.ExpiredSubscriptions], // Data values
+                    backgroundColor: ['#284ba7', '#28a745', '#dc3545'], // Colors for the bars
+                    borderColor: ['#284ba7','#28a745', '#dc3545'], // Border colors for the bars
+                    borderWidth: 1, // Border width for the bars
+                    barPercentage: 0.3, // Bar will occupy 60% of the category width
+                    categoryPercentage: 0.8 // Category will occupy 80% of the available width
+                }]
+            },
+            options: { // Chart configuration options
+                responsive: true, // Make the chart automatically resize to fit its container
+                // plugins: {
+                //     legend: {
+                //         position: 'top', // Position the legend (labels for the dataset, e.g., "Subscriptions") at the top of the chart
+                //     },
+                //     tooltip: {
+                //         enabled: true // Enable tooltips that display detailed info (e.g., data values like Total Subscribers) on hover
+                //     }
+                // },
+                scales: { // Scales for the chart
+                    x: {
+                        beginAtZero: true // Start the X axis at zero
+                    },
+                    y: {
+                        beginAtZero: true  // Start the Y axis at zero
+                    }
+                }
+            }
+        });
+</script>
 
