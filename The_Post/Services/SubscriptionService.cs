@@ -5,6 +5,7 @@ using Stripe;
 using The_Post.Data;
 using The_Post.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System;
 
 
 namespace The_Post.Services
@@ -69,9 +70,8 @@ namespace The_Post.Services
 
             // Generate a confirmation token
             var token = await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "SubscriptionConfirmation");
-
-            // Create confirmation link
-            var confirmationLink = $"{baseUrl}/Account/ConfirmSubscription?userId={userId}&token={Uri.EscapeDataString(token)}&subscriptionTypeId={subscriptionTypeId}";
+            var confirmationLink = $"{baseUrl}/Identity/Account/Manage/ConfirmSubscription?userId={userId}&token={Uri.EscapeDataString(token)}&subscriptionTypeId={subscriptionTypeId}";
+            
 
             // Email content
             var subject = "Confirm Your Subscription";
