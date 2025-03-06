@@ -33,19 +33,36 @@ namespace The_Post.Controllers
         public async Task<IActionResult> Index(AdminDashboardVM adminDashboard)
         {
             var totalArticles = _db.Articles.Count();
-            var allEmployees = await _employeeService.GetAllEmployees();
-            var totalEmployees = allEmployees.Count();
-            var stats = await _subscriptionService.GetSubscriptionStats();
             var archived = _db.Articles.Where(a => a.IsArchived).Count();
-            var mostLikedArticle = _db.Articles.Include(a => a.Likes)
-                .OrderByDescending(a => a.Likes.Count).FirstOrDefault();
+            var allArticles = _articleService.GetAllArticles();
+            var mostLiked = allArticles.OrderByDescending(a => a.Likes.Count).FirstOrDefault();
+
+            string mostLikedArticle = mostLiked?.HeadLine ?? "No articles available";
+            var mostLikedImage = mostLiked?.ImageSmallLink ?? "No image available";
+            int mostLikedCount = mostLiked?.Likes.Count ?? 0;
+
+            var allEmployees = await _employeeService.GetAllEmployeesWithRolesAsync();
+            var totalEmployees = allEmployees.Count();
+            var totalAdmins = allEmployees.Where(e => e.Role.Equals("Admin")).Count();
+            var totalEditor = allEmployees.Where(e => e.Role.Equals("Editor")).Count();
+            var totalWriter = allEmployees.Where(e => e.Role.Equals("Writer")).Count();
+
+            var totalUsers = _db.Users.Where(u => u.IsEmployee == false).Count();
+            var stats = await _subscriptionService.GetSubscriptionStats();
+            
 
             var viewModel = new AdminDashboardVM
             {
                 TotalArticles = totalArticles,
                 ArchivedArticles = archived,
-                //MostLikedArticle = mostLikedArticle,
+                MostLikedArticle = mostLikedArticle,
+                MostLikedImage = mostLikedImage,
+                MostLikedArticleLikes = mostLikedCount,
                 TotalEmployees = totalEmployees,
+                TotalAdmin = totalAdmins,
+                TotalEditors = totalEditor,
+                TotalWriters = totalWriter,
+                TotalUsers = totalUsers,
                 TotalSubscribers = stats.TotalSubscribers,
                 ActiveSubscriptions = stats.ActiveSubscriptions,
                 ExpiredSubscriptions = stats.ExpiredSubscriptions

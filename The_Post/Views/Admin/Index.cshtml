@@ -10,18 +10,46 @@
     <div class="row g-3">
         <!-- Statistics Cards -->
         <div class="col-md-3">
-            <div class="card shadow-sm">
+            <div class="card shadow-sm rounded-4 ratio ratio-16x9">
                 <div class="card-body">
-                    <h5 class="card-title">Total Articles</h5>
-                    <p class="card-text display-6">@Model.TotalArticles</p>
+                    <p class="card-title"><strong>@Model.TotalArticles</strong></p> 
+                    <h5 class="card-text"><strong>Total Articles</strong></h5>
+                    <i class="fa-solid fa-newspaper"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm rounded-4 ratio ratio-16x9">
+                <div class="card-body p-2">            
+                    <div class="position-relative h-100">
+                        <p class="card-title position-absolute top-0 start-0 ms-3 display-5 fw-bold">@Model.TotalArticles</p>           
+                        <h5 class="card-text position-absolute bottom-0 start-0 ms-3 mb-4"><strong>Total Articles</strong></h5>            
+                        <i class="fa-solid fa-newspaper position-absolute bottom-0 end-0 m-2 pe-2 display-1"></i>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card shadow-sm">
                 <div class="card-body">
+                    <h5 class="card-title">Most Liked Article</h5>
+                    <div class="ratio ratio-16x9 img-thumbnail" style="max-height: 200px; max-width: 300px;">
+                        <img src="@Model.MostLikedImage" class="card-img-top" alt="No Article Image" >
+                    </div>
+                    <h5 class="card-text">@Model.MostLikedArticle</h5>
+                    <p class="card-text small">Likes: @Model.MostLikedArticleLikes</p>
+                </div>
+            </div>            
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
                     <h5 class="card-title">Total Employees</h5>
                     <p class="card-text display-6">@Model.TotalEmployees</p>
+                    <br />
+                    <p class="card-text display-6">Admins: @Model.TotalAdmin</p>
+                    <p class="card-text display-6">Editors: @Model.TotalEditors</p>
+                    <p class="card-text display-6">Writers: @Model.TotalWriters</p>
                 </div>
             </div>
         </div>
@@ -29,7 +57,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Total Users</h5>
-                    <p class="card-text display-6">@Model.MostLikedArticle</p>
+                    <p class="card-text display-6">@Model.TotalUsers</p>
                 </div>
             </div>
         </div>
@@ -41,14 +69,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Pending Approvals</h5>
-                    <p class="card-text display-6">@Model.</p>
-                </div>
-            </div>
-        </div>
+        
     </div>
 
     <!-- Recent Activity -->

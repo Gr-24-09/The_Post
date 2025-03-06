@@ -72,6 +72,7 @@ namespace The_Post.Services
             // Order by date, newest first
             var articles = _applicationDBContext.Articles
                 .Include(a => a.Categories)
+                .Include(a => a.Likes)
                 .OrderByDescending(a => a.DateStamp)
                 .ToList();
 
