@@ -30,13 +30,33 @@ namespace The_Post.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(AdminDashboardVM adminDashboard)
         {
-            return View();
-        }
+            var totalArticles = _db.Articles.Count();
+            var allEmployees = await _employeeService.GetAllEmployees();
+            var totalEmployees = allEmployees.Count();
+            var stats = await _subscriptionService.GetSubscriptionStats();
+            var archived = _db.Articles.Where(a => a.IsArchived).Count();
+            var mostLikedArticle = _db.Articles.Include(a => a.Likes)
+                .OrderByDescending(a => a.Likes.Count).FirstOrDefault();
 
+            var viewModel = new AdminDashboardVM
+            {
+                TotalArticles = totalArticles,
+                ArchivedArticles = archived,
+                //MostLikedArticle = mostLikedArticle,
+                TotalEmployees = totalEmployees,
+                TotalSubscribers = stats.TotalSubscribers,
+                ActiveSubscriptions = stats.ActiveSubscriptions,
+                ExpiredSubscriptions = stats.ExpiredSubscriptions
+
+            };
+
+            return View(viewModel);
+        }
+       
         //------------------------- EMPLOYEE ACTIONS -------------------------
-        
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditEmployee(string userId)
@@ -300,27 +320,7 @@ namespace The_Post.Controllers
             };
 
             return View(searchVM);
-        }
-
-        public async Task<IActionResult> YourAction()
-        {
-            var totalArticles = _db.Articles.Count();
-            var allEmployees = await _employeeService.GetAllEmployees();
-            var totalEmployees = allEmployees.Count();
-            var stats = await _subscriptionService.GetSubscriptionStats();
-
-            var viewModel = new AdminDashboardVM
-            {
-                TotalArticles = totalArticles,
-                TotalEmployees = totalEmployees,
-                TotalSubscribers = stats.TotalSubscribers,
-                ActiveSubscriptions = stats.ActiveSubscriptions,
-                ExpiredSubscriptions = stats.ExpiredSubscriptions
-
-            };
-
-            return View(viewModel);
-        }
+        }       
 
 
         //------------------------- SUBSCRIPTION ACTIONS -------------------------

@@ -3,6 +3,8 @@
     public class AdminDashboardVM
     {
         public int TotalArticles { get; set; }
+        public int ArchivedArticles { get; set; }
+        public List<Article> MostLikedArticle { get; set; } = new List<Article>();
         public int TotalEmployees { get; set; }
         public int TotalSubscribers { get; set; }
         public int ActiveSubscriptions { get; set; }

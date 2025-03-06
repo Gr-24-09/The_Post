@@ -29,7 +29,7 @@
             <div class="card shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">Total Users</h5>
-                    <p class="card-text display-6">@Model.TotalEmployees</p>
+                    <p class="card-text display-6">@Model.MostLikedArticle</p>
                 </div>
             </div>
         </div>
@@ -80,7 +80,7 @@
 
         // Create a new chart
         var subscriptionBarChart = new Chart(ctx, {
-            type: 'bar', // We can also use 'pie' or 'line' here if we want
+            type: 'bar',
             data: {
                 labels: ['Total', 'Active', 'Expired'], // Labels for the X axis
                 datasets: [{
@@ -94,15 +94,15 @@
                 }]
             },
             options: { // Chart configuration options
-                responsive: true, // Make the chart automatically resize to fit its container
-                // plugins: {
-                //     legend: {
-                //         position: 'top', // Position the legend (labels for the dataset, e.g., "Subscriptions") at the top of the chart
-                //     },
-                //     tooltip: {
-                //         enabled: true // Enable tooltips that display detailed info (e.g., data values like Total Subscribers) on hover
-                //     }
-                // },
+                responsive: false, 
+                plugins: {
+                    legend: {
+                        position: false, 
+                    },
+                    tooltip: {
+                        enabled: false 
+                    }
+                },
                 scales: { // Scales for the chart
                     x: {
                         beginAtZero: true // Start the X axis at zero
@@ -113,5 +113,6 @@
                 }
             }
         });
+    });
 </script>
 
