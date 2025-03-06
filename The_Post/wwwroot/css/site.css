@@ -411,3 +411,51 @@ h2 {
     color: #0A2472;
     border: 1px solid #A8A8A8;
 }
+
+/*-----------------------------------------------------*/
+                    /*ManageNav*/
+/*-----------------------------------------------------*/
+.refined-nav {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .refined-nav .nav-link {
+        color: #343a40;
+        padding: 12px 18px;
+        border-left: 4px solid transparent;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease-in-out;
+        font-size: 16px;
+        border-radius: 6px;
+        position: relative;
+    }
+
+        .refined-nav .nav-link i {
+            font-size: 18px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .refined-nav .nav-link:hover {
+            background: linear-gradient(90deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+            border-left: 4px solid #0056b3;
+            color: #0056b3;
+        }
+
+            .refined-nav .nav-link:hover i {
+                transform: translateX(3px);
+            }
+
+        .refined-nav .nav-link.active {
+            border-left: 4px solid #0056b3;
+            color: #0056b3;
+            font-weight: bold;
+            background: linear-gradient(90deg, rgba(0, 123, 255, 0.2), rgba(0, 123, 255, 0.3));
+        }
+
+/*-----------------------------------------------------*/
