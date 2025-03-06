@@ -14,5 +14,6 @@ namespace The_Post.Models
 
         public virtual ICollection<Article> Articles { get; set; } = new List<Article>();
 
+        public ICollection<User> NewsletterUsers { get; set; } = new List<User>();
     }
 }

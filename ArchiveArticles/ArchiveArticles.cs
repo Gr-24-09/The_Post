@@ -4,9 +4,10 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using The_Post.Data;
 using The_Post.Models;
 
-namespace ArchiveArticles
+namespace AzureFunctions_Isolated
 {
     public class ArchiveArticles
     {
@@ -20,9 +21,10 @@ namespace ArchiveArticles
             _db = db;
         }
 
+        // 0 * * * * *     0 0 0 * * *
         // Timer setup to run every day at midnight
         [Function("ArchiveArticles")]
-        public void Run([TimerTrigger("0 0 0 * * *")] TimerInfo myTimer)
+        public void Run([TimerTrigger("0 * * * * *")] TimerInfo myTimer) // 0 0 * * * * runs every hour
         {   
             var articlesToArchive = _db.Articles
                 .Where(a => !a.IsArchived && a.DateStamp.AddDays(30) <= DateTime.UtcNow).ToList();

@@ -54,7 +54,7 @@
         </main>
 
         <!-- Most Popular - Right Sidebar -->
-        <div class="col-lg-2 order-2 order-lg-3">
+        <div class="col-lg-2 order-2 order-lg-3" style="z-index:1000 !important;">
             <div class="sticky-top" style="top: 2rem;">
                 <h3 class=" mt-3 pb-2 mb-4" style=" border-bottom: 1px solid #A8A8A8;">Most Popular</h3>
                 <div class="scrollable-sidebar-content">
@@ -80,24 +80,30 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+
         if (document.cookie.includes("cookiesConsent=true")) {
             document.getElementById('cookie-notice').style.display = 'none';
         }
 
-        // Handle Accept
-        document.getElementById('accept-cookies-btn').onclick = async function () {
-            try {
-                let response = await fetch('/Home/AcceptCookies', { method: 'POST' });
-                if (response.ok) {
-                    document.getElementById('cookie-notice').style.display = 'none';
-                } else {
-                    console.error("Failed to accept cookies");
-                }
-            } catch (error) {
-                console.error("Network error:", error);
-            }
-        };
+        const acceptCookiesBtn =  document.getElementById('accept-cookies-btn');
 
+        // If the button is rendered, i. e. if cookies haven't been accepted yet
+        if (acceptCookiesBtn){
+             // Handle Accept
+            acceptCookiesBtn.onclick = async function () {
+                try {
+                    let response = await fetch('/Home/AcceptCookies', { method: 'POST' });
+                    if (response.ok) {
+                        document.getElementById('cookie-notice').style.display = 'none';
+                    } else {
+                        console.error("Failed to accept cookies");
+                    }
+                } catch (error) {
+                    console.error("Network error:", error);
+                }
+            };
+        }
+       
         // Handle both Ignore buttons
         const ignoreButtons = ['ignore-cookies-btn', 'ignore-cookies-btn-header'];
         ignoreButtons.forEach(id => {

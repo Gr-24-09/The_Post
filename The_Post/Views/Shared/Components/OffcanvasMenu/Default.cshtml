@@ -50,7 +50,7 @@
 
             @if (User.Identity.IsAuthenticated && !User.IsInRole("Member"))
             {
-                <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Article" asp-action="Index">Admin Panel</a></li>    
+                <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="Admin" asp-action="Index">Admin Panel</a></li>    
             }
 
             <li class="nav-item my-3"><a class="nav-link sidebar-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Local">Local</a></li>

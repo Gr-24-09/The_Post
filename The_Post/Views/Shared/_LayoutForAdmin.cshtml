@@ -35,7 +35,7 @@
                     </a>
                 </li>
                 <li>
-                    <a asp-action="Index" asp-controller="Article" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
+                    <a asp-action="AllArticles" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-1 p-0 ps-3 text-bg-secondary">
                         <i class="fa fa-newspaper p-2"></i>
                         View Articles
                     </a>
@@ -91,6 +91,12 @@
                             Add New Subscription Type
                         </a>
                     </li>
+                    <li>
+                        <a asp-action="SubscriptionStats" asp-controller="Admin" class="nav-link link-body-emphasis rounded-start-pill mt-3 ms-4 p-0 ps-3 text-bg-secondary">
+                            <i class="fa fa-chart-column p-2"></i>
+                            Subscription Statistics
+                        </a>
+                    </li>
                 }
               
             </ul>            
@@ -133,19 +139,10 @@
                         </div>
 
 
-                        <div class="d-flex align-items-center">
-                            <div class="dropdown text-end header_Items_Admin me-3">
-                                <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                                </a>
-                                <ul class="dropdown-menu text-small">
-                                    <li><a class="dropdown-item" href="#">New project...</a></li>
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Sign out</a></li>
-                                </ul>
-                            </div>
+                        <div class="d-flex align-items-center me-2">
+                            <div class="side-controls right-controls">
+                                <partial name="_LoginPartial" />
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -170,6 +167,7 @@
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

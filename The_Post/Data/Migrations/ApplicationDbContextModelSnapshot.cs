@@ -37,6 +37,21 @@ namespace The_Post.Data.Migrations
                     b.ToTable("ArticleCategory");
                 });
 
+            modelBuilder.Entity("CategoryUser", b =>
+                {
+                    b.Property<int>("NewsletterCategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NewsletterUsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("NewsletterCategoriesId", "NewsletterUsersId");
+
+                    b.HasIndex("NewsletterUsersId");
+
+                    b.ToTable("CategoryUser");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -199,18 +214,10 @@ namespace The_Post.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("ImageMediumLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageOriginalLink")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ImageSmallLink")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
@@ -356,6 +363,9 @@ namespace The_Post.Data.Migrations
                     b.Property<DateTime?>("DOB")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("EditorsChoiceNewsletter")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -440,6 +450,21 @@ namespace The_Post.Data.Migrations
                     b.HasOne("The_Post.Models.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CategoryUser", b =>
+                {
+                    b.HasOne("The_Post.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("NewsletterCategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("The_Post.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("NewsletterUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Stripe;
 using The_Post.Data;
 using The_Post.Models;
+
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System;
+
+
+using The_Post.Models.VM;
 
 
 namespace The_Post.Services
@@ -103,6 +107,58 @@ namespace The_Post.Services
             return true;
         }
 
+
         
     }
+
+        public async Task<SubscriptionStatsVM> GetSubscriptionStats()
+        {
+            var now = DateTime.UtcNow;
+            var totalSubscribers = await _db.Subscriptions.CountAsync();
+            var activeSubscriptions = await _db.Subscriptions.CountAsync(s => s.Expires > now);
+            var expiredSubscriptions = totalSubscribers - activeSubscriptions;
+
+            return new SubscriptionStatsVM
+            {
+                TotalSubscribers = totalSubscribers,
+                ActiveSubscriptions = activeSubscriptions,
+                ExpiredSubscriptions = expiredSubscriptions
+            };
+        }
+
+        public async Task<List<SubscriptionStatsVM>> GetSubscriptionStatsOverTime()
+        {
+            // Get all subscriptions
+            var subscriptions = await _db.Subscriptions.ToListAsync();
+            var now = DateTime.UtcNow;
+
+            // Group in memory
+            var stats = subscriptions
+                .GroupBy(s => new { Year = s.Created.Year, Month = s.Created.Month })
+                .Select(g => new SubscriptionStatsVM
+                {
+                    Month = new DateTime(g.Key.Year, g.Key.Month, 1), // First day of the month
+                    TotalSubscribers = g.Count(),
+                    ActiveSubscriptions = g.Count(s => s.Expires > now),
+                    ExpiredSubscriptions = g.Count(s => s.Expires <= now)
+                })
+                .OrderBy(s => s.Month)
+                .ToList();
+
+            // If no data, provide at least one month of data (current month)
+            if (!stats.Any())
+            {
+                stats.Add(new SubscriptionStatsVM
+                {
+                    Month = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1),
+                    TotalSubscribers = 0,
+                    ActiveSubscriptions = 0,
+                    ExpiredSubscriptions = 0
+                });
+            }
+
+            return stats;
+        }
+    }    
+
 }

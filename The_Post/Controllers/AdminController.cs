@@ -7,6 +7,7 @@ using The_Post.Services;
 using The_Post.Middleware;
 using Microsoft.AspNetCore.Authorization;
 using X.PagedList.Extensions;
+using Microsoft.IdentityModel.Tokens;
 
 namespace The_Post.Controllers
 {
@@ -16,14 +17,16 @@ namespace The_Post.Controllers
         private readonly IArticleService _articleService;
         private readonly IEmployeeService _employeeService;
         private readonly IRoleService _roleService;
+        private readonly ISubscriptionService _subscriptionService;
         private readonly ApplicationDbContext _db;
         private const int MaxEditorsChoice = 5;
 
-        public AdminController(IArticleService articleService, IEmployeeService employeeService, IRoleService roleService, ApplicationDbContext db)
+        public AdminController(IArticleService articleService, IEmployeeService employeeService, IRoleService roleService, ISubscriptionService subscriptionService,ApplicationDbContext db)
         {            
             _articleService = articleService;
             _employeeService = employeeService;
             _roleService = roleService;
+            _subscriptionService = subscriptionService;
             _db = db;
         }
 
@@ -33,9 +36,6 @@ namespace The_Post.Controllers
         }
 
         //------------------------- EMPLOYEE ACTIONS -------------------------
-
-
-
         
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -138,7 +138,8 @@ namespace The_Post.Controllers
             return View(employees);
         }
 
-        //------------------------- OTHER ACTIONS -------------------------
+
+        //------------------------- ROLE ACTIONS -------------------------
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AssignRole()
@@ -173,6 +174,53 @@ namespace The_Post.Controllers
             model.Users = await _employeeService.GetAllEmployees();
             model.Roles = await _roleService.GetAllRolesAsync();
             return View(model);
+        }
+
+
+        //------------------------- ARTICLE ACTIONS -------------------------
+
+        [Authorize(Roles = "Editor,Admin")]
+        public IActionResult AllArticles(int? page, string sortOrder, bool? includeArchived)
+        {
+            // Current page number
+            int pageNumber = page ?? 1;
+            // Number of articles per page
+            int pageSize = 12;
+
+            var articles = _articleService.GetAllArticles();
+
+            if (articles.IsNullOrEmpty())
+            {
+                articles = new List<Article>();
+            }
+
+            // Excludes archived articles if the user has chosen to omit them
+            if (includeArchived != true)
+            {
+                articles = articles.Where(a => !a.IsArchived).ToList();
+            }
+
+            // Sorts the articles based on the sortOrder parameter
+            // If no sortOrder is provided, the articles are returned in their default order (newest first)
+            articles = sortOrder switch
+            {
+                "title_asc" => articles.OrderBy(a => a.HeadLine).ToList(),
+                "title_desc" => articles.OrderByDescending(a => a.HeadLine).ToList(),
+                "date_asc" => articles.OrderBy(a => a.DateStamp).ToList(),
+                "date_desc" => articles.OrderByDescending(a => a.DateStamp).ToList(),
+                _ => articles
+            };
+
+            var onePageOfArticles = articles.ToPagedList(pageNumber, pageSize);
+
+            var viewModel = new AdminAllArticlesVM()
+            {
+                Articles = onePageOfArticles,
+                IncludeArchived = includeArchived ?? false,
+                SortOrder = sortOrder
+            };
+
+            return View(viewModel);
         }
 
         [Authorize(Roles = "Editor,Admin")]
@@ -254,9 +302,29 @@ namespace The_Post.Controllers
             return View(searchVM);
         }
 
-        public IActionResult SubscriptionStats()
+
+        //------------------------- SUBSCRIPTION ACTIONS -------------------------
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SubscriptionStats()
         {
-            return View();
+            var stats = await _subscriptionService.GetSubscriptionStats();
+            return View(stats); 
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SubscriptionStatsOverTime()
+        {
+            var stats = await _subscriptionService.GetSubscriptionStatsOverTime();
+            var jsonData = stats.Select(s => new
+            {
+                Month = s.Month.ToString("yyyy-MM"), // Format for the X-axis
+                TotalSubscribers = s.TotalSubscribers,
+                ActiveSubscriptions = s.ActiveSubscriptions,
+                ExpiredSubscriptions = s.ExpiredSubscriptions
+            }).ToList();
+
+            return Json(jsonData);
         }
     }
 }

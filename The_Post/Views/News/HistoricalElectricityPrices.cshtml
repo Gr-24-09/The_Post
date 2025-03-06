@@ -1,0 +1,38 @@
+﻿@model List<Azure.Data.Tables.TableEntity>
+
+@{
+    ViewData["Title"] = "Historical Electricity Prices";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Region</th>
+                <th>Hour</th>
+                <th>Price (EUR)</th>
+                <th>Price (SEK)</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var price in Model)
+            {
+                <tr>
+                    <td>@price["region"]</td>
+                    <td>@price["hour"]</td>
+                    <td>@price["price_eur"]</td>
+                    <td>@price["price_sek"]</td>
+                    <td>@price["timestamp"]</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No data available for this region and date.</p>
+}
