@@ -3,137 +3,241 @@
     ViewData["Title"] = "Index";
     Layout = "_LayoutForAdmin";
 }
+<!-- Combined CSS: existing custom-card/custom-icon and the new grid layout -->
+<style>
+    /* Default for large screens */
+    .custom-card {
+        --bs-aspect-ratio: 40%;
+    }
+
+    .custom-icon {
+        font-size: 3rem;
+    }
+
+    /* Adjust aspect ratio for screens between 1590px and 1360px */
+    @@media (max-width: 1590px) and (min-width: 1360px) {
+        .custom-card {
+            --bs-aspect-ratio: 50%;
+        }
+
+        .custom-icon {
+            font-size: 3rem;
+        }
+    }
+
+    /* Adjust aspect ratio for screens between 1360px and 768px */
+    @@media (max-width: 1360px) and (min-width: 768px) {
+        .custom-card {
+            --bs-aspect-ratio: 56%;
+        }
+
+        .custom-icon {
+            font-size: 2.8rem;
+        }
+    }
+
+    /* For small screens (max-width: 768px), reduce card height and boost icon size */
+    @@media (max-width: 768px) {
+        .custom-card {
+            --bs-aspect-ratio: 26%;
+        }
+
+        .custom-icon {
+            font-size: 3.5rem;
+        }
+    }
+
+    /* Make the chart responsive */
+    #subscriptionBarChart {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Dashboard Grid Layout */
+    .dashboard-grid {
+        display: grid;
+        gap: 20px;
+    }
+    /* For large screens: 4 columns with grid‑template‑areas */
+    @@media (min-width: 1200px) {
+        .dashboard-grid {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            grid-template-areas:
+                "articles employees users subscriptions"
+                "mostLiked extra1 extra2 subscriptions";
+        }
+        /* Assign grid areas */
+        .total-articles {
+            grid-area: articles;
+        }
+
+        .total-employees {
+            grid-area: employees;
+        }
+
+        .total-users {
+            grid-area: users;
+        }
+
+        .subscriptions {
+            grid-area: subscriptions;
+        }
+
+        .most-liked {
+            grid-area: mostLiked;
+        }
+
+        .extra-card-1 {
+            grid-area: extra1;
+        }
+
+        .extra-card-2 {
+            grid-area: extra2;
+        }
+    }
+    /* For medium screens (max-width: 1199px), use a single column layout and reorder */
+    @@media (max-width: 1199px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+        /* Force the subscription card to appear last */
+        .subscriptions {
+            order: 10;
+        }
+    }
+    /* For small screens (max-width: 767px): stack all cards */
+    @@media (max-width: 767px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 <div class="container-fluid py-3 px-4">
-    <h1 class="mb-4"><em><strong>Admin Dashboard</strong></em</h1>
-    <hr />
-    <div class="row g-3">
-        <!-- Statistics Cards -->
-        <div class="col-md-3">
-            <div class="card shadow-sm rounded-4 ratio ratio-16x9">
-                <div class="card-body">
-                    <p class="card-title"><strong>@Model.TotalArticles</strong></p> 
-                    <h5 class="card-text"><strong>Total Articles</strong></h5>
-                    <i class="fa-solid fa-newspaper"></i>
+    <!-- All Cards in a Single Dashboard Grid -->
+    <div class="dashboard-grid">
+        <!-- Total Articles Card -->
+        <div class="card total-articles shadow-sm rounded-4 custom-card">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 fs-1 fw-bold">@Model.TotalArticles</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center w-100">
+                    <h5 class="m-0 fs-6"><strong>Articles</strong></h5>
+                    <i class="fa-solid fa-newspaper custom-icon"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm rounded-4 ratio ratio-16x9">
-                <div class="card-body p-2">            
-                    <div class="position-relative h-100">
-                        <p class="card-title position-absolute top-0 start-0 ms-3 display-5 fw-bold">@Model.TotalArticles</p>           
-                        <h5 class="card-text position-absolute bottom-0 start-0 ms-3 mb-4"><strong>Total Articles</strong></h5>            
-                        <i class="fa-solid fa-newspaper position-absolute bottom-0 end-0 m-2 pe-2 display-1"></i>
+
+        <!-- Total Employees Card -->
+        <div class="card total-employees shadow-sm rounded-4 custom-card">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 display-5 fw-bold">@Model.TotalEmployees</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center w-100">
+                    <h5 class="m-0 fs-6"><strong>Employees</strong></h5>
+                    <i class="fa-solid fa-user-tie custom-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Users Card -->
+        <div class="card total-users shadow-sm rounded-4 custom-card">
+            <div class="card-body d-flex flex-column h-100 pt-0 px-3 pb-3 overflow-hidden">
+                <div class="flex-shrink-0">
+                    <p class="m-0 display-5 fw-bold">@Model.TotalUsers</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center w-100">
+                    <h5 class="m-0 fs-6"><strong>Registered Users</strong></h5>
+                    <i class="fa-solid fa-users custom-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Subscriptions Card + Chart -->
+        <div class="card subscriptions shadow-sm rounded-4 custom-card">
+            <div class="card-body d-flex flex-column h-100">
+                <div class="flex-shrink-0">
+                    <p class="m-0 display-5 fw-bold">@Model.ActiveSubscriptions</p>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center w-100">
+                    <h5 class="m-0 fs-6"><strong>Active Subscriptions</strong></h5>
+                    <i class="fa-solid fa-pen-fancy custom-icon"></i>
+                </div>
+                <!-- Chart inside the card -->
+                <div class="mt-3 flex-grow-1">
+                    <canvas id="subscriptionBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Most Liked Article Card -->
+        <div class="card most-liked shadow-sm rounded-0">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><strong>Most Liked Article</strong></h5>
+                <!-- Inner Card for Article -->
+                <div class="card border-0 shadow-sm rounded-3 mx-auto" style="max-width: 250px;">
+                    <img src="@Model.MostLikedImage" class="card-img-top img-fluid rounded-top" alt="No Article Image">
+                    <div class="card-body p-2 text-center">
+                        <h6 class="card-title mb-1">@Model.MostLikedArticle</h6>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Most Liked Article</h5>
-                    <div class="ratio ratio-16x9 img-thumbnail" style="max-height: 200px; max-width: 300px;">
-                        <img src="@Model.MostLikedImage" class="card-img-top" alt="No Article Image" >
-                    </div>
-                    <h5 class="card-text">@Model.MostLikedArticle</h5>
-                    <p class="card-text small">Likes: @Model.MostLikedArticleLikes</p>
-                </div>
-            </div>            
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Total Employees</h5>
-                    <p class="card-text display-6">@Model.TotalEmployees</p>
-                    <br />
-                    <p class="card-text display-6">Admins: @Model.TotalAdmin</p>
-                    <p class="card-text display-6">Editors: @Model.TotalEditors</p>
-                    <p class="card-text display-6">Writers: @Model.TotalWriters</p>
+                <!-- Likes Count: number on left, "Likes" text vertically centered on right -->
+                <div class="d-flex align-items-center justify-content-start mt-1 gap-1">
+                    <p class="m-0 display-5 fw-bold">@Model.MostLikedArticleLikes</p>
+                    <p class="card-text m-0"><strong>Likes</strong></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Total Users</h5>
-                    <p class="card-text display-6">@Model.TotalUsers</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Active Subscriptions</h5>
-                    <p class="card-text display-6">@Model.ActiveSubscriptions</p>
-                </div>
-            </div>
-        </div>
-        
-    </div>
 
-    <!-- Recent Activity -->
-    @* <div class="mt-4">
-        <h4>Recent Activity</h4>
-        <ul class="list-group">
-            @foreach (var activity in Model.RecentActivities)
-            {
-                <li class="list-group-item">@activity</li>
-            }
-        </ul>
-    </div> *@
+        <!-- Extra Card 1 -->
+        <div class="card extra-card-1 shadow-sm rounded-0 custom-card">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Extra Card 1</strong></h5>
+                <p>Content goes here...</p>
+            </div>
+        </div>
 
-    <!-- Chart Section -->
-    <div class="mt-4">
-        <h4>Subscription Trends</h4>
-        <canvas id="subscriptionBarChart"></canvas>
+        <!-- Extra Card 2 -->
+        <div class="card extra-card-2 shadow-sm rounded-0 custom-card">
+            <div class="card-body">
+                <h5 class="card-title"><strong>Extra Card 2</strong></h5>
+                <p>More content...</p>
+            </div>
+        </div>
     </div>
 </div>
 
-
 <script>
-    // Wait for the DOM to be loaded
-    document.addEventListener("DOMContentLoaded", async function () {
-
-        // ----- Bar Chart -----
-
-        var ctx = document.getElementById('subscriptionBarChart').getContext('2d'); // Get the canvas element and the rendering context type
-
-        // Create a new chart
+    document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document.getElementById('subscriptionBarChart').getContext('2d');
         var subscriptionBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Total', 'Active', 'Expired'], // Labels for the X axis
+                labels: ['Total', 'Active', 'Expired'],
                 datasets: [{
                     label: 'Subscriptions',
-                    data: [@Model.TotalSubscribers, @Model.ActiveSubscriptions, @Model.ExpiredSubscriptions], // Data values
-                    backgroundColor: ['#284ba7', '#28a745', '#dc3545'], // Colors for the bars
-                    borderColor: ['#284ba7','#28a745', '#dc3545'], // Border colors for the bars
-                    borderWidth: 1, // Border width for the bars
-                    barPercentage: 0.3, // Bar will occupy 60% of the category width
-                    categoryPercentage: 0.8 // Category will occupy 80% of the available width
+                    data: [@Model.TotalSubscribers, @Model.ActiveSubscriptions, @Model.ExpiredSubscriptions],
+                    backgroundColor: ['#284ba7', '#28a745', '#dc3545'],
+                    borderColor: ['#284ba7', '#28a745', '#dc3545'],
+                    borderWidth: 1,
+                    barPercentage: 0.3,
+                    categoryPercentage: 0.8
                 }]
             },
-            options: { // Chart configuration options
-                responsive: false, 
+            options: {
+                responsive: false,
                 plugins: {
-                    legend: {
-                        position: false, 
-                    },
-                    tooltip: {
-                        enabled: false 
-                    }
+                    legend: { position: false },
+                    tooltip: { enabled: false }
                 },
-                scales: { // Scales for the chart
-                    x: {
-                        beginAtZero: true // Start the X axis at zero
-                    },
-                    y: {
-                        beginAtZero: true  // Start the Y axis at zero
-                    }
+                scales: {
+                    x: { beginAtZero: true },
+                    y: { beginAtZero: true }
                 }
             }
         });
     });
 </script>
-
