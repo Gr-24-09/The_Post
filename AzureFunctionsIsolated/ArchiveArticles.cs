@@ -39,6 +39,9 @@ namespace AzureFunctionsIsolated
 
             foreach (var article in articlesToArchive)
             {
+                if (article.EditorsChoice)
+                    article.EditorsChoice = false;
+
                 article.IsArchived = true;
             }
 
