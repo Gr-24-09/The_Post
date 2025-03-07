@@ -59,7 +59,7 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
             }
 
             // Create the Stripe Checkout session options
-            var domain = "https://thepost.azurewebsites.net";
+            var domain = "https://localhost:7116/";
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string> { "card" },
@@ -80,8 +80,8 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
                     },
                 },
                 Mode = "payment", // For one-time payments
-                SuccessUrl = domain + Url.Page("Subscription", new { handler = "Success", subscriptionTypeId }),
-                CancelUrl = domain + Url.Page("Subscription", new { handler = "Cancel", subscriptionTypeId }),
+                SuccessUrl = Url.Page("Subscription", null, new { handler = "Success", subscriptionTypeId }, Request.Scheme),
+                CancelUrl = domain + Url.Page("Subscription", new { handler = "Cancel", subscriptionTypeId }) 
             };
 
             var service = new SessionService();
@@ -96,20 +96,15 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
-            {
                 return Unauthorized();
-            }
 
-            var subscription = await _subscriptionService.AddSubscription(userId, subscriptionTypeId);
-            if (subscription == null)
-            {
-                TempData["ErrorMessage"] = "Failed to add subscription.";
-                return RedirectToPage("Subscription");
-            }
-            // Redirect with the expiration date as a query parameter
-            return RedirectToPage("SubscriptionSuccess", new { expireDate = subscription.Expires.ToString("yyyy-MM-dd") });
+            // Send confirmation email before adding subscription
+            await _subscriptionService.SendConfirmationEmailAsync(userId, subscriptionTypeId, Request.Scheme + "://" + Request.Host);
+
+            // Redirect to confirmation page (informing user that an email has been sent)
+            return RedirectToPage("SubscriptionEmailSent");
         }
-        
+
         public IActionResult OnGetCancel(int subscriptionTypeId)
         {
             var userId = _userManager.GetUserId(User);
