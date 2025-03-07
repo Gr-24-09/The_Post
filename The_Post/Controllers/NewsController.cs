@@ -54,7 +54,7 @@ namespace The_Post.Controllers
             {
                 try
                 {
-                    var date =DateTime.Now.AddDays(-1).ToString( "yyyy-MM-dd");
+                    var date = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
                     var regions = new List<string> { "SE1", "SE2", "SE3", "SE4" };
                     var allPrices = new List<TableEntity>();
 
