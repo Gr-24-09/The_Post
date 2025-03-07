@@ -155,5 +155,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Cookie notice
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (document.cookie.includes("cookiesConsent=true")) {
+        document.getElementById('cookie-notice').style.display = 'none';
+    }
+
+    const acceptCookiesBtn = document.getElementById('accept-cookies-btn');
+
+    // If the button is rendered, i. e. if cookies haven't been accepted yet
+    if (acceptCookiesBtn) {
+        // Handle Accept
+        acceptCookiesBtn.onclick = async function () {
+            try {
+                let response = await fetch('/BaseCookies/AcceptCookies', { method: 'POST' });
+                if (response.ok) {
+                    document.getElementById('cookie-notice').style.display = 'none';
+                } else {
+                    console.error("Failed to accept cookies");
+                }
+            } catch (error) {
+                console.error("Network error:", error);
+            }
+        };
+    }
+
+    // Handle both Ignore buttons
+    const ignoreButtons = ['ignore-cookies-btn', 'ignore-cookies-btn-header'];
+    ignoreButtons.forEach(id => {
+        const button = document.getElementById(id);
+        if (button) {
+            button.onclick = function () {
+                document.getElementById('cookie-notice').style.display = 'none';
+            };
+        }
+    });
+});
 
 

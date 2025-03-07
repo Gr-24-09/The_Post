@@ -15,7 +15,7 @@ using System.Drawing.Printing;
 
 namespace The_Post.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticleController : BaseCookiesController
     {
         private readonly IArticleService _articleService;
         private readonly IRequestService _requestService;
@@ -23,6 +23,7 @@ namespace The_Post.Controllers
 
         private readonly IEmployeeService _employeeService;
         public ArticleController(IArticleService articleService, IRequestService requestService, UserManager<User> userManager, IEmployeeService employeeService)
+            : base(articleService)
         {
             _articleService = articleService;
             _requestService = requestService;
