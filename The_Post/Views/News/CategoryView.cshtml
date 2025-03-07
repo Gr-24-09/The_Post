@@ -1,17 +1,9 @@
-﻿@model The_Post.Models.VM.CategoryPageVM
+﻿
+@model The_Post.Models.VM.CategoryPageVM
 
 @{
     ViewData["Title"] = Model.Category;
 }
-
-<div>
-
-    @if (Model.Category == "Economy")
-    {
-        @await Component.InvokeAsync("ElectricityPrices")
-    }
-</div>
-
 <div class="col-md-10 mx-auto">
 
     <h1 class="category-title mx-auto col-lg-10">@Model.Category</h1>
@@ -23,23 +15,76 @@
 
 </div>
 
-@if (Model.Category == "Economy")
-{
-    <div>
-        <h3>Historical Electricity Prices</h3>
-        <a href="@Url.Action("HistoricalElectricityPrices", "News", new { region = "SE1", date = DateTime.UtcNow.ToString("yyyy-MM-dd") })">View Prices for SE1</a>
-    </div>
-}
+<div>
+
+    @if (Model.Category == "Economy")
+    {
+        @await Component.InvokeAsync("ElectricityPrices")
+    }
+</div>
+
+@* <div class="col-md-10 mx-auto">
+
+    <h1 class="category-title mx-auto col-lg-10">@Model.Category</h1>
+
+    @foreach (var article in Model.Articles)
+    {
+        <partial name="_ArticleListingPartial" model="article"></partial>
+    }
+
+</div>
+ *@
+<div style="text-align:center">
+    @if (Model.Category == "Economy")
+    {
+        <a href="@Url.Action("HistoricalElectricityPrices", "News", new { date = "yyyy-MM-dd" })">View Historical Electricity Prices for All Regions</a>
+    }
+</div>
+
 
 @* <div>
+ @if (Model.Category == "Economy")
+{
+    @if (Model.HistoricalElectricityPrices != null && Model.HistoricalElectricityPrices.Any())
+    {
+        <h3>Historical Electricity Prices</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Region</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var price in Model.HistoricalElectricityPrices)
+                {
+                    <tr>
+   
+                        <td>@price.RowKey</td> <!-- Assuming RowKey is the region -->
+                        <td>@price["price_sek"]</td> <!-- Assuming the price is stored in a field called "Price" -->
+                        <td>@price.PartitionKey</td> <!-- Assuming PartitionKey is the date -->
+                    </tr>
+                }
+            </tbody>
+        </table> *@
+  @*   }
+    else
+    {
+        <p>No historical data found for this date range.</p>
+    }
+}
+</div> *@
+
+ <div>
     <h3>Articles</h3>
     <ul>
         @foreach (var article in Model.Articles)
         {
             <li>
-                <a href="@Url.Action("Details", "Article", new { id = article.Id })">@article.HeadLine</a>
+                <a href="@Url.Action("Details", "Article", new { id = article.Id })">@article.Categories</a>
             </li>
         }
     </ul>
 </div>
- *@
+ 

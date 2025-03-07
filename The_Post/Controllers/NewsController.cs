@@ -35,58 +35,127 @@ namespace The_Post.Controllers
             return View();
         }
 
-        public IActionResult CategoryView(string categoryName)
+        public async Task<IActionResult> CategoryView(string categoryName)
         {
+            var model = new CategoryPageVM()
+            {
+                //Articles = articles,
+                Category = categoryName
+            };
+            
             // Redirects to the weather action if category is weather
             if (categoryName == "Weather")
                 return RedirectToAction("Weather", "Article");
 
+            var articles = _articleService.GetAllArticlesByCategoryName(categoryName);
+            model.Articles = articles;
+
             if (categoryName == "Economy")
             {
-                return RedirectToAction("HistoricalElectricityPrices", new { region = "SE1", date = "2025-03-03" });
+                try
+                {
+                    var date =DateTime.Now.AddDays(-1).ToString( "yyyy-MM-dd");
+                    var regions = new List<string> { "SE1", "SE2", "SE3", "SE4" };
+                    var allPrices = new List<TableEntity>();
+
+                    foreach (var region in regions)
+                    {
+                        var prices = await GetHistoricalElectricityPrices(region, date);
+                        allPrices.AddRange(prices);
+                    }
+                    if (allPrices.Any())
+                    {
+                        model.HistoricalElectricityPrices = allPrices;  // Assign prices to the view model
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    // Log any errors that occur during the query
+                    Console.WriteLine($"Error querying historical electricity prices: {ex.Message}");
+                    model.NoHistoricalData = true;  // Flag to indicate that there was an error
+                }
             }
-
-            var articles = _articleService.GetAllArticlesByCategoryName(categoryName);
-
-            var model = new CategoryPageVM()
-            {
-                Articles = articles,
-                Category = categoryName
-            };
-
-
             return View(model);
-        }
+        }   
+        
 
-        [HttpGet]
-        public async Task<IActionResult> HistoricalElectricityPrices(string region, string date)
+        private async Task<List<TableEntity>> GetHistoricalElectricityPrices(string region, string date)
         {
-            var partitionKey = date;
+            //var partitionKey = date;
+            if (string.IsNullOrEmpty(region))
+            {
+                // Handle the case where region is null or empty
+                Console.WriteLine("Region is null or empty. Skipping the operation.");
 
-            // Create next prefix by increasing the last character
-            // e.g., "SE1" -> "SE2"
-            string nextRegion = region[..^1] + (char)(region[^1] + 1);
+                return new List<TableEntity>();
+            }
+                var partitionKey = date;
 
-            // Create a filter to query the table
-            // eq = equals, ge = greater than or equal to, lt = less than
-            // e.g., PartitionKey eq "2025-03-03" and RowKey ge "SE1" and RowKey lt "SE2"
+                var regionBase = region.Substring(0, region.Length - 1); // "SE"
+                var regionNumber = int.Parse(region.Substring(region.Length - 1)); // "1" -> 1
+
+            // Increment the numeric part to get the next region
+                regionNumber++;
+
+            // Combine the base and the incremented numeric part to get the next region (e.g., "SE1" becomes "SE2")
+               string nextRegion = regionBase + (regionNumber+1).ToString();
+
+            // Create the query filter
             var filter = TableClient.CreateQueryFilter($"PartitionKey eq {partitionKey} and RowKey ge {region} and RowKey lt {nextRegion}");
 
             var prices = new List<TableEntity>();
-
             await foreach (var entity in _tableClient.QueryAsync<TableEntity>(filter))
             {
                 prices.Add(entity);
             }
 
-            if (prices.Any())
-            {
-                return View(prices);
-            }
-            else
-            {
-                return View("NoHistoricalData"); // Create a NoData view to handle cases where no data is found
-            }
+            return prices;
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> HistoricalElectricityPrices(string date)
+        {
+            var model = new HistoricalElectricityPricesViewModel();
+            var regions = new List<String> { "SE1", "SE2", "SE3", "SE4" };
+
+            var allPrices = new List<TableEntity>();
+          
+            try
+            {
+                var queryDate = string.IsNullOrEmpty(date) ? DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd") : date;
+                //var regions = new List<String> { "SE1","SE2","SE3","SE4" };
+
+                //var allPrices = new List<TableEntity>();
+                if (regions != null && regions.Any())
+                { 
+                    foreach (var region in regions)
+                {
+                    var prices = await GetHistoricalElectricityPrices(region, queryDate);
+                    allPrices.AddRange(prices);
+                }
+                 }
+
+                if (allPrices.Any())
+                {
+                    model.ElectricityPrices = allPrices;
+                    model.SelectedDate = queryDate;
+                }
+                else
+                {
+                    model.NoHistoricalData = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error if anything goes wrong
+                Console.WriteLine($"Error querying historical electricity prices: {ex.Message}");
+                model.ErrorOccurred = true;
+            }
+            return View(model);
+        }
+
     }
-}
+    }
+
