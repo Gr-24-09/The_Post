@@ -104,3 +104,56 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     });
 });
+
+/*----- Newsletter subscription form --------*/
+document.addEventListener("DOMContentLoaded", function () {
+    const subscribeCheckbox = document.getElementById("subscribeCheckbox");
+    const categoryCheckboxes = document.querySelectorAll(".categoryCheckbox"); // Includes the editors choice checkbox
+    const saveButton = document.querySelector('input[type="submit"]');
+    const categoriesLabel = document.querySelector(".newsletterSelections > label.fs-5.fw-bold");
+
+    // Function to enable/disable category checkboxes based on subscription
+    function toggleNewsletterSelections() {
+        const isSubscribed = subscribeCheckbox.checked;
+
+        categoryCheckboxes.forEach((checkbox) => {
+            checkbox.disabled = !isSubscribed;
+            if (!isSubscribed) {
+                checkbox.checked = false; // Uncheck all boxes if not subscribed
+            }
+            const label = checkbox.closest(".d-flex")?.querySelector("label"); // Find label for each checkbox
+            if (label) {
+                label.classList.toggle("greyed-out", checkbox.disabled); // Add "greyed-out" css class if checkbox is disabled
+            }
+        });
+
+        categoriesLabel.classList.toggle("greyed-out", !isSubscribed); // Greys out the label for categories if not subscribed
+
+        updateSaveButtonState(); // Re-check button state when toggling subscription
+    }
+
+    // Function to update the Save button's disabled state
+    function updateSaveButtonState() {
+        const isSubscribed = subscribeCheckbox.checked;
+        const anyChecked = Array.from(categoryCheckboxes).some(checkbox => checkbox.checked);
+        if (!isSubscribed || anyChecked) {
+            saveButton.disabled = false; // Enable save button if subscribed or any checkbox is checked
+        } else {
+            saveButton.disabled = true; // Disable save button if not subscribed and no category is checked
+        }
+    }
+
+    // Initialize the form on load
+    toggleNewsletterSelections(); // Call the function on load to set the initial state
+
+    // Event listener to toggle the newsletter selections when the subscribe checkbox changes
+    subscribeCheckbox.addEventListener("change", toggleNewsletterSelections);
+
+    // Event listener to handle any checkbox change to update the save button state
+    categoryCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", updateSaveButtonState);
+    });
+});
+
+
+

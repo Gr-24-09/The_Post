@@ -405,11 +405,17 @@ table.prices-table {
     border: 1px solid #ddd;
 }
 
-h2 {
+/*h2 {
     text-align: center;
     font-size: 40px;
     color: #0A2472;
     border: 1px solid #A8A8A8;
+}*/
+
+
+/* For the newsletter form so the labels become grey when the user isn't subcribed */
+.greyed-out {
+    color: gray !important;
 }
 
 /*-----------------------------------------------------*/
@@ -459,3 +465,4 @@ h2 {
         }
 
 /*-----------------------------------------------------*/
+

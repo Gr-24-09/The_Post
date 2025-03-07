@@ -13,9 +13,12 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
         private readonly IArticleService _articleService;
         private readonly UserManager<User> _userManager;
 
-        public List<SelectListItem> AvailableCategories { get; set; }
+        public List<SelectListItem> AvailableCategories { get; set; } = new List<SelectListItem>();
 
         [BindProperty] // Binds the property to the request data so that the property is automatically populated with the request data
+        public bool SubscribeToNewsletter { get; set; }
+
+        [BindProperty] 
         public bool EditorsChoiceSelection { get; set; }
 
         [BindProperty]
@@ -34,17 +37,19 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
                 .Include(u => u.NewsletterCategories) // Laddar kategorierna explicit
                 .FirstOrDefaultAsync();
 
+            SubscribeToNewsletter = loggedInUser.IsSubscribedToNewsletter;
             AvailableCategories = _articleService.GetAllCategoriesSelectList();
             EditorsChoiceSelection = loggedInUser.EditorsChoiceNewsletter;
             SelectedCategoryIds = loggedInUser.NewsletterCategories.Select(c => c.Id).ToList();
         }
 
+
     
-public async Task<IActionResult> OnPostSaveAsync()
+        public async Task<IActionResult> OnPostSaveAsync()
         {
             if (!ModelState.IsValid)
             {
-                return Page();
+                return RedirectToPage();
             }
 
             var loggedInUser = await _userManager.Users
@@ -68,6 +73,9 @@ public async Task<IActionResult> OnPostSaveAsync()
             // Update the Editors' Choice selection
             loggedInUser.EditorsChoiceNewsletter = EditorsChoiceSelection;
 
+            // Updates the status of the newsletter subscription for the user
+            loggedInUser.IsSubscribedToNewsletter = SubscribeToNewsletter;
+
             // Save changes
             var result = await _userManager.UpdateAsync(loggedInUser);
 
@@ -80,10 +88,7 @@ public async Task<IActionResult> OnPostSaveAsync()
                 TempData["ErrorMessage"] = "Failed to save your preferences. Please try again.";
             }
       
-
             return RedirectToPage();
         }
-
-    
     }
 }
