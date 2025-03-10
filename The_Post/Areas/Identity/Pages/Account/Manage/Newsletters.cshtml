@@ -15,7 +15,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <label class="fs-4 fw-bolder mb-3">Subscribe to the newsletter</label>
                 <div class="form-check form-switch">
-                    <input class="form-check-input newsletter-checkbox fs-4" type="checkbox" asp-for="SubscribeToNewsletter" value="true" checked="@Model.SubscribeToNewsletter" id="subscribeCheckbox" />
+                    <input class="form-check-input  fs-4" type="checkbox" asp-for="SubscribeToNewsletter" value="true" checked="@Model.SubscribeToNewsletter" id="subscribeCheckbox" />
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <label class="fs-5 fw-bold">Include Editors' Choice:</label>
                     <div class="form-check form-switch">
-                        <input class="categoryCheckbox form-check-input newsletter-checkbox fs-5" type="checkbox" asp-for="EditorsChoiceSelection" value="true" checked="@Model.EditorsChoiceSelection" />
+                        <input class="categoryCheckbox form-check-input  fs-5" type="checkbox" asp-for="EditorsChoiceSelection" value="true" checked="@Model.EditorsChoiceSelection" />
                     </div>
                 </div>
 
@@ -40,7 +40,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <label class="fs-5">@category.Text</label>
                         <div class="form-check form-switch">
-                            <input class="categoryCheckbox form-check-input newsletter-checkbox fs-5" type="checkbox"
+                            <input class="categoryCheckbox form-check-input  fs-5" type="checkbox"
                                    name="SelectedCategoryIds"
                                    value="@category.Value"
                                    checked="@(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)))"
