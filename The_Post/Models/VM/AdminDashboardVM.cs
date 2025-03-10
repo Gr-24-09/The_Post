@@ -4,8 +4,8 @@
     {
         public int TotalArticles { get; set; }
         public int ArchivedArticles { get; set; }
-        public string MostLikedArticle { get; set; }
-        public string MostLikedImage { get; set; }
+        public string? MostLikedArticle { get; set; }
+        public string? MostLikedImage { get; set; }
         public int MostLikedArticleLikes { get; set; }
         public int TotalEmployees { get; set; }
         public int TotalAdmin { get; set; }
@@ -15,6 +15,7 @@
         public int TotalSubscribers { get; set; }
         public int ActiveSubscriptions { get; set; }
         public int ExpiredSubscriptions { get; set; }
-        public int RecentActivities { get; set; }
+        public int TotalViews { get; set; }
+        public List<int> UserAges { get; set; } = new List<int>();
     }
 }

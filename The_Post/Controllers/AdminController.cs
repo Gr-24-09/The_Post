@@ -36,6 +36,7 @@ namespace The_Post.Controllers
             var archived = _db.Articles.Where(a => a.IsArchived).Count();
             var allArticles = _articleService.GetAllArticles();
             var mostLiked = allArticles.OrderByDescending(a => a.Likes.Count).FirstOrDefault();
+            var totalViews = allArticles.Sum(a => a.Views);
 
             string mostLikedArticle = mostLiked?.HeadLine ?? "No articles available";
             var mostLikedImage = mostLiked?.ImageSmallLink ?? "No image available";
@@ -49,7 +50,14 @@ namespace The_Post.Controllers
 
             var totalUsers = _db.Users.Where(u => u.IsEmployee == false).Count();
             var stats = await _subscriptionService.GetSubscriptionStats();
-            
+
+            var userAges = _db.Users
+            .Where(u => !u.IsEmployee && u.DOB.HasValue)
+            .AsEnumerable()
+            .Select(u => DateTime.Now.Year - u.DOB.Value.Year -
+                (DateTime.Now.DayOfYear < u.DOB.Value.DayOfYear ? 1 : 0))
+            .ToList();
+
 
             var viewModel = new AdminDashboardVM
             {
@@ -58,6 +66,7 @@ namespace The_Post.Controllers
                 MostLikedArticle = mostLikedArticle,
                 MostLikedImage = mostLikedImage,
                 MostLikedArticleLikes = mostLikedCount,
+                TotalViews = totalViews,
                 TotalEmployees = totalEmployees,
                 TotalAdmin = totalAdmins,
                 TotalEditors = totalEditor,
@@ -65,7 +74,8 @@ namespace The_Post.Controllers
                 TotalUsers = totalUsers,
                 TotalSubscribers = stats.TotalSubscribers,
                 ActiveSubscriptions = stats.ActiveSubscriptions,
-                ExpiredSubscriptions = stats.ExpiredSubscriptions
+                ExpiredSubscriptions = stats.ExpiredSubscriptions,
+                UserAges = userAges
 
             };
 
