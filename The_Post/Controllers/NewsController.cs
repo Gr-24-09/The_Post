@@ -55,12 +55,13 @@ namespace The_Post.Controllers
                 try
                 {
                     var date = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
-                    var regions = new List<string> { "SE1", "SE2", "SE3", "SE4" };
+                    //var regions = new List<string> { "SE1", "SE2", "SE3", "SE4" };
+                    var hours = new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
                     var allPrices = new List<TableEntity>();
 
-                    foreach (var region in regions)
+                    foreach (var hour in hours) //iterating through all the hours
                     {
-                        var prices = await GetHistoricalElectricityPrices(region, date);
+                        var prices = await GetHistoricalElectricityPrices(hour, date);
                         allPrices.AddRange(prices);
                     }
                     if (allPrices.Any())
@@ -80,29 +81,35 @@ namespace The_Post.Controllers
         }   
         
 
-        private async Task<List<TableEntity>> GetHistoricalElectricityPrices(string region, string date)
+        private async Task<List<TableEntity>> GetHistoricalElectricityPrices(string hour, string date)
         {
             //var partitionKey = date;
-            if (string.IsNullOrEmpty(region))
+            if (string.IsNullOrEmpty(hour) || string.IsNullOrEmpty(date))
             {
                 // Handle the case where region is null or empty
-                Console.WriteLine("Region is null or empty. Skipping the operation.");
+                Console.WriteLine("Hour is null or empty. Skipping the operation.");
 
                 return new List<TableEntity>();
             }
                 var partitionKey = date;
 
-                var regionBase = region.Substring(0, region.Length - 1); // "SE"
-                var regionNumber = int.Parse(region.Substring(region.Length - 1)); // "1" -> 1
+                var rowKey = hour;
+
+                //var hourNumber = int.Parse(hour);  //Directly parsing the hour
+
+            //var regionBase = region.Substring(0, region.Length - 1); // "SE"
+            //var regionNumber = int.Parse(region.Substring(region.Length - 1)); // "1" -> 1
+
+              //string nextHour = (hourNumber + 1).ToString("00");
 
             // Increment the numeric part to get the next region
-                regionNumber++;
+                //regionNumber++;
 
             // Combine the base and the incremented numeric part to get the next region (e.g., "SE1" becomes "SE2")
-               string nextRegion = regionBase + (regionNumber+1).ToString();
+               //string nextRegion = regionBase + (regionNumber+1).ToString();
 
             // Create the query filter
-            var filter = TableClient.CreateQueryFilter($"PartitionKey eq {partitionKey} and RowKey ge {region} and RowKey lt {nextRegion}");
+            var filter = TableClient.CreateQueryFilter($"PartitionKey eq {partitionKey} and RowKey eq {rowKey}");
 
             var prices = new List<TableEntity>();
             await foreach (var entity in _tableClient.QueryAsync<TableEntity>(filter))
@@ -119,6 +126,8 @@ namespace The_Post.Controllers
         {
             var model = new HistoricalElectricityPricesViewModel();
             var regions = new List<String> { "SE1", "SE2", "SE3", "SE4" };
+            var hours = new List<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
+                
 
             var allPrices = new List<TableEntity>();
           
@@ -128,13 +137,13 @@ namespace The_Post.Controllers
                 //var regions = new List<String> { "SE1","SE2","SE3","SE4" };
 
                 //var allPrices = new List<TableEntity>();
-                if (regions != null && regions.Any())
+                if (hours != null && hours.Any())
                 { 
-                    foreach (var region in regions)
+                    foreach (var hour in hours)  //we had regions before.Replaced region with hour
                 {
-                    var prices = await GetHistoricalElectricityPrices(region, queryDate);
-                    allPrices.AddRange(prices);
-                }
+                    var prices = await GetHistoricalElectricityPrices(hour, queryDate);
+                    allPrices.AddRange(prices); // Add fetched prices to the list
+                    }
                  }
 
                 if (allPrices.Any())

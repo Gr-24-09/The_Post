@@ -143,6 +143,7 @@ namespace SaveElecticityPrices_Isolated
             public int kmeans { get; set; }
             [JsonIgnore]
             public string Region { get; set; }
+            //}
         }
     }
 }

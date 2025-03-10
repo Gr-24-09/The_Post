@@ -32,18 +32,18 @@ else
         <table class="table table-dark table-hover table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>Region</th>
+                    <th>Hour</th>
                     <th>Price (SEK)</th>
-                    <th>Date</th>
+                     <th>Date</th> 
                 </tr>
             </thead>
             <tbody>
             @foreach (var price in Model.ElectricityPrices.Where(p => p.RowKey.StartsWith("SE1")))
                 {
                     <tr>
-                        <td>@price.RowKey</td>
+                        <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                        <td>@price.PartitionKey</td>
+                         <td>@price.PartitionKey</td> 
                     </tr>
                 }
             </tbody>
@@ -55,9 +55,9 @@ else
      <table class="table table-dark table-hover table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>Region</th>
+                    <th>Hour</th>
                     <th>Price (SEK)</th>
-                     <th>Date</th> 
+                      <th>Date</th>  
                 </tr>
             </thead>
             <tbody>
@@ -65,9 +65,9 @@ else
            .Select(g => g.First()))
                 {
                     <tr>
-                        <td>@price.RowKey</td>
+                    <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                         <td>@price.PartitionKey</td> 
+                          <td>@price.PartitionKey</td>  
                     </tr>
                 }
             </tbody>
@@ -81,9 +81,9 @@ else
         <table class="table table-dark table-hover table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>Region</th>
+                    <th>Hour</th>
                     <th>Price (SEK)</th>
-                     <th>Date</th> 
+                      <th>Date</th>  
                 </tr>
             </thead>
             <tbody>
@@ -91,9 +91,9 @@ else
            .Select(g => g.First()))
                 {
                     <tr>
-                        <td>@price.RowKey</td>
+                    <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                         <td>@price.PartitionKey</td> 
+                         <td>@price.PartitionKey</td>  
                     </tr>
                 }
             </tbody>
@@ -107,9 +107,9 @@ else
         <table class="table table-dark table-hover table-bordered table-sm">
             <thead>
                 <tr>
-                    <th>Region</th>
+                    <th>Hour</th>
                     <th>Price (SEK)</th>
-                     <th>Date</th> 
+                     <th>Date</th>  
                 </tr>
             </thead>
             <tbody>
