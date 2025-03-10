@@ -7,13 +7,15 @@ using Stripe.Checkout;
 
 namespace The_Post.Areas.Identity.Pages.Account.Manage
 {
-    public class SubscriptionModel : PageModel
+    public class SubscriptionModel : BaseCookiesPageModel
     {
         private readonly ISubscriptionService _subscriptionService;
         private readonly ISubscriptionTypeService _subscriptionTypeService;
         private readonly UserManager<User> _userManager;
 
-        public SubscriptionModel(ISubscriptionService subscriptionService, ISubscriptionTypeService subscriptionTypeService, UserManager<User> userManager)
+        public SubscriptionModel(ISubscriptionService subscriptionService, ISubscriptionTypeService subscriptionTypeService,
+            UserManager<User> userManager, IArticleService articleService)
+            : base(articleService)
         {
             _subscriptionService = subscriptionService;
             _subscriptionTypeService = subscriptionTypeService;
