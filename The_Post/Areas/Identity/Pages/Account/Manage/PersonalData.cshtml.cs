@@ -7,17 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using The_Post.Models;
+using The_Post.Services;
 
 namespace The_Post.Areas.Identity.Pages.Account.Manage
 {
-    public class PersonalDataModel : PageModel
+    public class PersonalDataModel : BaseCookiesPageModel
     {
         private readonly UserManager<User> _userManager;
         private readonly ILogger<PersonalDataModel> _logger;
 
         public PersonalDataModel(
             UserManager<User> userManager,
-            ILogger<PersonalDataModel> logger)
+            ILogger<PersonalDataModel> logger, 
+            IArticleService articleService)
+            : base(articleService)
         {
             _userManager = userManager;
             _logger = logger;

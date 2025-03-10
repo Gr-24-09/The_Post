@@ -15,15 +15,17 @@ namespace The_Post.Controllers
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            // Set ViewBag.IsCookiesAccepted for all actions in controllers that inherit from this controller
-            ViewBag.IsCookiesAccepted = _articleService.IsCookiesAccepted();
+            // Set IsCookiesAccepted for all actions in controllers that inherit from this controller
+            // This way, the view can display the cookies notice if the user has not accepted cookies and hide it if they have
+            ViewData["IsCookiesAccepted"] = _articleService.IsCookiesAccepted();
             base.OnActionExecuted(context);
         }
 
+        // This action is called when the user accepts cookies from the cookies notice
         [HttpPost]
         public IActionResult AcceptCookies()
         {
-            // Set the cookie to mark the user has accepted cookies
+            // Set the cookie to mark that the user has accepted cookies
             _articleService.AcceptCookies();
 
             return NoContent();

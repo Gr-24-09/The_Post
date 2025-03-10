@@ -108,6 +108,13 @@ document.addEventListener("DOMContentLoaded", function () {
 /*----- Newsletter subscription form --------*/
 document.addEventListener("DOMContentLoaded", function () {
     const subscribeCheckbox = document.getElementById("subscribeCheckbox");
+
+    // If the subscribe checkbox is not found, this script will not run
+    // This is to prevent errors on pages where the checkbox is not present
+    if (!subscribeCheckbox) {
+        return; 
+    }
+
     const categoryCheckboxes = document.querySelectorAll(".categoryCheckbox"); // Includes the editors choice checkbox
     const saveButton = document.querySelector('input[type="submit"]');
     const categoriesLabel = document.querySelector(".newsletterSelections > label.fs-5.fw-bold");

@@ -8,7 +8,7 @@ using The_Post.Services;
 
 namespace The_Post.Areas.Identity.Pages.Account.Manage
 {
-    public class NewslettersModel : PageModel
+    public class NewslettersModel : BaseCookiesPageModel
     {
         private readonly IArticleService _articleService;
         private readonly UserManager<User> _userManager;
@@ -25,6 +25,7 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
         public List<int> SelectedCategoryIds { get; set; } = new List<int>();
 
         public NewslettersModel(IArticleService articleService, UserManager<User> userManager)
+            : base(articleService)
         {
             _articleService = articleService;
             _userManager = userManager;
@@ -34,7 +35,7 @@ namespace The_Post.Areas.Identity.Pages.Account.Manage
         {
             var loggedInUser = await _userManager.Users
                 .Where(u => u.Id == _userManager.GetUserId(User))
-                .Include(u => u.NewsletterCategories) // Laddar kategorierna explicit
+                .Include(u => u.NewsletterCategories) // Needed for adding/removing categories
                 .FirstOrDefaultAsync();
 
             SubscribeToNewsletter = loggedInUser.IsSubscribedToNewsletter;

@@ -3,15 +3,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using The_Post.Models;
 using The_Post.Services;
+using The_Post.Areas.Identity.Pages;
 
-public class ConfirmSubscriptionModel : PageModel
+public class ConfirmSubscriptionModel : BaseCookiesPageModel
 {
     private readonly UserManager<User> _userManager;
     private readonly ISubscriptionService _subscriptionService;
 
     public bool IsSuccess { get; private set; }  //  property
 
-    public ConfirmSubscriptionModel(UserManager<User> userManager, ISubscriptionService subscriptionService)
+    public ConfirmSubscriptionModel(UserManager<User> userManager, ISubscriptionService subscriptionService, IArticleService articleService)
+        : base(articleService)
     {
         _userManager = userManager;
         _subscriptionService = subscriptionService;
