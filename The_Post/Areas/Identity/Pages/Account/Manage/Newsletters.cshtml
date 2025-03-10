@@ -7,7 +7,7 @@
 }
 
 <div class="col-md-6 mx-auto">
-    <h2 class="border-0 text-center mb-4">My Personalized Newsletter</h2>
+    <h2 class="form-title-Nav-Pages">My Personalized Newsletter</h2>
 
     <form method="post" asp-page-handler="save">
         <div class="form-group m-2">
@@ -15,7 +15,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <label class="fs-4 fw-bolder mb-3">Subscribe to the newsletter</label>
                 <div class="form-check form-switch">
-                    <input class="form-check-input fs-4" type="checkbox" asp-for="SubscribeToNewsletter" value="true" checked="@Model.SubscribeToNewsletter" id="subscribeCheckbox" />
+                    <input class="form-check-input newsletter-checkbox fs-4" type="checkbox" asp-for="SubscribeToNewsletter" value="true" checked="@Model.SubscribeToNewsletter" id="subscribeCheckbox" />
                 </div>
             </div>
 
@@ -23,24 +23,24 @@
             <span id="makeSelectionText" class="text-danger text-center"></span>
 
            <!--Newsletter Selections-->
-            <div class="newsletterSelections mt-3 p-3 bg-secondary-subtle" id="newsletterSelections">
+            <div class="newsletterSelections mt-3 p-3 form-container-Newsletter" id="newsletterSelections">
 
                 <!-- Include Editors' Choice -->
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <label class="fs-5 fw-bold">Include Editors' Choice:</label>
                     <div class="form-check form-switch">
-                        <input class="categoryCheckbox form-check-input fs-5" type="checkbox" asp-for="EditorsChoiceSelection" value="true" checked="@Model.EditorsChoiceSelection" />
+                        <input class="categoryCheckbox form-check-input newsletter-checkbox fs-5" type="checkbox" asp-for="EditorsChoiceSelection" value="true" checked="@Model.EditorsChoiceSelection" />
                     </div>
                 </div>
 
                 <!-- Choose categories to include -->
-                <label class="mt-2 fs-5 fw-bold">Choose categories to include:</label>
+                <label class=" mb-2 text-success fs-5 fw-bold">Choose categories to include:</label>
                 @foreach (var category in Model.AvailableCategories)
                 {
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <label class="fs-5">@category.Text</label>
                         <div class="form-check form-switch">
-                            <input class="categoryCheckbox form-check-input fs-5" type="checkbox"
+                            <input class="categoryCheckbox form-check-input newsletter-checkbox fs-5" type="checkbox"
                                    name="SelectedCategoryIds"
                                    value="@category.Value"
                                    checked="@(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)))"
@@ -52,7 +52,7 @@
 
             <!-- Save Preferences Button -->
             <div class="form-group mt-4 text-center">
-                <input type="submit" value="Save Preferences" class="btn btn-primary" />
+                <input type="submit" value="Save Preferences" class="btn-custom-blue" />
             </div>
         </div>
     </form>
