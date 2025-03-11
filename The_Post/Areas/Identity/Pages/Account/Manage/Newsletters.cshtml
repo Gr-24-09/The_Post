@@ -6,35 +6,60 @@
     ViewData["ActivePage"] = ManageNavPages.Newsletters;
 }
 
-<h3>My Personalized Newsletter</h3>
+<div class="col-md-6 mx-auto">
+    <h2 class="form-title-Nav-Pages">My Personalized Newsletter</h2>
 
-<form method="post" asp-page-handler="save">
-    <div class="form-group m-2">
-        <label>Include Editors' Choice:</label>
-        <div class="form-check form-switch">
-            <!-- Hidden input to ensure false is sent if checkbox is unchecked -->
-            @* <input type="hidden" name="EditorsChoiceSelection" value="false" /> *@
-            <input class="form-check-input" type="checkbox" asp-for="EditorsChoiceSelection" value="true" checked="@Model.EditorsChoiceSelection" />
-        </div>
-
-        <label>Choose categories to include:</label>
-        @foreach (var category in Model.AvailableCategories)
-        {
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" name="SelectedCategoryIds" value="@category.Value"
-                @(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)) ? "checked" : "") /> <!--If a user has saved a category before, it is reflected here-->
-                <label class="form-check-label">@category.Text</label>
+    <form method="post" asp-page-handler="save">
+        <div class="form-group m-2">
+            <!-- Subscribe to the newsletter -->
+            <div class="d-flex justify-content-between align-items-center">
+                <label class="fs-4 fw-bolder mb-3">Subscribe to the newsletter</label>
+                <div class="form-check form-switch">
+                    <input class="form-check-input  fs-4" type="checkbox" asp-for="SubscribeToNewsletter" value="true" checked="@Model.SubscribeToNewsletter" id="subscribeCheckbox" />
+                </div>
             </div>
-        }
-        <div class="form-group mt-3">
-            <input type="submit" value="Save Changes" class="btn btn-primary" />
-        </div>
-    </div>
-</form>
 
+            <!--Notifies if the user saves without making a selection, see the script below-->
+            <span id="makeSelectionText" class="text-danger text-center"></span>
+
+           <!--Newsletter Selections-->
+            <div class="newsletterSelections mt-3 p-3 form-container-Newsletter" id="newsletterSelections">
+
+                <!-- Include Editors' Choice -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <label class="fs-5 fw-bold">Include Editors' Choice:</label>
+                    <div class="form-check form-switch">
+                        <input class="categoryCheckbox form-check-input  fs-5" type="checkbox" asp-for="EditorsChoiceSelection" value="true" checked="@Model.EditorsChoiceSelection" />
+                    </div>
+                </div>
+
+                <!-- Choose categories to include -->
+                <label class=" mb-2 text-success fs-5 fw-bold">Choose categories to include:</label>
+                @foreach (var category in Model.AvailableCategories)
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="fs-5">@category.Text</label>
+                        <div class="form-check form-switch">
+                            <input class="categoryCheckbox form-check-input  fs-5" type="checkbox"
+                                   name="SelectedCategoryIds"
+                                   value="@category.Value"
+                                   checked="@(Model.SelectedCategoryIds.Contains(int.Parse(category.Value)))"
+                                   id="category-@category.Value" />
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Save Preferences Button -->
+            <div class="form-group mt-4 text-center">
+                <input type="submit" value="Save Preferences" class="btn-custom-blue" />
+            </div>
+        </div>
+    </form>
+</div>
 
 <script>
-        // Toastr Message if saving was successful or not
+    // Toastr Message if saving was successful or not
     document.addEventListener("DOMContentLoaded", function () {
         var successMessage = '@TempData["SuccessMessage"]';
         var errorMessage = '@TempData["ErrorMessage"]';

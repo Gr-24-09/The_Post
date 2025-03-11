@@ -3,25 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-@if (!(ViewBag.IsCookiesAccepted ?? false))
-{
-    <div id="cookie-notice" class="toast show position-fixed bottom-0 end-0 m-3 bg-white" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">Cookie Notice</strong>
-            <button type="button" class="btn-close" id="ignore-cookies-btn-header" aria-label="Ignore"></button>
-        </div>
-        <div class="toast-body">
-            <p class="mb-2">
-                This website uses cookies to ensure you get the best experience.
-                <a href="/privacy-policy">Learn more</a>
-            </p>
-            <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-primary btn-sm" id="accept-cookies-btn">Accept</button>
-                <button class="btn btn-secondary btn-sm" id="ignore-cookies-btn">Ignore</button>
-            </div>
-        </div>
-    </div>
-}
+
 <div class="container-fluid">
     <div class="row">
         <!-- Editors Choice - Left Sidebar -->
@@ -78,35 +60,3 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        if (document.cookie.includes("cookiesConsent=true")) {
-            document.getElementById('cookie-notice').style.display = 'none';
-        }
-
-        // Handle Accept
-        document.getElementById('accept-cookies-btn').onclick = async function () {
-            try {
-                let response = await fetch('/Home/AcceptCookies', { method: 'POST' });
-                if (response.ok) {
-                    document.getElementById('cookie-notice').style.display = 'none';
-                } else {
-                    console.error("Failed to accept cookies");
-                }
-            } catch (error) {
-                console.error("Network error:", error);
-            }
-        };
-
-        // Handle both Ignore buttons
-        const ignoreButtons = ['ignore-cookies-btn', 'ignore-cookies-btn-header'];
-        ignoreButtons.forEach(id => {
-            const button = document.getElementById(id);
-            if (button) {
-                button.onclick = function () {
-                    document.getElementById('cookie-notice').style.display = 'none';
-                };
-            }
-        });
-    });
-</script>

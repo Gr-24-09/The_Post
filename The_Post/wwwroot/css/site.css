@@ -1,4 +1,4 @@
-/*Layout Styling */
+﻿/*Layout Styling */
 
 .footer {
     line-height: normal !important;
@@ -62,6 +62,9 @@
         text-transform: uppercase;
         letter-spacing: 2px;
         color: #0A2472; /* Navy Blue */
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.1);
+        
     }
 
 .side-controls {
@@ -399,6 +402,7 @@ body {
     color: rgba(128, 0, 32, 0.8) !important;
 }
 
+
 .bg-customGray {
     background-color: #929aa1 !important;
 }
@@ -412,3 +416,236 @@ body {
 .custom-shadow {
     box-shadow: 0 4px 6px -1px #0A2472, 0 2px 4px -2px #0A2472;
 }
+
+.table-responsive {
+    width: 50%;
+    max-width: 800px; /* Max width for larger screens */
+    margin: 0 auto;
+}
+
+table.prices-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: honeydew;
+    color: black;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+/*h2 {
+    text-align: center;
+    font-size: 40px;
+    color: #0A2472;
+    border: 1px solid #A8A8A8;
+}*/
+
+
+/* For the newsletter form so the labels become grey when the user isn't subcribed */
+.greyed-out {
+    color: gray !important;
+}
+
+/*---------------------------------------------------------------------------------------------*/
+                                          /*ManageNav*/
+/*---------------------------------------------------------------------------------------------*/
+  .refined-nav {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .refined-nav .nav-link {
+      color: #343a40;
+      padding: 12px 18px;
+      border-left: 4px solid transparent;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s ease-in-out;
+      font-size: 16px;
+      border-radius: 6px;
+      position: relative;
+  }
+
+  .refined-nav .nav-link i {
+      font-size: 18px;
+      transition: transform 0.3s ease-in-out;
+  }
+
+  .refined-nav .nav-link:hover {
+      background: linear-gradient(90deg, rgba(0, 123, 255, 0.1), rgba(0, 123, 255, 0.2));
+      border-left: 4px solid #0056b3;
+      color: #0056b3;
+  }
+
+  .refined-nav .nav-link:hover i {
+      transform: translateX(3px);
+  }
+
+  .refined-nav .nav-link.active {
+      border-left: 4px solid #0056b3;
+      color: #0056b3;
+      font-weight: bold;
+      background: linear-gradient(90deg, rgba(0, 123, 255, 0.2), rgba(0, 123, 255, 0.3));
+  }
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                      /*My Profile Pages*/
+/*---------------------------------------------------------------------------------------------*/
+
+
+.btn-custom-blue {
+    background-color: #0A2472; /* Primary blue color for button */
+    color: white; /* White text for good contrast */
+    border-radius: 8px; /* Rounded corners to match form fields */
+    padding: 12px; /* Adds extra padding for better touch/click experience */
+    font-weight: 600; /* Bold text for a strong call-to-action */
+    transition: all 0.3s ease-in-out; /* Smooth hover effect transition */
+}
+  
+  .btn-custom-blue:hover {
+      background-color: #004494; /* Slightly darker shade on hover */
+  }
+
+.form-title-Nav-Pages {
+    font-size: 34px; /* Keeps the prominent size */
+    font-weight: 800; /* Ensures bold appearance */
+    color: #0A2472; 
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Adds a soft glow for depth */
+    backdrop-filter: blur(10px); /* Creates a glassy effect */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    padding: 7px 20px; /* Adds space for the glassy effect */
+    border-radius: 10px; /* Smooth rounded edges */
+    letter-spacing: 1px; /* Maintains clean spacing */
+    margin-bottom: 7px; /* Keeps spacing below */
+}
+
+
+/* Style the form container */
+.form-container-Nav-Pages {
+    background: #f8f9fa; /* Light grey background to make the form stand out */
+    padding: 30px; /* Adds space inside the container for better readability */
+    border-radius: 10px; /* Rounds the corners for a softer look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}
+
+/* Style input fields */
+.form-floating-Nav-Pages .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+}
+
+/* Focus effect on input fields */
+    .form-floating-Nav-Pages .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
+    }
+
+/* Label styling */
+.form-floating-Nav-Pages label {
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Validation error styling */
+.text-danger-Nav-Pages {
+    font-size: 14px;
+}
+
+
+/* 🔹 Success checkmark styling */
+.input-group-text-Nav-Pages .text-success {
+    background: #d4edda; /* Light green background */
+    border: none;
+    color: #155724; /* Dark green for contrast */
+    font-weight: bold;
+    padding: 10px;
+}
+
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                          /*Email*/
+/*---------------------------------------------------------------------------------------------*/
+
+/* 🔹 Style the form container - Gives a professional card-like look */
+.email-form-container {
+    background: #f8f9fa; /* Light grey background to make the form stand out */
+    padding: 30px; /* Adds space inside the container for better readability */
+    border-radius: 10px; /* Rounds the corners for a softer look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}
+
+/* 🔹 Style input fields - Makes the input boxes more attractive */
+.form-floating .form-control {
+    border-radius: 8px; /* Slightly rounded corners for a smoother look */
+    border: 1px solid #ced4da; /* Light grey border to blend with the design */
+}
+
+    /* 🔹 Focus effect on input fields - Highlights input when user clicks */
+    .form-floating .form-control:focus {
+        border-color: #0056b3; /* Changes border to a blue color when active */
+        box-shadow: 0 0 8px rgba(0, 86, 179, 0.3); /* Adds a glowing blue shadow effect */
+    }
+
+/* 🔹 Label styling - Improves readability of form labels */
+.form-floating label {
+    font-weight: 500; /* Makes text a bit bolder for clarity */
+    color: #495057; /* Dark grey color for better contrast */
+}
+
+/* 🔹 Validation error styling - Helps users see form errors clearly */
+.text-danger {
+    font-size: 14px; /* Makes error messages slightly smaller */
+}
+
+/* 🔹 Custom button styling - Makes the submit button look modern */
+.btn-custom-blue {
+    background-color: #0056b3; /* Primary blue color for button */
+    color: white; /* White text for good contrast */
+    border-radius: 8px; /* Rounded corners to match form fields */
+    padding: 12px; /* Adds extra padding for better touch/click experience */
+    font-weight: 600; /* Bold text for a strong call-to-action */
+    transition: all 0.3s ease-in-out; /* Smooth hover effect transition */
+}
+
+    /* 🔹 Button hover effect - Enhances interactivity */
+    .btn-custom-blue:hover {
+        background-color: #004494; /* Darker blue when hovered for a nice effect */
+    }
+
+/* 🔹 Success checkmark styling */
+.input-group-text.text-success {
+    background: #d4edda; /* Light green background */
+    border: none;
+    color: #155724; /* Dark green for contrast */
+    font-weight: bold;
+    padding: 10px;
+}
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                     /*Subscription*/
+/*---------------------------------------------------------------------------------------------*/
+
+.rounded-border-gray {
+    border: 2px solid #D3D3D3 !important;
+    border-radius: 8px; /* Adjust rounding as needed */
+}
+
+
+/*---------------------------------------------------------------------------------------------*/
+                                     /*Newsletters*/
+/*---------------------------------------------------------------------------------------------*/
+
+.form-container-Newsletter {
+    background: #F8F9FA; /* Slightly darker grey for better contrast */
+    padding: 30px; /* Adds space inside the container for better readability */
+    border-radius: 10px; /* Rounds the corners for a softer look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Slightly darker shadow for better depth */
+}
+
+

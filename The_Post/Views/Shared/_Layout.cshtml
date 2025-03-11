@@ -53,21 +53,21 @@
                
            </div>
 
-              <div class="w-100 bottom-section d-none d-md-flex  justify-content-center align-items-center flex-grow-0 py-1">
+           <div class="w-100 bottom-section d-none d-md-flex  justify-content-center align-items-center flex-grow-0 py-1">
 
-                    <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Local">Local</a>
-                                              
-                    <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sweden">Sweden</a>
-                                              
-                    <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="World">World</a>
-                                              
-                    <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Weather">Weather</a>
-                                              
-                    <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sports">Sports</a>
-                                              
-                    <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Economy">Economy</a>
-                                              
-              </div>
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Local">Local</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sweden">Sweden</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="World">World</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Weather">Weather</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Sports">Sports</a>
+                                         
+               <a class="nav-link sidebar1-link" asp-controller="News" asp-action="CategoryView" asp-route-categoryName="Economy">Economy</a>
+                                           
+           </div>
         </div>
           
      </nav>
@@ -75,6 +75,27 @@
 
     <!-- Invoke the Offcanvas Menu View Component -->
       @await Component.InvokeAsync("OffcanvasMenu")
+
+    <!-- Cookies Notice-->
+    @if (!(ViewData["IsCookiesAccepted"] as bool? ?? false))
+    {
+        <div id="cookie-notice" class="toast show position-fixed top-50 start-50 translate-middle bg-white fs-5" style="width: 80%; max-width: 500px;" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Cookie Notice</strong>
+                <button type="button" class="btn-close" id="ignore-cookies-btn-header" aria-label="Ignore"></button>
+            </div>
+            <div class="toast-body">
+                <p class="mb-2">
+                    This website uses cookies to ensure you get the best experience.
+                    <a href="/Home/Privacy">Learn more</a>
+                </p>
+                <div class="d-flex justify-content-end gap-2">
+                    <button class="btn btn-primary btn-md" id="accept-cookies-btn">Accept</button>
+                    <button class="btn btn-secondary btn-md" id="ignore-cookies-btn">Ignore</button>
+                </div>
+            </div>
+        </div>
+    }
 
     <div class="container" style="max-width: 2200px;">
         <main role="main" class="pb-3">
@@ -94,6 +115,5 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>    
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>

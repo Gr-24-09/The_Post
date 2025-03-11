@@ -37,10 +37,10 @@ namespace AzureFunctionsIsolated
             }
 
 
-            // Get all users who have opted in to the newsletter
+            // Get all users that are subscribed to the newsletter
             var users = _dbContext.Users
                 .Include(u => u.NewsletterCategories)
-                .Where(u => u.EditorsChoiceNewsletter == true || u.NewsletterCategories.Any()).ToList();
+                .Where(u => u.IsSubscribedToNewsletter).ToList();
 
             // Get all articles that are not archived
             var allArticles = _dbContext.Articles

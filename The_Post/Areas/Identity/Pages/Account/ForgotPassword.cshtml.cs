@@ -14,15 +14,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using The_Post.Models;
+using The_Post.Services;
 
 namespace The_Post.Areas.Identity.Pages.Account
 {
-    public class ForgotPasswordModel : PageModel
+    public class ForgotPasswordModel : BaseCookiesPageModel
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
 
-        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender, IArticleService articleService)
+            : base(articleService)
         {
             _userManager = userManager;
             _emailSender = emailSender;

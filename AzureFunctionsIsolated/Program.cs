@@ -23,6 +23,8 @@ var host = new HostBuilder()
             options.UseSqlServer(connectionString));
 
         services.AddTransient<IEmailSender, EmailSender>();
+
+        services.AddHttpClient();
     })
     .Build();
 

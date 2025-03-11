@@ -10,15 +10,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using The_Post.Models;
+using The_Post.Services;
 
 namespace The_Post.Areas.Identity.Pages.Account
 {
-    public class LogoutModel : PageModel
+    public class LogoutModel : BaseCookiesPageModel
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(SignInManager<User> signInManager, ILogger<LogoutModel> logger, IArticleService articleService)
+            : base(articleService)
         {
             _signInManager = signInManager;
             _logger = logger;
