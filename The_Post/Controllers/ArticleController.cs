@@ -116,7 +116,7 @@ namespace The_Post.Controllers
         public IActionResult DeleteArticle(int articleID)
         {
             _articleService.DeleteArticle(articleID);
-            return RedirectToAction("Index");
+            return RedirectToAction("AllArticles", "Admin");
         }
 
         [HttpGet]
@@ -185,7 +185,7 @@ namespace The_Post.Controllers
                 _articleService.UpdateArticle(article);
 
                 TempData["Success"] = "Article updated successfully";
-                return RedirectToAction("Index");
+                return RedirectToAction("AllArticles", "Admin");
             }
             catch (Exception ex)
             {
