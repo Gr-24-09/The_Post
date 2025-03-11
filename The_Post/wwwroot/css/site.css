@@ -409,3 +409,6 @@ body {
     font-family: 'Merriweather', serif;    
     color: #0A2472;
 }
+.custom-shadow {
+    box-shadow: 0 4px 6px -1px #0A2472, 0 2px 4px -2px #0A2472;
+}

@@ -35,6 +35,12 @@
                     </a>
                 </li>
                 <li>
+                    <a asp-action="Index" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <i class="fa fa-gauge-high p-2"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
                     <a asp-action="AllArticles" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
                         <i class="fa fa-newspaper p-2"></i>
                         View Articles
@@ -47,8 +53,8 @@
                     </a>
                 </li>
 
-                @if (User.IsInRole("Admin"))
-                {
+               @if (User.IsInRole("Admin"))
+               {
                     <li>
                         <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
                             <i class="fa fa-address-card p-2"></i>
@@ -97,7 +103,7 @@
                             Subscription Statistics
                         </a>
                     </li>
-                }
+               }
               
             </ul>            
         </div>
