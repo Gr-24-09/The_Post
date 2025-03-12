@@ -266,12 +266,8 @@ body {
 }
 
 .weather-button-text {
-    background: none;
-    border: none;
     padding: 0;
-    font-size: 3rem;
     cursor: pointer;
-    color: inherit;
 }
 
 .modal-weather-color{
@@ -285,13 +281,16 @@ body {
 }
 
 .article-image-height {
-    width: 100%;
-    height: auto;
-    max-height: 400px;
-    object-fit: cover;
-    border: 2px solid #A8A8A8; /* Light Silver */
-    border-radius: 15px; /* Adjust this value for more or less rounding */
+    width: 100%; /* Full width of the container */
+    height: 400px; /* Fixed height for uniformity */
+    object-fit: cover; /* Crop excess instead of stretching */
+    object-position: center; /* Keep the middle of the image visible */
+    display: block; /* Avoid inline spacing issues */
+    border: 2px solid #A8A8A8;
+    border-radius: 15px;
 }
+
+
 
 /* Media query for mobile screens (600px or less width) */
 @media (max-width: 600px) {
