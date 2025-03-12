@@ -1,24 +1,24 @@
-﻿@model The_Post.Models.VM.EmployeeVM
+﻿@model The_Post.Models.VM.AllEmployeesVM
 
-<div class="p-2 col-md-3">
+<div class="p-2">
     <div class="card">
         <img class="card-img-top" src="" alt="">
         <div class="card-body">
             <h5 class="card-title"><strong>@Model.FirstName @Model.LastName</strong></h5>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-success">
+                <li class="list-group-item list-group-item-custom">
                     <i class="fas fa-briefcase me-2"></i>The Post
                 </li>
-                <li class="list-group-item list-group-item-success">
+                <li class="list-group-item list-group-item-custom">
                     <i class="fas fa-user me-2"></i>@Model.Role
                 </li>
-                <li class="list-group-item list-group-item-success">
+                <li class="list-group-item list-group-item-custom">
                     <i class="fas fa-map-marker-alt me-2"></i>Linköping
                 </li>
-                <li class="list-group-item list-group-item-success">
+                <li class="list-group-item list-group-item-custom">
                     <i class="fas fa-phone me-2"></i>@Model.PhoneNumber
                 </li>
-                <li class="list-group-item list-group-item-success">
+                <li class="list-group-item list-group-item-custom">
                     <i class="fas fa-envelope me-2"></i>@Model.Email
                 </li>
             </ul>

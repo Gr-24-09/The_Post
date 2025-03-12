@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using The_Post.Models.VM;
 using The_Post.Services;
 
 namespace The_Post.Controllers
@@ -9,16 +10,31 @@ namespace The_Post.Controllers
     public class RolesController : Controller
     {
         private readonly IRoleService _roleService;
-        public RolesController(IRoleService roleService)
+        private readonly IEmployeeService _employeeService;
+
+        public RolesController(IRoleService roleService, IEmployeeService employeeService)
         {
             _roleService = roleService;
+            _employeeService = employeeService;
         }
 
 
         public async Task<IActionResult> Index()
         {
-            var roles = await _roleService.GetAllRolesAsync();  
-            return View(roles);
+            var roles = await _roleService.GetAllRolesAsync();
+            var employees = await _employeeService.GetAllEmployees();
+
+            var model = new RoleManagementVM
+            {
+                Roles = roles,                
+                AssignRoleVM = new AssignRoleVM
+                {
+                    Users = employees,
+                    Roles = roles
+                }
+            };
+
+            return View(model);
         }
         public IActionResult Create()
         {
@@ -64,7 +80,6 @@ namespace The_Post.Controllers
 
         [HttpPost] 
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Edit(IdentityRole role)
         {
             if (role == null || string.IsNullOrEmpty(role.Id))
@@ -111,6 +126,48 @@ namespace The_Post.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AssignRole()
+        {
+            var model = new AssignRoleVM
+            {
+                Users = await _employeeService.GetAllEmployees(),
+                Roles = await _roleService.GetAllRolesAsync()
+            };
 
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AssignRole(AssignRoleVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _employeeService.AssignRole(model.UserId, model.Role);
+                    TempData["SuccessMessage"] = "Role assigned successfully.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+            }
+
+            //Repopulate dropdowns if validation fails
+            model.Users = await _employeeService.GetAllEmployees();
+            model.Roles = await _roleService.GetAllRolesAsync();
+
+            // Return view with errors
+            var vM = new RoleManagementVM
+            {
+                Roles = await _roleService.GetAllRolesAsync(),                
+                AssignRoleVM = model
+            };
+
+            return View("Index", vM);
+        }
     }
 }

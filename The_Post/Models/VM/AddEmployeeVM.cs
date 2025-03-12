@@ -11,7 +11,7 @@ namespace The_Post.Models.VM
         public string LastName { get; set; }
                 
         [Required]
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
         [Required]
         public string Address { get; set; }
@@ -27,7 +27,7 @@ namespace The_Post.Models.VM
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string userMail { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

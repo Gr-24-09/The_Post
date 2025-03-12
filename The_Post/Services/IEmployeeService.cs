@@ -11,7 +11,7 @@ namespace The_Post.Services
         public Task<bool> DeleteEmployee(string userId);
         public Task<bool> EditEmployee(EditEmployeeVM employeeVM);
         public Task<List<User>> GetAllEmployees();
-        public Task<List<EmployeeVM>> GetAllEmployeesWithRolesAsync();
+        public Task<List<AllEmployeesVM>> GetAllEmployeesWithRolesAsync();
         public Task<EditEmployeeVM?> GetEmployeeById(string userId);
     }
 }

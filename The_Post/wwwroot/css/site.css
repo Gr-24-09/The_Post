@@ -168,24 +168,59 @@ body {
   margin-bottom: 60px;
 }
 
+/* ---- Employees ---- */
 
 /* For Modals */
 .modal-header {
-    background-image: linear-gradient(#81baa0,white);
+    background-image: linear-gradient(#0A2472,white);
 }
 
 .modal-footer {
-    background-image: linear-gradient(white,#81baa0);
+    background-image: linear-gradient(white,#0A2472); /*#81baa0*/
 }
 
-/* For Homepage cards */
+/* For Cards */
+.list-group-item-custom {
+    background-color: rgba(10, 36, 114, 0.6); /* Same as #0A2472 but with lower opacity */
+    border-color: #0A2472;
+    color: black;
+}
+
+/* For viewports between 1400px and 1700px: 4 columns (each card takes 4/12 = 33.33% width) */
+@media (min-width: 1400px) and (max-width: 1700px) {
+    .col-xxl-custom {
+        flex: 0 0 33.33%;
+        max-width: 33.33%;
+    }
+}
+
+/* For viewports 1700px and above: 3 columns (each card takes 3/12 = 25% width) */
+@media (min-width: 1700px) {
+    .col-xxl-custom {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+/* For Tabs */
+/*.custom-tabs .nav-link .active {
+    color: #0A2472 !important;
+    font-weight: bold;
+}
+.custom-tabs .nav-link {
+    color: gray !important;
+    
+}*/
+
+
+/* --- For Homepage cards --- */
 .fpCard {
     transition: transform 0.2s, box-shadow 0.2s;
 }
-    .fpCard:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
+.fpCard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 
 
 /* ---- Sidebars ---- */

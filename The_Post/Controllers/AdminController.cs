@@ -81,8 +81,22 @@ namespace The_Post.Controllers
 
             return View(viewModel);
         }
-       
+
         //------------------------- EMPLOYEE ACTIONS -------------------------
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EmployeeManagement()
+        {
+            var employeeList = await _employeeService.GetAllEmployeesWithRolesAsync();
+
+            var viewModel = new EmployeeVM
+            {
+                Employees = employeeList,
+                NewEmployee = new AddEmployeeVM()
+            };
+
+            return View(viewModel);
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
@@ -126,7 +140,7 @@ namespace The_Post.Controllers
             {
                 var user = new User
                 {                    
-                    UserName = model.Email,
+                    UserName = model.userMail,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     DOB = model.DOB,
@@ -134,7 +148,7 @@ namespace The_Post.Controllers
                     Zip = model.Zip,
                     City = model.City,
                     PhoneNumber = model.PhoneNumber,
-                    Email = model.Email,
+                    Email = model.userMail,
                     IsEmployee = true
                 };
 
@@ -142,7 +156,8 @@ namespace The_Post.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("EmployeeAdded");
+                    TempData["SuccessMessage"] = "Employee successfully added.";
+                    return RedirectToAction("EmployeeManagement");
                 }
 
                 foreach (var error in result.Errors)
@@ -151,7 +166,17 @@ namespace The_Post.Controllers
                 } 
             }
 
-            return View(model);
+            //Repopulate dropdowns if validation fails
+            var employeeList = await _employeeService.GetAllEmployeesWithRolesAsync();
+
+            // Return view with errors
+            var vM = new EmployeeVM
+            {
+                Employees = employeeList,
+                NewEmployee = model
+            };
+
+            return View("EmployeeManagement", vM);
         }
 
 
@@ -184,45 +209,7 @@ namespace The_Post.Controllers
             var employees = await _employeeService.GetAllEmployeesWithRolesAsync();
             return View(employees);
         }
-
-
-        //------------------------- ROLE ACTIONS -------------------------
-
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AssignRole()
-        {
-            var model = new AssignRoleVM
-            {
-                Users = await _employeeService.GetAllEmployees(),
-                Roles = await _roleService.GetAllRolesAsync()
-            };
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AssignRole(AssignRoleVM model)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    await _employeeService.AssignRole(model.UserId, model.Role);
-                    return RedirectToAction("AllEmployees");
-                }
-                catch (ArgumentException ex)
-                {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                } 
-            }
-
-            //Repopulate dropdowns if validation fails
-            model.Users = await _employeeService.GetAllEmployees();
-            model.Roles = await _roleService.GetAllRolesAsync();
-            return View(model);
-        }
-
+        
 
         //------------------------- ARTICLE ACTIONS -------------------------
 
