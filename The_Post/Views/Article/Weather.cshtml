@@ -4,63 +4,74 @@
     ViewData["Title"] = "Weather";
 }
 
-<h1>Weather</h1>
 
-<!-- Wrapper for the background image and weather cards -->
-<div class="position-relative d-flex flex-column align-items-center" style="padding: 15px;">
-    <!-- Background image -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 bg-cover bg-center"
-         style="background-image: url('https://images.pexels.com/photos/53594/blue-clouds-day-fluffy-53594.jpeg'); height: 100%; pointer-events: none;">
-    </div>
+<!--Div-structure that mimics the one in the Front page-->
+<div class="container-fluid">
+    <div class="row justify-content-between gap-lg-5">
+        <div class="col-lg-2 order-3 order-lg-1 flex-lg-grow-1"></div>
 
-    <!-- Weather cards container-->
-    <div id="weatherCardsContainer" class="d-flex flex-nowrap overflow-auto gap-3 position-relative align-items-center"
-         style="scrollbar-color: rgba(0, 0, 0, 0.2) transparent; min-height: 150px;">
-        @foreach (var forecast in Model.Forecasts)
-        {
-            <partial name="../Shared/_WeatherPartial" model="forecast" />
-        }
-    </div>
-</div>
+        <main class="col-lg-6 order-1 order-lg-2 flex-lg-grow-1">
 
-<div class="d-flex justify-content-start gap-3 pb-3">
-    <!-- Add City Button -->
-    <button id="addCityButton" class="d-flex align-items-center justify-content-center weather-button-text px-3" data-bs-toggle="modal" data-bs-target="#addCityModal">+</button>
+            <h1 class="w-100 pb-2 mb-2 text-center" style="border-bottom: 1px solid #A8A8A8;color: #0A2472;"> Weather </h1>
 
-    <!-- Remove City Button -->
-    <button class="d-flex align-items-center justify-content-center weather-button-text" id="removeCitiesBtn" onclick="enableRemoveMode()">-</button>
-</div>
+            <!-- Wrapper for the background image and weather cards -->
+            <div class="position-relative d-flex flex-column align-items-center p-2">
+                <!-- Background image -->
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-cover bg-center"
+                     style="background-image: url('https://images.pexels.com/photos/53594/blue-clouds-day-fluffy-53594.jpeg'); height: 100%; pointer-events: none;">
+                </div>
 
-
-<!-- Modal for adding a city -->
-<div class="modal fade" id="addCityModal" tabindex="-1" aria-labelledby="addCityModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header modal-weather-color">
-                <h5 class="modal-title" id="addCityModalLabel">Add City</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <!-- Weather cards container-->
+                <div id="weatherCardsContainer" class="d-flex flex-nowrap overflow-auto gap-2 position-relative align-items-center"
+                     style="scrollbar-color: rgba(0, 0, 0, 0.2) transparent; min-height: 150px;">
+                    @foreach (var forecast in Model.Forecasts)
+                    {
+                        <partial name="../Shared/_WeatherPartial" model="forecast" />
+                    }
+                </div>
             </div>
-            <div class="modal-body modal-weather-color">
-                <input type="text" id="cityNameInput" class="form-control" placeholder="Enter city name">
+
+            <div class="d-flex justify-content-start pb-3 my-2">
+                <!-- Add City Button -->
+                <button id="addCityButton" class="btn btn-outline-secondary btn-lg d-flex align-items-center justify-content-center weather-button-text px-2 me-2 ms-1" data-bs-toggle="modal" data-bs-target="#addCityModal">Add City</button>
+
+                <!-- Remove City Button -->
+                <button class="btn btn-outline-secondary btn-lg d-flex align-items-center justify-content-center weather-button-text px-2" id="removeCitiesBtn" onclick="enableRemoveMode()">Remove City</button>
             </div>
-            <div class="modal-footer modal-weather-color">
-                <button type="button" class="btn btn-primary" id="addCityConfirm">Add</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+            <!-- Modal for adding a city -->
+            <div class="modal fade" id="addCityModal" tabindex="-1" aria-labelledby="addCityModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header modal-weather-color">
+                            <h5 class="modal-title" id="addCityModalLabel">Add City</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body modal-weather-color">
+                            <input type="text" id="cityNameInput" class="form-control" placeholder="Enter city name">
+                        </div>
+                        <div class="modal-footer modal-weather-color">
+                            <button type="button" class="btn btn-primary" id="addCityConfirm">Add</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+
+
+
+            <!--Articles listing-->
+            @foreach (var article in Model.Articles)
+            {
+                <partial name="_ArticleListingPartial" model="article" />
+            }
+        </main>
+
+        <div class="col-lg-2 order-2 order-lg-3 flex-lg-grow-1"></div>
     </div>
 </div>
 
-
-<!--Displays weather articles-->
-
-<div class="col-lg-8 mx-auto">
-    @foreach (var article in Model.Articles)
-    {
-        <partial name="_ArticleListingPartial" model="article"></partial>
-    }
-
-</div>
 
 
 
