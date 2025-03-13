@@ -22,18 +22,7 @@
         @await Component.InvokeAsync("ElectricityPrices")
     }
 </div>
-
-@* <div class="col-md-10 mx-auto">
-
-    <h1 class="category-title mx-auto col-lg-10">@Model.Category</h1>
-
-    @foreach (var article in Model.Articles)
-    {
-        <partial name="_ArticleListingPartial" model="article"></partial>
-    }
-
-</div>
- *@
+ 
 <div style="text-align:center">
     @if (Model.Category == "Economy")
     {
@@ -42,49 +31,5 @@
 </div>
 
 
-@* <div>
- @if (Model.Category == "Economy")
-{
-    @if (Model.HistoricalElectricityPrices != null && Model.HistoricalElectricityPrices.Any())
-    {
-        <h3>Historical Electricity Prices</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Region</th>
-                    <th>Price</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var price in Model.HistoricalElectricityPrices)
-                {
-                    <tr>
-   
-                        <td>@price.RowKey</td> <!-- Assuming RowKey is the region -->
-                        <td>@price["price_sek"]</td> <!-- Assuming the price is stored in a field called "Price" -->
-                        <td>@price.PartitionKey</td> <!-- Assuming PartitionKey is the date -->
-                    </tr>
-                }
-            </tbody>
-        </table> *@
-  @*   }
-    else
-    {
-        <p>No historical data found for this date range.</p>
-    }
-}
-</div> *@
 
- <div>
-    <h3>Articles</h3>
-    <ul>
-        @foreach (var article in Model.Articles)
-        {
-            <li>
-                <a href="@Url.Action("Details", "Article", new { id = article.Id })">@article.Categories</a>
-            </li>
-        }
-    </ul>
-</div>
- 
+   
