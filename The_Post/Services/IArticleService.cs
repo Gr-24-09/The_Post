@@ -18,6 +18,7 @@ namespace The_Post.Services
         public List<Category> GetSelectedCategories(List<int> categoryIDs);
         public List<Article> GetSearchResults(string searchTerm);
         public string GetProcessedArticleContent(string content);
+        public string GetUnprocessedArticleContent(string content);
         public List<Article> TenLatestArticles();
         public Article GetMostPopularArticleByCategory(int categoryID);
         public List<Article> GetAllArticlesByCategoryID(int categoryID);

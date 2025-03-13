@@ -225,6 +225,22 @@ namespace The_Post.Services
             return string.Join("", paragraphs);
         }
 
+        public string GetUnprocessedArticleContent(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+                return string.Empty;
+
+            // Replace <br /> with \n
+            content = content.Replace("<br />", "\n");
+
+            // Remove <p> and </p>, replacing with double newlines
+            content = Regex.Replace(content, @"<\/p>\s*<p>", "\n\n");
+            content = content.Replace("<p>", "").Replace("</p>", "");
+
+            return content;
+        }
+
+
         // Checks if there is a like made by the user for the article. If there is, the like gets removed. If not, a new like is added.
         public async Task AddRemoveLikeAsync(int articleID, string userID)
         {
