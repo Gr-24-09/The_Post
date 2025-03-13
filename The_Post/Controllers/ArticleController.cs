@@ -15,7 +15,7 @@ using System.Drawing.Printing;
 
 namespace The_Post.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticleController : BaseCookiesController
     {
         private readonly IArticleService _articleService;
         private readonly IRequestService _requestService;
@@ -23,6 +23,7 @@ namespace The_Post.Controllers
 
         private readonly IEmployeeService _employeeService;
         public ArticleController(IArticleService articleService, IRequestService requestService, UserManager<User> userManager, IEmployeeService employeeService)
+            : base(articleService)
         {
             _articleService = articleService;
             _requestService = requestService;
@@ -115,7 +116,7 @@ namespace The_Post.Controllers
         public IActionResult DeleteArticle(int articleID)
         {
             _articleService.DeleteArticle(articleID);
-            return RedirectToAction("Index");
+            return RedirectToAction("AllArticles", "Admin");
         }
 
         [HttpGet]
@@ -135,7 +136,7 @@ namespace The_Post.Controllers
                 HeadLine = article.HeadLine,
                 LinkText = article.LinkText,
                 ContentSummary = article.ContentSummary,
-                Content = article.Content,
+                Content = _articleService.GetUnprocessedArticleContent(article.Content),
                 SelectedCategoryIds = article.Categories.Select(c => c.Id).ToList(),
                 AvailableCategories = _articleService.GetAllCategoriesSelectList()
             };
@@ -184,7 +185,7 @@ namespace The_Post.Controllers
                 _articleService.UpdateArticle(article);
 
                 TempData["Success"] = "Article updated successfully";
-                return RedirectToAction("Index");
+                return RedirectToAction("AllArticles", "Admin");
             }
             catch (Exception ex)
             {

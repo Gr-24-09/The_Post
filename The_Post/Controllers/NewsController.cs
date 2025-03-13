@@ -7,7 +7,7 @@ using The_Post.Services;
 
 namespace The_Post.Controllers
 {
-    public class NewsController : Controller
+    public class NewsController : BaseCookiesController
     {
         private readonly TableServiceClient _tableServiceClient;
         private readonly TableClient _tableClient;
@@ -16,6 +16,7 @@ namespace The_Post.Controllers
         private readonly ApplicationDbContext _db;
 
         public NewsController(IArticleService articleService, ApplicationDbContext db, IConfiguration configuration)
+            : base(articleService)
         {
             var connectionString = configuration.GetSection("AzureTableStorage:ConnectionStrings:AzureWebJobsStorage").Value;
 

@@ -30,13 +30,60 @@ namespace The_Post.Controllers
             _db = db;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(AdminDashboardVM adminDashboard)
         {
-            return View();
-        }
+            var totalArticles = _db.Articles.Count();
+            var archived = _db.Articles.Where(a => a.IsArchived).Count();
+            var allArticles = _articleService.GetAllArticles();
+            var mostLiked = allArticles.OrderByDescending(a => a.Likes.Count).FirstOrDefault();
+            var totalViews = allArticles.Sum(a => a.Views);
 
+            string mostLikedArticle = mostLiked?.HeadLine ?? "No articles available";
+            var mostLikedImage = mostLiked?.ImageSmallLink ?? "No image available";
+            int mostLikedCount = mostLiked?.Likes.Count ?? 0;
+
+            var allEmployees = await _employeeService.GetAllEmployeesWithRolesAsync();
+            var totalEmployees = allEmployees.Count();
+            var totalAdmins = allEmployees.Where(e => e.Role.Equals("Admin")).Count();
+            var totalEditor = allEmployees.Where(e => e.Role.Equals("Editor")).Count();
+            var totalWriter = allEmployees.Where(e => e.Role.Equals("Writer")).Count();
+
+            var totalUsers = _db.Users.Where(u => u.IsEmployee == false).Count();
+            var stats = await _subscriptionService.GetSubscriptionStats();
+
+            var userAges = _db.Users
+            .Where(u => !u.IsEmployee && u.DOB.HasValue)
+            .AsEnumerable()
+            .Select(u => DateTime.Now.Year - u.DOB.Value.Year -
+                (DateTime.Now.DayOfYear < u.DOB.Value.DayOfYear ? 1 : 0))
+            .ToList();
+
+
+            var viewModel = new AdminDashboardVM
+            {
+                TotalArticles = totalArticles,
+                ArchivedArticles = archived,
+                MostLikedArticle = mostLikedArticle,
+                MostLikedImage = mostLikedImage,
+                MostLikedArticleLikes = mostLikedCount,
+                TotalViews = totalViews,
+                TotalEmployees = totalEmployees,
+                TotalAdmin = totalAdmins,
+                TotalEditors = totalEditor,
+                TotalWriters = totalWriter,
+                TotalUsers = totalUsers,
+                TotalSubscribers = stats.TotalSubscribers,
+                ActiveSubscriptions = stats.ActiveSubscriptions,
+                ExpiredSubscriptions = stats.ExpiredSubscriptions,
+                UserAges = userAges
+
+            };
+
+            return View(viewModel);
+        }
+       
         //------------------------- EMPLOYEE ACTIONS -------------------------
-        
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> EditEmployee(string userId)
@@ -300,7 +347,7 @@ namespace The_Post.Controllers
             };
 
             return View(searchVM);
-        }
+        }       
 
 
         //------------------------- SUBSCRIPTION ACTIONS -------------------------

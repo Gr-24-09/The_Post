@@ -8,13 +8,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace The_Post.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseCookiesController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IArticleService _articleService;
         private readonly ApplicationDbContext _db;
 
         public HomeController(ILogger<HomeController> logger, IArticleService articleService, ApplicationDbContext db)
+            : base(articleService)
         {
             _logger = logger;            
             _articleService = articleService;
@@ -33,26 +34,9 @@ namespace The_Post.Controllers
            
         }
         
-
         public IActionResult Privacy()
         {
             return View();
-        }
-
-        public IActionResult CookiesNotice()
-        {
-            bool isCookiesAccepted = _articleService.IsCookiesAccepted();
-            ViewBag.IsCookiesAccepted = isCookiesAccepted;
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult AcceptCookies()
-        {
-            // Set the cookie to mark the user has accepted cookies
-            _articleService.AcceptCookies();
-
-            return NoContent();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
