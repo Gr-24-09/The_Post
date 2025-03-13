@@ -24,9 +24,9 @@ namespace AzureFunctionsIsolated
         }
         // For testing, triggers every minute:   0 * * * * *    
         // The main function that sends the newsletter
-        // This function is triggered every Friday at 12:00 PM
+        // This function is triggered every Friday at midnight
         [Function("SendNewsletter")]
-        public async Task Run([TimerTrigger("0 0 12 * * 5")] TimerInfo myTimer)
+        public async Task Run([TimerTrigger("0 0 0 * * 5")] TimerInfo myTimer)
         {
             // For local testing
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
@@ -65,13 +65,15 @@ namespace AzureFunctionsIsolated
                 // If the user has opted in to receive articles by category
                 if (user.NewsletterCategories.Count != 0)
                 {
-                    // Get the latest 5 articles for each category
+                    // Get the top 5 most viewed articles in each category for the past week
                     foreach (var category in user.NewsletterCategories)
                     {
                         var articles = allArticles
                             .Where(a => a.Categories.Contains(category))
-                            .OrderByDescending(a => a.DateStamp)
+                            .Where(a => a.DateStamp.AddDays(7) >= DateTime.UtcNow)
+                            .OrderByDescending(a => a.Views) 
                             .Take(5).ToList();
+
                         articlesByCategory.Add(articles);
                     }
                 }
@@ -194,7 +196,7 @@ namespace AzureFunctionsIsolated
         // Builds the HTML content for a category section
         public string BuildCategoryHtml(List<Article> articles, string category)
         {
-            var htmlContent = $"<h2>The latest in {category} news</h2><ul style='display: inline-block; padding: 0;'>";
+            var htmlContent = $"<h2>The Most Read {category} News Articles This Week</h2><ul style='display: inline-block; padding: 0;'>";
 
             foreach (var article in articles)
             {

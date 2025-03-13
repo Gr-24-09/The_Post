@@ -6,8 +6,8 @@
     ViewData["ActivePage"] = ManageNavPages.Newsletters;
 }
 
-<div class="col-md-6 mx-auto">
-    <h2 class="form-title-Nav-Pages">My Personalized Newsletter</h2>
+<div class="col-md-8 mx-auto">
+    <h2 class="form-title-Nav-Pages text-center">My Personalized Newsletter</h2>
 
     <form method="post" asp-page-handler="save">
         <div class="form-group m-2">
@@ -34,7 +34,7 @@
                 </div>
 
                 <!-- Choose categories to include -->
-                <label class=" mb-2 text-success fs-5 fw-bold">Choose categories to include:</label>
+                <label class="mb-2 fs-5 fw-bold">Top 5 Most Read Articles by Category This Week:</label>
                 @foreach (var category in Model.AvailableCategories)
                 {
                     <div class="d-flex justify-content-between align-items-center mb-3">
