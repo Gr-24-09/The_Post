@@ -92,6 +92,7 @@ namespace The_Post.Services
         {
             var editorschoice = _applicationDBContext.Articles
                 .Include(a => a.Categories)
+                .Where(a => a.IsArchived == false)
                 .Where(article => article.EditorsChoice).ToList();
             return editorschoice;
         }
