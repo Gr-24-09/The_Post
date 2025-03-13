@@ -34,7 +34,7 @@ namespace SaveElecticityPrices_Isolated
 
 
 
-            var day = DateTime.UtcNow.AddDays(-1);
+            var day = DateTime.UtcNow;
             var connectionstring = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
             var tableServiceClient = new TableServiceClient(connectionstring);
             var tableClient = tableServiceClient.GetTableClient("ElectricityPrices");
