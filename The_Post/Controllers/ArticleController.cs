@@ -136,7 +136,7 @@ namespace The_Post.Controllers
                 HeadLine = article.HeadLine,
                 LinkText = article.LinkText,
                 ContentSummary = article.ContentSummary,
-                Content = article.Content,
+                Content = _articleService.GetUnprocessedArticleContent(article.Content),
                 SelectedCategoryIds = article.Categories.Select(c => c.Id).ToList(),
                 AvailableCategories = _articleService.GetAllCategoriesSelectList()
             };

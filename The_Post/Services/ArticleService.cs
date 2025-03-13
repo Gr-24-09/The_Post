@@ -92,6 +92,7 @@ namespace The_Post.Services
         {
             var editorschoice = _applicationDBContext.Articles
                 .Include(a => a.Categories)
+                .Where(a => a.IsArchived == false)
                 .Where(article => article.EditorsChoice).ToList();
             return editorschoice;
         }
@@ -224,6 +225,22 @@ namespace The_Post.Services
             // Joins the paragraphs together into one string.
             return string.Join("", paragraphs);
         }
+
+        public string GetUnprocessedArticleContent(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content))
+                return string.Empty;
+
+            // Replace <br /> with \n
+            content = content.Replace("<br />", "\n");
+
+            // Remove <p> and </p>, replacing with double newlines
+            content = Regex.Replace(content, @"<\/p>\s*<p>", "\n\n");
+            content = content.Replace("<p>", "").Replace("</p>", "");
+
+            return content;
+        }
+
 
         // Checks if there is a like made by the user for the article. If there is, the like gets removed. If not, a new like is added.
         public async Task AddRemoveLikeAsync(int articleID, string userID)
