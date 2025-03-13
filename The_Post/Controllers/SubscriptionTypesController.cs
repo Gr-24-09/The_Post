@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using The_Post.Models;
+using The_Post.Models.VM;
 using The_Post.Services;
 
 namespace The_Post.Controllers
@@ -19,7 +20,12 @@ namespace The_Post.Controllers
         public async Task<IActionResult> Index()
         {
             var subTypes = await _subscriptionTypeService.GetAllSubscriptionTypes();
-            return View(subTypes);
+            var viewModel = new SubscriptionManagementVM
+            {
+                SubscriptionTypes = subTypes
+            };
+
+            return View(viewModel);
         }
                 
         public async Task<IActionResult> Details(int? id)
@@ -41,18 +47,22 @@ namespace The_Post.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new SubscriptionManagementVM();
+            return View(viewModel);
         }
                
         [HttpPost]        
-        public async Task<IActionResult> Create([Bind("Id,TypeName,Description,Price")] SubscriptionType subType)
+        public async Task<IActionResult> Create(SubscriptionManagementVM viewModel)
         {
             if (ModelState.IsValid)
             {
-                await _subscriptionTypeService.Create(subType);
+                await _subscriptionTypeService.Create(viewModel.NewSubscriptionType);
                 return RedirectToAction(nameof(Index));
             }
-            return View(subType);
+
+            // Reload the list of subscription types
+            viewModel.SubscriptionTypes = await _subscriptionTypeService.GetAllSubscriptionTypes();
+            return View(viewModel);
         }
                 
         public async Task<IActionResult> Edit(int? id)
@@ -115,6 +125,17 @@ namespace The_Post.Controllers
             {
                 return NotFound($"SubscriptionType with ID {id} not found.");
             }
+        }
+
+        public async Task<IActionResult> GetDetails(int id)
+        {
+            var subType = await _subscriptionTypeService.GetByIdAsync(id);
+            if (subType == null)
+            {
+                return NotFound($"SubscriptionType with ID {id} not found.");
+            }
+
+            return PartialView("_SubscriptionTypeDetails", subType);
         }
     }
 }

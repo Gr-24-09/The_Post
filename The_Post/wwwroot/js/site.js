@@ -50,9 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const articleId = parseInt(this.dataset.articleId);
             const isChecked = this.checked;
 
-            const cardWrapper = this.closest(".card").querySelector(".position-relative");
-            if (cardWrapper) {
-                cardWrapper.classList.toggle("archived-css", isChecked);
+            // Get the closest list item for toggling the archived class
+            const listItem = this.closest("li.list-group-item");
+            if (listItem) {
+                listItem.classList.toggle("archived-css", isChecked);
             }
 
             try {
@@ -69,18 +70,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const result = await response.json();
                 if (result.success) {
                     toastr.success("Archive status updated successfully");
-                }
-                else {
-                    if (cardWrapper) {
-                        cardWrapper.classList.toggle("archived-css", !isChecked);
+                } else {
+                    if (listItem) {
+                        listItem.classList.toggle("archived-css", !isChecked);
                     }
                     this.checked = !isChecked;
                     toastr.error(result.message || "Failed to update archive status");
                 }
-            }
-            catch (error) {
-                if (cardWrapper) {
-                    cardWrapper.classList.toggle("archived-css", !isChecked);
+            } catch (error) {
+                if (listItem) {
+                    listItem.classList.toggle("archived-css", !isChecked);
                 }
                 this.checked = !isChecked;
                 toastr.error("An unexpected error occurred");
