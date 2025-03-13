@@ -1,16 +1,26 @@
-﻿@model The_Post.Models.VM.CategoryPageVM
+﻿
+@model The_Post.Models.VM.CategoryPageVM
 
 @{
     ViewData["Title"] = Model.Category;
 }
 
-<div>
+<h1 class="category-title mx-auto col-lg-10">@Model.Category</h1> 
 
+<div>
     @if (Model.Category == "Economy")
     {
         @await Component.InvokeAsync("ElectricityPrices")
     }
 </div>
+
+<div style="text-align:center">
+    @if (Model.Category == "Economy")
+    {
+        <a href="@Url.Action("HistoricalElectricityPrices", "News", new { date = "" })">View Historical Electricity Prices for All Regions</a>
+    }
+</div>
+
 
 <!--Div-structure that mimics the one in the Front page-->
 <div class="container-fluid">
@@ -29,25 +39,3 @@
         <div class="col-lg-2 order-2 order-lg-3 flex-lg-grow-1"></div>
     </div>
 </div>
-    
-
-@if (Model.Category == "Economy")
-{
-    <div>
-        <h3>Historical Electricity Prices</h3>
-        <a href="@Url.Action("HistoricalElectricityPrices", "News", new { region = "SE1", date = DateTime.UtcNow.ToString("yyyy-MM-dd") })">View Prices for SE1</a>
-    </div>
-}
-
-@* <div>
-    <h3>Articles</h3>
-    <ul>
-        @foreach (var article in Model.Articles)
-        {
-            <li>
-                <a href="@Url.Action("Details", "Article", new { id = article.Id })">@article.HeadLine</a>
-            </li>
-        }
-    </ul>
-</div>
- *@

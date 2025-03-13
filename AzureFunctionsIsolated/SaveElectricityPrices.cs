@@ -34,12 +34,12 @@ namespace SaveElecticityPrices_Isolated
 
 
 
-            var yesterday = DateTime.UtcNow.AddDays(-1);
+            var day = DateTime.UtcNow;
             var connectionstring = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
             var tableServiceClient = new TableServiceClient(connectionstring);
             var tableClient = tableServiceClient.GetTableClient("ElectricityPrices");
 
-            var prices = await FetchPricesFromApi(yesterday);
+            var prices = await FetchPricesFromApi(day);
 
             if (prices == null || prices.Count == 0)
             {
@@ -55,7 +55,7 @@ namespace SaveElecticityPrices_Isolated
                     string rowKey = $"{data.Region}_{data.hour:00}";
 
                     // Create a new TableEntity with the partition key and row key and the data
-                    var tableEntity = new TableEntity(yesterday.ToString("yyyy-MM-dd"), rowKey)
+                    var tableEntity = new TableEntity(day.ToString("yyyy-MM-dd"), rowKey)
                     {
                         {"price_eur", data.price_eur},
                         {"price_sek", data.price_sek},
@@ -67,7 +67,7 @@ namespace SaveElecticityPrices_Isolated
                     await tableClient.UpsertEntityAsync(tableEntity, TableUpdateMode.Replace);
                 }
                 // Log success message
-                _logger.LogInformation($"ElectricityPrices for {yesterday.ToString("yyyy-MM-dd")} saved at {DateTime.UtcNow}");
+                _logger.LogInformation($"ElectricityPrices for {day.ToString("yyyy-MM-dd")} saved at {DateTime.UtcNow}");
             }
             catch (Exception ex)
             {
@@ -143,6 +143,7 @@ namespace SaveElecticityPrices_Isolated
             public int kmeans { get; set; }
             [JsonIgnore]
             public string Region { get; set; }
+            //}
         }
     }
 }
