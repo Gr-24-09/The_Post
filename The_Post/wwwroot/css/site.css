@@ -203,11 +203,10 @@ body {
 }
 
 /* For Tabs */
-/*.custom-tabs .nav-link .active {
-    color: #0A2472 !important;
-    font-weight: bold;
+.custom-tabs .nav-link:not(.active) {
+    color: #233A80 !important;
 }
-.custom-tabs .nav-link {
+/*.custom-tabs .nav-link {
     color: gray !important;
     
 }*/

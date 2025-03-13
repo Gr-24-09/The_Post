@@ -109,9 +109,9 @@
                     <div class="row ps-2">
                         <div class="col-md-6">
                             <div class="form-floating mb-3">
-                                <input asp-for="NewEmployee.userMail" class="form-control" placeholder="Email" name="uniqueEmailField" autocomplete="off" />
-                                <label asp-for="NewEmployee.userMail">Email</label>
-                                <span asp-validation-for="NewEmployee.userMail" class="text-danger"></span>
+                                <input asp-for="NewEmployee.Email" class="form-control" placeholder="Email" autocomplete="off" />
+                                <label asp-for="NewEmployee.Email">Email</label>
+                                <span asp-validation-for="NewEmployee.Email" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -155,3 +155,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var activeTab = '@ViewBag.ActiveTab';
+        if (activeTab === "addEmployee") {
+            var tabTrigger = document.querySelector('#addEmployee-tab');
+            if (tabTrigger) {
+                var tab = new bootstrap.Tab(tabTrigger);
+                tab.show();
+            }
+        }
+    });
+</script>

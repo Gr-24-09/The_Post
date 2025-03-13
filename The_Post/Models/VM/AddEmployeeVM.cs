@@ -27,7 +27,7 @@ namespace The_Post.Models.VM
 
         [Required]
         [EmailAddress]
-        public string userMail { get; set; }
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

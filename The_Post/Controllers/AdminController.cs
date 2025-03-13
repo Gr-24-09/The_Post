@@ -121,7 +121,7 @@ namespace The_Post.Controllers
             }
 
             TempData["SuccessMessage"] = "Employee details updated successfully.";
-            return RedirectToAction("AllEmployees");
+            return RedirectToAction("EmployeeManagement");
         }
 
 
@@ -134,13 +134,13 @@ namespace The_Post.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddEmployee(AddEmployeeVM model)
+        public async Task<IActionResult> AddEmployee([Bind(Prefix = "NewEmployee")] AddEmployeeVM model)
         {
             if (ModelState.IsValid)
             {
                 var user = new User
                 {                    
-                    UserName = model.userMail,
+                    UserName = model.Email,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     DOB = model.DOB,
@@ -148,7 +148,7 @@ namespace The_Post.Controllers
                     Zip = model.Zip,
                     City = model.City,
                     PhoneNumber = model.PhoneNumber,
-                    Email = model.userMail,
+                    Email = model.Email,
                     IsEmployee = true
                 };
 
@@ -166,10 +166,11 @@ namespace The_Post.Controllers
                 } 
             }
 
-            //Repopulate dropdowns if validation fails
-            var employeeList = await _employeeService.GetAllEmployeesWithRolesAsync();
+            // Set a flag so the view knows to stay on the "Register Employee" tab.
+            ViewBag.ActiveTab = "addEmployee";
 
-            // Return view with errors
+            // Repopulate the employee list and return the view with the errors.
+            var employeeList = await _employeeService.GetAllEmployeesWithRolesAsync();
             var vM = new EmployeeVM
             {
                 Employees = employeeList,
@@ -177,13 +178,6 @@ namespace The_Post.Controllers
             };
 
             return View("EmployeeManagement", vM);
-        }
-
-
-
-        public IActionResult EmployeeAdded()
-        {
-            return View();
         }
 
 
@@ -196,11 +190,11 @@ namespace The_Post.Controllers
             if (!result) 
             {
                 TempData["ErrorMessage"] = "Failed to delete employee.";
-                return RedirectToAction("AllEmployees"); 
+                return RedirectToAction("EmployeeManagement"); 
             }
 
             TempData["SuccessMessage"] = "Employee deleted successfully.";
-            return RedirectToAction("AllEmployees");
+            return RedirectToAction("EmployeeManagement");
         }
 
         [Authorize(Roles = "Admin")]
