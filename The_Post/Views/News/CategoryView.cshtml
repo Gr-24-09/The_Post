@@ -4,9 +4,23 @@
 @{
     ViewData["Title"] = Model.Category;
 }
+  <h1 class="category-title mx-auto col-lg-10">@Model.Category</h1> 
+<div>
+
+    @if (Model.Category == "Economy")
+    {
+        @await Component.InvokeAsync("ElectricityPrices")
+    }
+</div>
+<div style="text-align:center">
+    @if (Model.Category == "Economy")
+    {
+        <a href="@Url.Action("HistoricalElectricityPrices", "News", new { date = "" })">View Historical Electricity Prices for All Regions</a>
+    }
+</div>
+
 <div class="col-md-10 mx-auto">
 
-    <h1 class="category-title mx-auto col-lg-10">@Model.Category</h1>
 
     @foreach (var article in Model.Articles)
     {
@@ -15,21 +29,21 @@
 
 </div>
 
-<div>
+@* <div>
 
     @if (Model.Category == "Economy")
     {
         @await Component.InvokeAsync("ElectricityPrices")
     }
-</div>
+</div> *@
  
-<div style="text-align:center">
+@* <div style="text-align:center">
     @if (Model.Category == "Economy")
     {
         <a href="@Url.Action("HistoricalElectricityPrices", "News", new { date = "" })">View Historical Electricity Prices for All Regions</a>
     }
 </div>
-
+ *@
 
 
    

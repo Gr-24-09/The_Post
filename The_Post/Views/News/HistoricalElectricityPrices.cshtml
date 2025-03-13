@@ -27,7 +27,6 @@ else
     <h3 style="color:#0A2472">Choose Date</h3>
     <form method="get" action="@Url.Action("HistoricalElectricityPrices", "News")">
         <label for="datePicker">Select a Date:</label>
-        @* <input type="date" id="datePicker" name="date" value= "@DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd")" required /> *@
         <input type="date" id="datePicker" name="date" value="@Model.SelectedDate" required />
         <button type="submit" class="btn" style="background-color:#0A2472; color: white; border-radius: 5px;">Get Prices</button>
     </form>
@@ -56,7 +55,6 @@ else
                 <tr>
                     <th>Hour</th>
                     <th>Price (SEK)</th>
-                    @*  <th>Date</th>  *@
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +63,6 @@ else
                     <tr>
                         <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                         @* <td>@price.PartitionKey</td>  *@
                     </tr>
                 }
             </tbody>
@@ -74,13 +71,12 @@ else
   
     <!-- Table for SE2 -->
             <div id="se2" class="tab-pane" style="display:none;">
-    @* <h3 style="text-align:center">SE2 Region</h3> *@
+    
      <table class="table table-dark table-hover table-bordered table-sm table-striped">
             <thead>
                 <tr>
                     <th>Hour</th>
-                    <th>Price (SEK)</th>
-                     @*  <th>Date</th>  *@ 
+                    <th>Price (SEK)<th/>
                 </tr>
             </thead>
             <tbody>
@@ -90,7 +86,7 @@ else
                     <tr>
                     <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                         @*  <td>@price.PartitionKey</td>   *@
+                         
                     </tr>
                 }
             </tbody>
@@ -107,7 +103,7 @@ else
                 <tr>
                     <th>Hour</th>
                     <th>Price (SEK)</th>
-                     @*  <th>Date</th>   *@
+                    
                 </tr>
             </thead>
             <tbody>
@@ -117,7 +113,7 @@ else
                     <tr>
                     <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                        @*  <td>@price.PartitionKey</td>   *@
+                        
                     </tr>
                 }
             </tbody>
@@ -134,7 +130,7 @@ else
                 <tr>
                     <th>Hour</th>
                     <th>Price (SEK)</th>
-                     @* <th>Date</th>   *@
+                     
                 </tr>
             </thead>
             <tbody>
@@ -144,7 +140,7 @@ else
                     <tr>
                     <td>@price.RowKey.Substring(4)</td>
                         <td>@price["price_sek"]</td>
-                         @*  <td>@price.PartitionKey</td>   *@
+                         
                     </tr>
                 }
             </tbody>
