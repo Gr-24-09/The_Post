@@ -30,6 +30,7 @@ namespace The_Post.Controllers
             _db = db;
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(AdminDashboardVM adminDashboard)
         {
             var totalArticles = _db.Articles.Count();
