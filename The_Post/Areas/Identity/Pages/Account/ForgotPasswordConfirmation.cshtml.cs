@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using The_Post.Services;
 
 namespace The_Post.Areas.Identity.Pages.Account
 {
@@ -12,8 +13,13 @@ namespace The_Post.Areas.Identity.Pages.Account
     ///     directly from your code. This API may change or be removed in future releases.
     /// </summary>
     [AllowAnonymous]
-    public class ForgotPasswordConfirmation : PageModel
+    public class ForgotPasswordConfirmation : BaseCookiesPageModel
     {
+        public ForgotPasswordConfirmation(IArticleService articleService)
+            : base(articleService)
+        {
+            
+        }
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
