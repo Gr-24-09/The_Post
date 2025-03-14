@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using The_Post.Data;
 
@@ -11,9 +12,11 @@ using The_Post.Data;
 namespace The_Post.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250314083240_MadeNullableUserAddressZip")]
+    partial class MadeNullableUserAddressZip
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,6 +350,7 @@ namespace The_Post.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -425,6 +429,7 @@ namespace The_Post.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Zip")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
