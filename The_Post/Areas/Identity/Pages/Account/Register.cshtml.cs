@@ -117,19 +117,19 @@ namespace The_Post.Areas.Identity.Pages.Account
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
-            [Required(ErrorMessage = "Delivery address is required.")]
-            [StringLength(50, ErrorMessage = "Delivery address can't be longer than 50 characters.")]
 
-            public string Address { get; set; }
+            //[Required(ErrorMessage = "Delivery address is required.")]
+            //[StringLength(50, ErrorMessage = "Delivery address can't be longer than 50 characters.")]
+
+            //public string Address { get; set; }
 
             [Required(ErrorMessage = "Delivery City is required.")]
             [StringLength(50, ErrorMessage = "Delivery city can't be longer than 50 characters.")]
-
             public string City { get; set; }
 
-            [Required(ErrorMessage = "Delivery Zip is required.")]
-            [RegularExpression(@"^\d{5}$", ErrorMessage = "Delivery zip must be a 5-digit number.")]
-            public string Zip { get; set; }
+            //[Required(ErrorMessage = "Delivery Zip is required.")]
+            //[RegularExpression(@"^\d{5}$", ErrorMessage = "Delivery zip must be a 5-digit number.")]
+            //public string Zip { get; set; }
         }
 
 
@@ -156,9 +156,9 @@ namespace The_Post.Areas.Identity.Pages.Account
                 user.LastName = Input.LastName;
                 user.DOB = Input.DOB;
                 user.PhoneNumber = Input.PhoneNumber;
-                user.Address = Input.Address;
+                //user.Address = Input.Address;
                 user.City = Input.City; 
-                user.Zip = Input.Zip;
+                //user.Zip = Input.Zip;
                
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -172,6 +172,7 @@ namespace The_Post.Areas.Identity.Pages.Account
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
@@ -180,6 +181,7 @@ namespace The_Post.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

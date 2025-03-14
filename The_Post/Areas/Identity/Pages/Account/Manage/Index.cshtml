@@ -17,56 +17,56 @@
 
             <!-- Updated class names for consistency -->
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.Email" class="form-control" placeholder="Please enter your email" />
                 <label asp-for="Input.Email" class="form-label"></label>
+                <input asp-for="Input.Email" class="form-control" placeholder="Please enter your email" />
                 <span asp-validation-for="Input.Email" class="text-danger-Nav-Pages"></span>
             </div>
 
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.FirstName" class="form-control" placeholder="Please enter your first name" />
                 <label asp-for="Input.FirstName" class="form-label"></label>
+                <input asp-for="Input.FirstName" class="form-control" placeholder="Please enter your first name" />
                 <span asp-validation-for="Input.FirstName" class="text-danger-Nav-Pages"></span>
             </div>
 
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.LastName" class="form-control" placeholder="Please enter your last name" />
                 <label asp-for="Input.LastName" class="form-label"></label>
+                <input asp-for="Input.LastName" class="form-control" placeholder="Please enter your last name" />
                 <span asp-validation-for="Input.LastName" class="text-danger-Nav-Pages"></span>
             </div>
 
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.DOB" type="date" class="form-control" placeholder="Please enter your date of birth" />
                 <label asp-for="Input.DOB" class="form-label"></label>
+                <input asp-for="Input.DOB" type="date" class="form-control" placeholder="Please enter your date of birth" />
                 <span asp-validation-for="Input.DOB" class="text-danger-Nav-Pages"></span>
             </div>
 
-            <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.Address" class="form-control" placeholder="Please enter your Address" />
+        @*     <div class="form-floating-Nav-Pages mb-3">
                 <label asp-for="Input.Address" class="control-label">Address</label>
+                <input asp-for="Input.Address" class="form-control" placeholder="Please enter your Address" />
                 <span asp-validation-for="Input.Address" class="text-danger-Nav-Pages"></span>
-            </div>
+            </div> *@
 
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.City" class="form-control" placeholder="Please enter your City" />
                 <label asp-for="Input.City" class="control-label">City</label>
+                <input asp-for="Input.City" class="form-control" placeholder="Please enter your City" />
                 <span asp-validation-for="Input.City" class="text-danger-Nav-Pages"></span>
             </div>
 
-            <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.Zip" class="form-control" placeholder="Please enter your Zip Code" />
+       @*      <div class="form-floating-Nav-Pages mb-3">
                 <label asp-for="Input.Zip" class="control-label">Zip</label>
+                <input asp-for="Input.Zip" class="form-control" placeholder="Please enter your Zip Code" />
                 <span asp-validation-for="Input.Zip" class="text-danger-Nav-Pages"></span>
-            </div>
+            </div> *@
 
             <!-- Disabled input for Username to prevent modifications -->
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
                 <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
             </div>
 
             <div class="form-floating-Nav-Pages mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger-Nav-Pages"></span>
             </div>
 

@@ -18,17 +18,15 @@ namespace The_Post.Models
         [DataType(DataType.Date)]
         public DateTime? DOB { get; set; }
 
-        [Required(ErrorMessage = "Address is required.")]
         [StringLength(50, ErrorMessage = "Address can't be longer than 50 characters.")]        
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         [Required(ErrorMessage = "City is required.")]
         [StringLength(50, ErrorMessage = "City can't be longer than 50 characters.")]        
         public string City { get; set; }
 
-        [Required(ErrorMessage = "Zip is required.")]
         [RegularExpression(@"^\d{5}$", ErrorMessage = "Zip must be a 5-digit number.")]
-        public string Zip { get; set; }
+        public string? Zip { get; set; }
 
         public bool IsEmployee { get; set; }
 
