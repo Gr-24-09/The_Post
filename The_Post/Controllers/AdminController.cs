@@ -52,8 +52,7 @@ namespace The_Post.Controllers
             var stats = await _subscriptionService.GetSubscriptionStats();
 
             var userAges = _db.Users
-            .Where(u => !u.IsEmployee && u.DOB.HasValue)
-            .AsEnumerable()
+            .Where(u => !u.IsEmployee && u.DOB.HasValue)            
             .Select(u => DateTime.Now.Year - u.DOB.Value.Year -
                 (DateTime.Now.DayOfYear < u.DOB.Value.DayOfYear ? 1 : 0))
             .ToList();
