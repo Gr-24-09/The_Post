@@ -43,7 +43,7 @@
                 <li>
                     <a asp-action="AllArticles" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
                         <i class="fa fa-newspaper p-2"></i>
-                        View Articles
+                        Articles
                     </a>
                 </li>
                 <li>
@@ -56,47 +56,23 @@
                @if (User.IsInRole("Admin"))
                {
                     <li>
-                        <a asp-action="AllEmployees" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
+                        <a asp-action="EmployeeManagement" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
                             <i class="fa fa-address-card p-2"></i>
-                            View Employees
+                            Employee Management
                         </a>
-                    </li>
-                    <li>
-                        <a asp-action="AddEmployee" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
-                            <i class="fa fa-user-plus p-2"></i>
-                            Add Employee
-                        </a>
-                    </li>
+                    </li>                   
                     <li>
                         <a asp-action="Index" asp-controller="Roles" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
                             <i class="fa fa-user-tie p-2"></i>
                             Roles Management
                         </a>
-                    </li>
-                    <li>
-                        <a asp-action="Create" asp-controller="Roles" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
-                            <i class="fa fa-square-plus p-2"></i>
-                            Add Role
-                        </a>
-                    </li>
-                    <li>
-                        <a asp-action="AssignRole" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
-                            <i class="fa fa-square-check p-2"></i>
-                            Assign Role
-                        </a>
-                    </li>
+                    </li>                    
                     <li>
                         <a asp-action="Index" asp-controller="SubscriptionTypes" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-2 p-0 ps-2 bg-customGray">
                             <i class="fa fa-pen-fancy p-2"></i>
                             Subscription Management
                         </a>
-                    </li>
-                    <li>
-                        <a asp-action="Create" asp-controller="SubscriptionTypes" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
-                            <i class="fa fa-square-plus p-2 pe-1"></i>
-                            Add Subscription Type
-                        </a>
-                    </li>
+                    </li>                    
                     <li>
                         <a asp-action="SubscriptionStats" asp-controller="Admin" class="nav-link link-body-emphasis rounded-0 border-start customBorderColor border-4 mt-3 ms-5 p-0 ps-2 bg-customGray">
                             <i class="fa fa-chart-column p-2"></i>
@@ -105,7 +81,10 @@
                     </li>
                }
               
-            </ul>            
+            </ul>  
+            <svg class="wave-divider" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="#0A2472" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,192C672,171,768,149,864,160C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
         </div>
 
         <!-- Main Content Area -->
@@ -114,7 +93,7 @@
             <header class="p-2 headerAdmin text-bg-light">
                     <div class="d-flex align-items-center Mobile_Header-Admin p-0">
                         <!-- Button -->
-                        <button class="btn btn-light ofcButtonAdmin d-inline-flex d-md-none" type="button"
+                        <button class="btn btn-light ofcButtonAdmin d-inline-flex" type="button"
                                 data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
                                 aria-controls="offcanvasWithBothOptions" aria-expanded="false" title="Menu">
                             <svg viewBox="0 0 32 32" width="25" height="25" aria-hidden="true">

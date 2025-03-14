@@ -101,18 +101,18 @@ namespace The_Post.Services
             return employees;
         }
 
-        public async Task<List<EmployeeVM>> GetAllEmployeesWithRolesAsync()
+        public async Task<List<AllEmployeesVM>> GetAllEmployeesWithRolesAsync()
         {
             var employees = await _userManager.Users
                 .Where(u => u.IsEmployee)
                 .ToListAsync();
 
-            var employeeVMs = new List<EmployeeVM>();
+            var employeeVMs = new List<AllEmployeesVM>();
 
             foreach (var user in employees)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                employeeVMs.Add(new EmployeeVM
+                employeeVMs.Add(new AllEmployeesVM
                 {
                     Id = user.Id,
                     FirstName = user.FirstName,

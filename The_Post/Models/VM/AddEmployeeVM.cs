@@ -11,7 +11,7 @@ namespace The_Post.Models.VM
         public string LastName { get; set; }
                 
         [Required]
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
         [Required]
         public string Address { get; set; }
